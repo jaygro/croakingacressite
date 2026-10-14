@@ -1,6 +1,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Garden Suite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -263,7 +264,27 @@ body.care .readout,body.care .dock-add{display:none}
 .mini{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:12px 0 4px}
 .carebar .cb-d{flex-direction:row;align-items:center;white-space:nowrap}
 .carebar .cb-d input{flex:1}
+/* Site bar: matches the Croaking Acres header on the other pages. */
+.sitebar{margin:-14px -16px 12px;padding:0 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+.sitebar-in{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding:10px 0}
+.sitebar-brand{font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.sitebar-links a{margin-left:16px;text-decoration:none;color:var(--muted);font-size:.92rem}
+.sitebar-links a:first-child{margin-left:0}
+.sitebar-links a:hover{color:var(--accent)}
+.sitebar-links a[aria-current]{color:var(--ink);font-weight:600}
+.sitebar a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
+<div class="sitebar" role="navigation" aria-label="Croaking Acres site">
+  <div class="sitebar-in">
+    <a class="sitebar-brand" href="../">Croaking Acres</a>
+    <span class="sitebar-links">
+      <a href="../">Home</a>
+      <a href="./" aria-current="page">Garden Planner</a>
+      <a href="../nrcs-guide/">NRCS Guide</a>
+      <a href="../#contact">Contact</a>
+    </span>
+  </div>
+</div>
 <nav class="suite-tabs" role="tablist" aria-label="Garden Suite">
   <button type="button" role="tab" data-tab="plan" aria-selected="true">Plan</button>
   <button type="button" role="tab" data-tab="care" aria-selected="false">Care</button>
