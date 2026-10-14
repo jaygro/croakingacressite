@@ -3,61 +3,94 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>Croaking Acres | Market Garden</title>
   <meta name="description" content="Croaking Acres is a small market garden in Acton, Indiana, with free tools for growers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
   <style>
+    /* Palette and fonts match the Garden Planner (garden-planner/index.html). */
     :root {
-      --bg: #faf8f3;
-      --text: #2b2b26;
-      --muted: #6b6b60;
-      --green: #3f6b3a;
-      --green-dark: #2d4f29;
-      --card: #ffffff;
-      --border: #e4e0d4;
+      --bg: #edf1ea;
+      --panel: #f7f9f4;
+      --ink: #1b2a21;
+      --muted: #5b6a60;
+      --line: #cbd5ca;
+      --accent: #2e7a4d;
+      --accent-ink: #ffffff;
+      --accent-soft: #bfe0c7;
+      --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+      --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
     }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #111814;
+        --panel: #18211b;
+        --ink: #e3ece5;
+        --muted: #8fa196;
+        --line: #2c3a31;
+        --accent: #58b97f;
+        --accent-ink: #0c140f;
+        --accent-soft: #2b4a37;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #111814;
+      --panel: #18211b;
+      --ink: #e3ece5;
+      --muted: #8fa196;
+      --line: #2c3a31;
+      --accent: #58b97f;
+      --accent-ink: #0c140f;
+      --accent-soft: #2b4a37;
+    }
+
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--font-body);
       background: var(--bg);
-      color: var(--text);
+      color: var(--ink);
       line-height: 1.6;
     }
-    a { color: var(--green); }
+    a { color: var(--accent); }
     .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
 
-    header { border-bottom: 1px solid var(--border); background: var(--card); }
+    header { border-bottom: 1px solid var(--line); background: var(--panel); }
     header .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; padding-bottom: 16px; flex-wrap: wrap; gap: 12px; }
-    .brand { font-weight: 700; font-size: 1.2rem; color: var(--green-dark); text-decoration: none; }
-    nav a { margin-left: 18px; text-decoration: none; color: var(--text); font-size: 0.95rem; }
-    nav a:hover { color: var(--green); }
+    .brand { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+    nav a { margin-left: 18px; text-decoration: none; color: var(--muted); font-size: 0.95rem; }
+    nav a:hover { color: var(--accent); }
 
     .hero { padding: 64px 0 48px; }
-    .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 12px; line-height: 1.15; color: var(--green-dark); }
+    .hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.01em; margin: 0 0 12px; line-height: 1.15; color: var(--ink); text-wrap: balance; }
     .hero p { font-size: 1.15rem; color: var(--muted); max-width: 600px; margin: 0; }
 
     section { padding: 40px 0; }
-    h2 { margin: 0 0 8px; font-size: 1.6rem; color: var(--green-dark); }
+    h2 { font-family: var(--font-display); font-weight: 700; margin: 0 0 8px; font-size: 1.6rem; letter-spacing: -0.01em; color: var(--ink); }
     .lead { color: var(--muted); margin: 0 0 24px; }
 
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
-    .card h3 { margin: 0 0 8px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 24px; }
+    .card h3 { font-family: var(--font-display); font-weight: 700; margin: 0 0 8px; }
     .card p { margin: 0 0 16px; color: var(--muted); }
-    .tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; background: #eef3ea; color: var(--green-dark); padding: 3px 10px; border-radius: 999px; margin-bottom: 12px; }
+    .tag { display: inline-block; font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; background: var(--accent-soft); color: var(--ink); padding: 3px 10px; border-radius: 3px; margin-bottom: 12px; }
 
-    .btn { display: inline-block; background: var(--green); color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; }
-    .btn:hover { background: var(--green-dark); }
-    .btn.disabled { background: #b9b9ae; pointer-events: none; }
+    .btn { display: inline-block; background: var(--accent); color: var(--accent-ink); padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+    .btn:hover { filter: brightness(1.1); }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn.disabled { background: var(--line); color: var(--muted); pointer-events: none; }
 
     .contact-list { list-style: none; padding: 0; margin: 0; }
     .contact-list li { margin-bottom: 8px; }
-    .contact-list strong { display: inline-block; min-width: 90px; }
+    .contact-list strong { display: inline-block; min-width: 90px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 
-    .donate { background: #eef3ea; border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin-top: 8px; }
+    .donate { background: var(--panel); border: 1px dashed var(--line); border-radius: 6px; padding: 24px; margin-top: 8px; }
     .donate p { margin: 0 0 14px; }
 
-    footer { border-top: 1px solid var(--border); padding: 24px 0; color: var(--muted); font-size: 0.9rem; margin-top: 24px; }
+    footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted); font-size: 0.9rem; margin-top: 24px; }
   </style>
 </head>
 <body>
