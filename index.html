@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Farm Name] | Market Garden</title>
+  <meta name="description" content="[Farm Name] is a small market garden in Acton, Indiana, with free tools for growers.">
+  <style>
+    :root {
+      --bg: #faf8f3;
+      --text: #2b2b26;
+      --muted: #6b6b60;
+      --green: #3f6b3a;
+      --green-dark: #2d4f29;
+      --card: #ffffff;
+      --border: #e4e0d4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--green); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+    header { border-bottom: 1px solid var(--border); background: var(--card); }
+    header .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; padding-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+    .brand { font-weight: 700; font-size: 1.2rem; color: var(--green-dark); text-decoration: none; }
+    nav a { margin-left: 18px; text-decoration: none; color: var(--text); font-size: 0.95rem; }
+    nav a:hover { color: var(--green); }
+
+    .hero { padding: 64px 0 48px; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 12px; line-height: 1.15; color: var(--green-dark); }
+    .hero p { font-size: 1.15rem; color: var(--muted); max-width: 600px; margin: 0; }
+
+    section { padding: 40px 0; }
+    h2 { margin: 0 0 8px; font-size: 1.6rem; color: var(--green-dark); }
+    .lead { color: var(--muted); margin: 0 0 24px; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+    .card h3 { margin: 0 0 8px; }
+    .card p { margin: 0 0 16px; color: var(--muted); }
+    .tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; background: #eef3ea; color: var(--green-dark); padding: 3px 10px; border-radius: 999px; margin-bottom: 12px; }
+
+    .btn { display: inline-block; background: var(--green); color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; }
+    .btn:hover { background: var(--green-dark); }
+    .btn.disabled { background: #b9b9ae; pointer-events: none; }
+
+    .contact-list { list-style: none; padding: 0; margin: 0; }
+    .contact-list li { margin-bottom: 8px; }
+    .contact-list strong { display: inline-block; min-width: 90px; }
+
+    .donate { background: #eef3ea; border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin-top: 8px; }
+    .donate p { margin: 0 0 14px; }
+
+    footer { border-top: 1px solid var(--border); padding: 24px 0; color: var(--muted); font-size: 0.9rem; margin-top: 24px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <a class="brand" href="#top">[Farm Name]</a>
+      <nav>
+        <a href="#tools">Free Tools</a>
+        <a href="#contact">Contact</a>
+        <a href="#support">Support Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="wrap">
+
+      <div class="hero">
+        <h1>Small farm. Fresh food. Free tools for growers.</h1>
+        <p>[One or two sentences about the farm: what you grow, where you are, and who you sell to.]</p>
+      </div>
+
+      <section id="tools">
+        <h2>Free Tools</h2>
+        <p class="lead">Built for small growers, free to use.</p>
+        <div class="cards">
+          <div class="card">
+            <span class="tag">Coming soon</span>
+            <h3>Garden Planner</h3>
+            <p>Lay out beds, plan spacing and rotations, and print your plan. Runs in your browser, no account needed.</p>
+            <a class="btn disabled" href="#">Open the planner</a>
+          </div>
+          <div class="card">
+            <span class="tag">Coming soon</span>
+            <h3>NRCS Grant Guide</h3>
+            <p>A plain-language walkthrough of NRCS programs for small farms, from eligibility to application.</p>
+            <a class="btn disabled" href="#">Read the guide</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2>Contact</h2>
+        <p class="lead">Questions, orders, or feedback on the tools? Get in touch.</p>
+        <ul class="contact-list">
+          <li><strong>Email:</strong> <a href="mailto:you@yourdomain.com">you@yourdomain.com</a></li>
+          <li><strong>Phone:</strong> [phone number, optional]</li>
+          <li><strong>Location:</strong> Acton, Indiana</li>
+          <li><strong>Social:</strong> [link, optional]</li>
+        </ul>
+      </section>
+
+      <section id="support">
+        <h2>Support Us</h2>
+        <div class="donate">
+          <p>The tools and guides here are free. If they help you, a small donation keeps them going and helps us build more.</p>
+          <a class="btn" href="#">Donate</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">&copy; <span id="year"></span> [Farm Name]. Acton, Indiana.</div>
+  </footer>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>
