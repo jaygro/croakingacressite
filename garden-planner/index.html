@@ -64,6 +64,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .canvas-wrap{border:1px solid var(--line);background:var(--panel);height:min(68vh,640px);min-height:340px;position:relative;overflow:hidden}
 svg#board{width:100%;height:100%;display:block;touch-action:manipulation;cursor:grab;user-select:none}
 svg#board.panning{cursor:grabbing}
+/* A finger that starts on a shape or handle drags it and must not scroll the page. An empty-map swipe still scrolls. */
+svg#board [data-id]{touch-action:none}
 .compass{position:absolute;top:8px;right:8px;width:60px;height:60px;padding:0;border-radius:50%;background:var(--panel);border:1px solid var(--line);cursor:pointer;line-height:0;display:block}
 .compass svg{width:100%;height:100%;display:block}
 .compass text{font-family:var(--font-mono);font-size:8px;fill:var(--muted);text-anchor:middle;dominant-baseline:central}
@@ -3271,6 +3273,16 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       else if(s.locked||careOn()){drag={mode:'pan',sx:e.clientX,sy:e.clientY,vx:view.x,vy:view.y};svg.classList.add('panning');}
       else{drag={mode:'move',id:s.id,w0:w,orig:{x:s.x,y:s.y,pts:s.pts?s.pts.map(function(q){return q.slice();}):null}};}
       if(e.pointerType==='touch'&&drag&&drag.mode==='pan'){drag=null;svg.classList.remove('panning');}
+      if(e.pointerType==='touch'&&drag&&drag.mode!=='pan'){
+        /* render() below replaces the shape under the finger, so later touch events land on the removed node and never reach the board's listeners. Hold the gesture on that node itself so the page does not scroll mid-drag. */
+        (function(node){
+          var hold=function(ev){if(ev.cancelable)ev.preventDefault();};
+          var done=function(){node.removeEventListener('touchstart',hold);node.removeEventListener('touchmove',hold);node.removeEventListener('touchend',done);node.removeEventListener('touchcancel',done);};
+          node.addEventListener('touchstart',hold,{passive:false});
+          node.addEventListener('touchmove',hold,{passive:false});
+          node.addEventListener('touchend',done);node.addEventListener('touchcancel',done);
+        })(e.target);
+      }
       render();
     }else if(e.pointerType==='touch'){
       /* one finger on empty map scrolls the page; a tap (no movement) clears the selection on release */
@@ -3331,7 +3343,11 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   var tShape=false;
   function tdist(a,b){return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);}
   svg.addEventListener('touchstart',function(e){
-    if(e.touches.length===1){tShape=!!(drag&&drag.mode!=='pan');}
+    if(e.touches.length===1){
+      tShape=!!(drag&&drag.mode!=='pan');
+      /* claim the gesture up front: waiting for touchmove lets the browser start scrolling and cancel the drag */
+      if(tShape&&e.cancelable)e.preventDefault();
+    }
     else if(e.touches.length>=2){
       drag=null;tShape=false;tapStart=null;svg.classList.remove('panning');
       var a=e.touches[0],b=e.touches[1],r=svg.getBoundingClientRect(),cx=(a.clientX+b.clientX)/2,cy=(a.clientY+b.clientY)/2;
