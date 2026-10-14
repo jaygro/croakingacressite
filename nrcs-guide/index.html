@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>NRCS Grant Guide | Croaking Acres</title>
+  <meta name="description" content="A plain-language guide to what NRCS can help small farms pay for, with a worksheet to turn your ideas into a request.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    :root {
+      --bg: #edf1ea; --panel: #f7f9f4; --ink: #1b2a21; --muted: #5b6a60; --line: #cbd5ca;
+      --accent: #2e7a4d; --accent-ink: #ffffff; --accent-soft: #bfe0c7; --warn-bg: #f1e7cf;
+      --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+      --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #111814; --panel: #18211b; --ink: #e3ece5; --muted: #8fa196; --line: #2c3a31;
+        --accent: #58b97f; --accent-ink: #0c140f; --accent-soft: #2b4a37; --warn-bg: #3a3320;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #111814; --panel: #18211b; --ink: #e3ece5; --muted: #8fa196; --line: #2c3a31;
+      --accent: #58b97f; --accent-ink: #0c140f; --accent-soft: #2b4a37; --warn-bg: #3a3320;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.6; }
+    a { color: var(--accent); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+    header { border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 5; }
+    header .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; padding-bottom: 12px; flex-wrap: wrap; gap: 8px 16px; }
+    .brand { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+    nav a { margin-left: 16px; text-decoration: none; color: var(--muted); font-size: 0.92rem; }
+    nav a:hover { color: var(--accent); }
+
+    .hero { padding: 48px 0 24px; }
+    .hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 5vw, 2.8rem); letter-spacing: -0.01em; margin: 0 0 12px; line-height: 1.15; text-wrap: balance; }
+    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 680px; margin: 0 0 12px; }
+
+    section { padding: 32px 0; }
+    h2 { font-family: var(--font-display); font-weight: 700; margin: 0 0 8px; font-size: 1.6rem; letter-spacing: -0.01em; }
+    h3 { font-family: var(--font-display); font-weight: 700; margin: 0 0 6px; font-size: 1.15rem; }
+    .lead { color: var(--muted); margin: 0 0 20px; max-width: 720px; }
+    .kicker { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+
+    .notice { background: var(--warn-bg); border: 1px dashed var(--line); border-radius: 6px; padding: 14px 16px; font-size: 0.93rem; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 20px; }
+
+    .idea-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .idea-grid .panel h3 { font-size: 1.02rem; }
+    .idea-grid .panel p { margin: 0; color: var(--muted); font-size: 0.93rem; }
+
+    .bundles { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+    .btn { display: inline-block; background: var(--accent); color: var(--accent-ink); padding: 9px 18px; border: 0; border-radius: 4px; text-decoration: none; font-weight: 600; font-family: inherit; font-size: 0.95rem; cursor: pointer; }
+    .btn:hover { filter: brightness(1.1); }
+    .btn:focus-visible, .chip:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .chip { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-family: inherit; font-size: 0.9rem; cursor: pointer; }
+    .chip:hover { border-color: var(--accent); }
+    .bundle-note { color: var(--muted); font-size: 0.88rem; margin: 0 0 18px; }
+
+    .cat { margin-top: 28px; }
+    .cat > p { margin: 0 0 12px; color: var(--muted); font-size: 0.95rem; max-width: 720px; }
+    .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+    .pcard { display: block; position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 14px 14px 42px; cursor: pointer; }
+    .pcard:hover { border-color: var(--accent); }
+    .pcard input { position: absolute; left: 14px; top: 17px; width: 18px; height: 18px; accent-color: var(--accent); }
+    .pcard.on { border-color: var(--accent); background: var(--accent-soft); }
+    .pname { font-weight: 600; display: block; }
+    .pcode { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
+    .pwhat { display: block; color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+    .pcard.on .pwhat, .pcard.on .pcode { color: var(--ink); }
+
+    .builder { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 820px) { .builder { grid-template-columns: 1fr 1fr; } }
+    label.f { display: block; margin-bottom: 14px; font-weight: 600; font-size: 0.93rem; }
+    label.f small { display: block; font-weight: 400; color: var(--muted); }
+    input[type=text], textarea { width: 100%; margin-top: 4px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); color: var(--ink); font-family: inherit; font-size: 0.95rem; }
+    textarea { min-height: 76px; resize: vertical; }
+    .pick { border-top: 1px solid var(--line); padding: 12px 0; }
+    .pick:first-child { border-top: 0; }
+    .pick b { font-weight: 600; }
+    .pick textarea { min-height: 54px; font-size: 0.9rem; }
+    .empty { color: var(--muted); font-size: 0.95rem; margin: 0; }
+    .count { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+    ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+    ol.steps li { counter-increment: s; position: relative; padding: 0 0 18px 48px; }
+    ol.steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-weight: 700; font-family: var(--font-mono); font-size: 0.9rem; }
+    ol.steps b { display: block; }
+    ol.steps span { color: var(--muted); font-size: 0.95rem; }
+
+    .qlist { padding-left: 20px; margin: 0; }
+    .qlist li { margin-bottom: 8px; }
+    details { border-top: 1px solid var(--line); padding: 12px 0; }
+    details summary { cursor: pointer; font-weight: 600; }
+    details p { margin: 8px 0 0; color: var(--muted); }
+    .sources { padding-left: 20px; }
+    .sources li { margin-bottom: 6px; font-size: 0.93rem; }
+
+    #summary { display: none; padding: 24px 0 8px; }
+    #summary .doc { background: #fff; color: #111; border: 1px solid var(--line); border-radius: 6px; padding: 28px; font-size: 0.95rem; }
+    #summary h2 { color: #111; font-size: 1.4rem; }
+    #summary h4 { margin: 18px 0 6px; font-family: var(--font-display); font-size: 1rem; border-bottom: 1px solid #ccc; padding-bottom: 3px; }
+    #summary ul { margin: 0; padding-left: 20px; }
+    #summary li { margin-bottom: 6px; }
+    #summary .small { color: #555; font-size: 0.85rem; }
+    #summary .pre { white-space: pre-wrap; margin: 0; }
+
+    footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted); font-size: 0.9rem; margin-top: 24px; }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; }
+      #summary { display: block !important; padding: 0; }
+      #summary .doc { border: 0; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print">
+  <header>
+    <div class="wrap">
+      <a class="brand" href="../">Croaking Acres</a>
+      <nav>
+        <a href="#explore">What's possible</a>
+        <a href="#build">Build your list</a>
+        <a href="#process">How it works</a>
+        <a href="#sources">Sources</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+
+      <div class="hero">
+        <p class="kicker">Free guide</p>
+        <h1>NRCS grants: see everything that's possible, then ask for it.</h1>
+        <p>Many small farms apply for one thing, like a high tunnel, and never hear that NRCS can also help pay for irrigation, rainwater capture, soil and fertility planning, pest management, wind protection, and more. This guide shows the full range and helps you turn your ideas into a clear request.</p>
+        <div class="notice">This is an independent guide, not an official USDA or NRCS page. Programs, practice lists, payment rates, and deadlines change, and they differ by state. Always confirm details with your local NRCS office before you plan around anything here.</div>
+      </div>
+
+      <section id="mindset">
+        <h2>Think in problems, not shopping lists</h2>
+        <p class="lead">NRCS doesn't fund wish lists. It helps pay for conservation practices that fix a "resource concern" on your land, such as soil health, erosion, water supply and quality, plant health, pests, or wildlife habitat. Your request works best when it says what's going wrong or what you want to improve, and then names the practices that would address it.</p>
+        <div class="idea-grid">
+          <div class="panel"><h3>1. Name the problem</h3><p>Wet spot in the field, plants stressed by dry spells, cold nights cutting your season short, weeds eating your time, soil that has worn out.</p></div>
+          <div class="panel"><h3>2. Think in systems</h3><p>A tunnel pairs with irrigation, rain gutters, and raised beds. A soil-building plan pairs cover crops, compost, and testing. Practices that work together often make a stronger request.</p></div>
+          <div class="panel"><h3>3. Bring a draft to NRCS</h3><p>A conservation planner works with you to build the real plan. Walking in with a clear list and notes saves time and shows them what you actually need.</p></div>
+        </div>
+      </section>
+
+      <section id="explore">
+        <h2>What's possible</h2>
+        <p class="lead">Tick anything that sounds useful. Your picks carry down to the worksheet below. These are practices that have appeared on NRCS practice lists, including its list for high tunnel and small-scale or urban farms. Which ones your state offers this year, and what they pay, varies. Your local office has the current Indiana list and payment schedule.</p>
+
+        <p class="kicker">Start from a bundle</p>
+        <div class="bundles" id="bundles"></div>
+        <p class="bundle-note">Bundles are only starting points we made up, not official NRCS packages. They tick a group of related practices for you, and you can untick anything.</p>
+
+        <div id="catalog"></div>
+      </section>
+
+      <section id="build">
+        <h2>Build your request worksheet</h2>
+        <p class="lead">Tell us a bit about your farm and add notes to each practice you picked. The worksheet turns into a one-page summary you can print or copy and bring to your NRCS meeting. Everything stays in your browser and nothing is sent anywhere.</p>
+        <div class="builder">
+          <div class="panel">
+            <h3>About your operation</h3>
+            <label class="f">Your name or farm name <small>optional</small><input type="text" id="p-name" autocomplete="off"></label>
+            <label class="f">County or location<input type="text" id="p-where" autocomplete="off"></label>
+            <label class="f">What you grow or raise<input type="text" id="p-grow" autocomplete="off"></label>
+            <label class="f">Size of your operation <small>acres or square feet, and any structures you already have</small><input type="text" id="p-size" autocomplete="off"></label>
+            <label class="f">What's not working today? <small>Dry spells, wet spots, cold snaps, weeds, tired soil, wind, hauling water by hand...</small><textarea id="p-problems"></textarea></label>
+            <label class="f">What do you want to be able to do? <small>Your goals for the next few years</small><textarea id="p-goals"></textarea></label>
+          </div>
+          <div class="panel">
+            <h3>Your picks <span class="count" id="count">0 selected</span></h3>
+            <div id="picks"><p class="empty">Nothing picked yet. Choose practices above or start from a bundle.</p></div>
+            <div class="actions">
+              <button class="btn" id="gen" type="button">Create my summary</button>
+              <button class="btn ghost" id="clear" type="button">Clear everything</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  </div>
+
+  <div class="wrap" id="summary" aria-live="polite">
+    <div class="no-print actions" style="margin-bottom:14px">
+      <button class="btn" id="print" type="button">Print or save as PDF</button>
+      <button class="btn ghost" id="copy" type="button">Copy as text</button>
+      <button class="btn ghost" id="back" type="button">Back to editing</button>
+      <span id="copied" class="count"></span>
+    </div>
+    <div class="doc" id="doc"></div>
+  </div>
+
+  <div class="no-print">
+  <main>
+    <div class="wrap">
+      <section id="process">
+        <h2>How the process works</h2>
+        <p class="lead">The details vary by state and year, but the path for EQIP (the main NRCS program for working farms) generally looks like this.</p>
+        <ol class="steps">
+          <li><b>Contact your local USDA Service Center.</b><span>Tell them you're interested in EQIP. You can also start through farmers.gov. A conservation planner will check your eligibility and learn about your land.</span></li>
+          <li><b>Get a farm number from the Farm Service Agency (FSA).</b><span>NRCS requires one for financial assistance. FSA is usually in the same building as NRCS. If you're new to USDA programs, make this appointment early.</span></li>
+          <li><b>Develop a conservation plan with your planner.</b><span>This is where your worksheet helps. You and the planner pick practices that address your resource concerns.</span></li>
+          <li><b>Complete the application and paperwork.</b><span>This includes forms CPA-1200 and AD-1026, a tax ID (SSN or EIN), and proof you control the land, like a deed or a lease. If you lease, landowner permission can matter for some practices.</span></li>
+          <li><b>Meet the ranking date.</b><span>NRCS accepts applications year-round, but funding decisions are made at set ranking dates, and applications are scored competitively. Indiana's current cutoff is listed on the NRCS application cutoff dates page (linked below). Missing a date means waiting for the next cycle.</span></li>
+          <li><b>If you're selected, sign a contract. Don't start the work first.</b><span>Starting a practice before NRCS signs your contract can make that practice ineligible for payment. A waiver to start early exists, but it has to be requested in writing and granted beforehand.</span></li>
+          <li><b>Build it to NRCS standards, then get paid.</b><span>NRCS typically pays after the work is done and inspected. Some producers qualify for advance payment, and NRCS describes higher payment rates for beginning, veteran, limited resource, and socially disadvantaged producers, so ask which applies to you.</span></li>
+        </ol>
+        <p class="lead" style="margin-top:8px">Eligibility basics from Indiana NRCS: you control or own eligible land, meet adjusted gross income limits, comply with highly erodible land and wetland conservation rules, and develop a conservation plan. Already doing good conservation work? Ask about the Conservation Stewardship Program (CSP), which pays for maintaining and building on it.</p>
+      </section>
+
+      <section id="questions">
+        <h2>Questions to ask your conservationist</h2>
+        <p class="lead">These come along in your summary too.</p>
+        <ul class="qlist" id="qlist"></ul>
+      </section>
+
+      <section id="faq">
+        <h2>Good to know</h2>
+        <details><summary>Is a high tunnel the only thing worth asking for?</summary><p>No. NRCS's high tunnel initiative practice list also includes irrigation, roof runoff structures, raised beds, low tunnels, mulching, nutrient and pest management, and more. Tunnels get the attention, but the supporting practices are often what make a farm work.</p></details>
+        <details><summary>Will everything I tick get funded?</summary><p>No. Practices have to address a documented resource concern, fit NRCS design standards, be on your state's current list, and rank well against other applicants. Think of your picks as a starting conversation, not a promise.</p></details>
+        <details><summary>What do practices pay?</summary><p>Payment rates are set by state and year, and some practices have small-scale scenarios. We don't list dollar amounts here because they go stale quickly. Ask your local office for the current Indiana payment schedule.</p></details>
+        <details><summary>I'm a small or urban farm. Is there special help?</summary><p>Indiana NRCS has a page for small and urban farms and a state urban and small-scale conservationist. NRCS also describes targeted funding and higher rates for historically underserved producers, and an Organic Initiative. Ask about each when you meet.</p></details>
+      </section>
+
+      <section id="sources">
+        <h2>Sources and where to go next</h2>
+        <p class="lead">Last reviewed October 2026. Check these for current details.</p>
+        <ul class="sources">
+          <li><a href="https://www.nrcs.usda.gov/state-offices/indiana/smallurban-farming-indiana" rel="noopener">Indiana NRCS: Small and urban farming</a></li>
+          <li><a href="https://www.nrcs.usda.gov/Indiana/EQIP" rel="noopener">Indiana NRCS: EQIP</a></li>
+          <li><a href="https://www.nrcs.usda.gov/application-cutoff-dates" rel="noopener">NRCS application cutoff dates by state</a></li>
+          <li><a href="https://www.nrcs.usda.gov/programs-initiatives/eqip-environmental-quality-incentives" rel="noopener">NRCS: Environmental Quality Incentives Program (EQIP)</a></li>
+          <li><a href="https://www.nrcs.usda.gov/sites/default/files/2023-11/EQIP%20for%20Small-Scale%20Urban%20Ag%20factsheet_0.pdf" rel="noopener">NRCS: EQIP for small-scale urban agriculture (fact sheet)</a></li>
+          <li><a href="https://www.nrcs.usda.gov/sites/default/files/2024-12/fy25-eqip-seasonal-high-tunnel-practice-list.pdf" rel="noopener">NRCS: FY2025 EQIP seasonal high tunnel practice list</a></li>
+          <li><a href="https://www.nrcs.usda.gov/state-offices/indiana/news/ask-the-indiana-nrcs-expert-urban-agriculture" rel="noopener">Ask the Indiana NRCS expert: urban agriculture</a></li>
+          <li><a href="https://www.nrcs.usda.gov/contact/find-a-service-center" rel="noopener">Find your USDA service center</a></li>
+          <li><a href="https://www.farmers.gov" rel="noopener">farmers.gov</a></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">&copy; <span id="year"></span> Croaking Acres. Independent guide, not affiliated with USDA or NRCS. Questions or corrections? <a href="mailto:james@croakingacres.com">james@croakingacres.com</a></div>
+  </footer>
+  </div>
+
+<script>
+(function () {
+  "use strict";
+
+  // Practice codes and names come from NRCS practice lists (high tunnel initiative list and the national practice index).
+  var CATS = [
+    { id: "structures", title: "Growing structures and season extension",
+      blurb: "Cover and protect crops so you can start earlier, finish later, and lose less to weather.",
+      items: [
+        { id: "ht", code: "325", name: "High tunnel system", what: "An unheated, hoop-style structure that protects crops from wind, rain, and cold and extends your season." },
+        { id: "lt", code: "821", name: "Low tunnel system", what: "Low covers over rows or beds that protect plants from cold, sun, wind, and pests." },
+        { id: "rb", code: "812", name: "Raised bed", what: "Beds built above ground, useful for poor or contaminated soil and for better drainage and plant health." }
+      ] },
+    { id: "water", title: "Water supply and irrigation",
+      blurb: "Get water to the crops efficiently so you stop hauling hoses and guessing.",
+      items: [
+        { id: "micro", code: "441", name: "Irrigation system, microirrigation", what: "Drip or micro-spray systems that put water where plants need it and use less of it." },
+        { id: "iwm", code: "449", name: "Irrigation water management", what: "A plan for when and how much to water, based on your crops and soil." },
+        { id: "pipe", code: "430", name: "Irrigation pipeline", what: "Pipe that carries water from the source to your growing areas." },
+        { id: "pump", code: "533", name: "Pumping plant", what: "A pump and power setup to move water, including automated pumps." },
+        { id: "spr", code: "442", name: "Sprinkler system", what: "Overhead watering for larger plantings or cover crops." },
+        { id: "well", code: "642", name: "Water well", what: "A new or replacement well as your water source. Availability varies, so ask." },
+        { id: "res", code: "436", name: "Irrigation reservoir", what: "A tank, pit, or small reservoir that stores irrigation water." }
+      ] },
+    { id: "capture", title: "Rainwater capture, drainage, and wet-weather fixes",
+      blurb: "Catch the water you get, move away the water you don't want, and keep high-traffic spots from turning to mud.",
+      items: [
+        { id: "roof", code: "558", name: "Roof runoff structure", what: "Gutters and related structures that collect rain from a roof, such as a tunnel, and send it where you want it." },
+        { id: "catch", code: "636", name: "Water harvesting catchment", what: "A way to capture rainfall or runoff and save it for later use." },
+        { id: "pond", code: "378", name: "Pond", what: "A constructed pond for water storage. Usually a bigger project with design requirements, so ask early." },
+        { id: "storm", code: "570", name: "Stormwater runoff control", what: "Things like small rain gardens that catch and soak in runoff." },
+        { id: "drain", code: "606", name: "Subsurface drainage", what: "Buried drain lines that take water off soggy ground." },
+        { id: "outlet", code: "620", name: "Underground outlet", what: "A buried outlet that carries collected water safely away." },
+        { id: "hua", code: "561", name: "Heavy use area protection", what: "A stable surface, like gravel, for spots that get constant traffic, such as around tunnels or work areas." },
+        { id: "trail", code: "575", name: "Trails and walkways", what: "Woodchip or similar paths that keep foot traffic off your beds and out of the mud." }
+      ] },
+    { id: "soil", title: "Soil health and fertility (feeding your soil)",
+      blurb: "Build the soil instead of just replacing what crops take out.",
+      items: [
+        { id: "cc", code: "340", name: "Cover crop", what: "Seasonal plantings that protect soil, add organic matter, hold nutrients, and improve water infiltration." },
+        { id: "rot", code: "328", name: "Conservation crop rotation", what: "A planned sequence of different crops to break pest cycles and support soil life." },
+        { id: "mulch", code: "484", name: "Mulching", what: "Covering soil with plant residue or other material to hold moisture and suppress weeds." },
+        { id: "sca", code: "336", name: "Soil carbon amendment", what: "Adding compost, biochar, or similar materials to build organic matter and soil structure." },
+        { id: "nm", code: "590", name: "Nutrient management", what: "A plan for the amount, placement, and timing of fertilizer or amendments, based on soil tests and records." },
+        { id: "notill", code: "329", name: "Residue and tillage management, no-till", what: "Leaving residue and cutting back on soil disturbance to protect structure and moisture." },
+        { id: "redtill", code: "345", name: "Reduced tillage", what: "Working the soil less, to protect it and save energy and moisture." },
+        { id: "comp", code: "317", name: "Composting facility", what: "A compost pad and bins so you can turn farm waste into a soil amendment." },
+        { id: "test", code: "", name: "Soil and soil health testing", what: "Testing soil and nutrient sources to guide fertilizer decisions. Appears on state small-farm payment schedules, so ask if Indiana offers it." }
+      ] },
+    { id: "pest", title: "Pests, weeds, pollinators, and wildlife",
+      blurb: "Work with the ecosystem so you spray and weed less.",
+      items: [
+        { id: "ipm", code: "595", name: "Pest management conservation system", what: "A plan for managing pests and weeds with fewer chemicals, using prevention and monitoring." },
+        { id: "poll", code: "327", name: "Conservation cover (pollinator planting)", what: "Flowers and grasses that feed pollinators and beneficial insects that eat pests." },
+        { id: "wild", code: "420", name: "Wildlife habitat planting", what: "Seeds or plants that support wildlife, including monarch- and pollinator-friendly species." },
+        { id: "boxes", code: "", name: "Bat and owl boxes", what: "Nesting structures that bring in natural pest control. Indiana NRCS names these as a pest-management tool." },
+        { id: "weed", code: "", name: "Herbaceous weed treatment", what: "Managing weeds in non-woody plantings. Appears on at least one state's small-farm NRCS payment schedule, so ask if Indiana offers it." }
+      ] },
+    { id: "wind", title: "Wind, trees, and boundaries",
+      blurb: "Protect crops and structures and tidy up the edges of your land.",
+      items: [
+        { id: "wb", code: "380", name: "Windbreak or shelterbelt", what: "Rows of trees or shrubs that cut wind, shelter crops and buildings, and reduce erosion." },
+        { id: "hwb", code: "", name: "Herbaceous wind barriers", what: "Strips of non-woody plants that reduce wind and dust within or between fields." },
+        { id: "tree", code: "", name: "Tree and shrub establishment", what: "Planting trees and shrubs for erosion control, water quality, habitat, and shade." },
+        { id: "fence", code: "382", name: "Fence", what: "Fencing, including small-area fencing, to keep animals out or in." },
+        { id: "cap", code: "342", name: "Critical area planting", what: "Planting to stabilize bare or eroding spots." },
+        { id: "obs", code: "500", name: "Obstruction removal", what: "Clearing stumps, debris, or other obstructions that stand in the way of a conservation practice." }
+      ] },
+    { id: "other", title: "Energy and organic",
+      blurb: "Programs and add-ons beyond standard practices.",
+      items: [
+        { id: "energy", code: "", name: "On-farm energy audit", what: "Indiana NRCS lists energy efficiency and NRCS energy audits as help for small and urban farms." },
+        { id: "organic", code: "", name: "Organic support", what: "NRCS has an Organic Initiative and guidance for organic and transitioning producers. Ask what applies in Indiana." }
+      ] }
+  ];
+
+  var BUNDLES = [
+    { name: "Extend my season", ids: ["ht", "lt", "rb", "roof", "micro", "mulch"] },
+    { name: "Water security", ids: ["micro", "iwm", "pump", "pipe", "res", "roof", "catch"] },
+    { name: "Build my soil", ids: ["cc", "rot", "sca", "nm", "comp", "mulch", "test"] },
+    { name: "Fewer pests and weeds", ids: ["ipm", "poll", "wild", "boxes", "mulch", "weed"] },
+    { name: "Weather and wear", ids: ["wb", "hua", "trail", "storm", "drain"] }
+  ];
+
+  var QUESTIONS = [
+    "Which of these practices are on Indiana's EQIP list and payment schedule this year?",
+    "What is the next ranking date, and what can I do now to be ready for it?",
+    "Which resource concerns on my land would these practices address?",
+    "Are there special funding pools or higher payment rates I may qualify for (beginning, small-scale, historically underserved, organic)?",
+    "Can I get an advance payment, and how does that work?",
+    "Which of these should I request together so they work as a system?",
+    "Do I need landowner permission, engineering, or permits for any of these?",
+    "What do I need to have in place before I start, and how do I avoid losing eligibility by starting early?",
+    "Would the Conservation Stewardship Program (CSP) fit what I'm already doing?",
+    "What technical help can NRCS or partners like Purdue Extension and the local soil and water conservation district give me?"
+  ];
+
+  var KEY = "ca-nrcs-worksheet-v1";
+  var state = { sel: {}, notes: {}, profile: {} };
+  var byId = {};
+  CATS.forEach(function (c) { c.items.forEach(function (i) { i.cat = c.title; byId[i.id] = i; }); });
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) { var s = JSON.parse(raw); state.sel = s.sel || {}; state.notes = s.notes || {}; state.profile = s.profile || {}; }
+    } catch (e) {}
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; }
+
+  function renderCatalog() {
+    var root = $("catalog");
+    root.textContent = "";
+    CATS.forEach(function (c) {
+      var sec = el("div", "cat");
+      sec.appendChild(el("h3", "", c.title));
+      sec.appendChild(el("p", "", c.blurb));
+      var grid = el("div", "pgrid");
+      c.items.forEach(function (i) {
+        var lab = el("label", "pcard" + (state.sel[i.id] ? " on" : ""));
+        lab.dataset.id = i.id;
+        var cb = document.createElement("input");
+        cb.type = "checkbox"; cb.checked = !!state.sel[i.id]; cb.dataset.id = i.id;
+        lab.appendChild(cb);
+        lab.appendChild(el("span", "pname", i.name));
+        if (i.code) lab.appendChild(el("span", "pcode", "Practice " + i.code));
+        lab.appendChild(el("span", "pwhat", i.what));
+        grid.appendChild(lab);
+      });
+      sec.appendChild(grid);
+      root.appendChild(sec);
+    });
+  }
+
+  function syncCards() {
+    var cards = document.querySelectorAll(".pcard");
+    for (var k = 0; k < cards.length; k++) {
+      var id = cards[k].dataset.id, on = !!state.sel[id];
+      cards[k].classList.toggle("on", on);
+      cards[k].querySelector("input").checked = on;
+    }
+  }
+
+  function selectedIds() {
+    var out = [];
+    CATS.forEach(function (c) { c.items.forEach(function (i) { if (state.sel[i.id]) out.push(i.id); }); });
+    return out;
+  }
+
+  function renderPicks() {
+    var ids = selectedIds(), box = $("picks");
+    $("count").textContent = ids.length + " selected";
+    box.textContent = "";
+    if (!ids.length) { box.appendChild(el("p", "empty", "Nothing picked yet. Choose practices above or start from a bundle.")); return; }
+    ids.forEach(function (id) {
+      var i = byId[id], row = el("div", "pick");
+      var b = el("b", "", i.name + (i.code ? " (" + i.code + ")" : ""));
+      row.appendChild(b);
+      var ta = document.createElement("textarea");
+      ta.placeholder = "Where on my farm, and what problem would this solve?";
+      ta.value = state.notes[id] || "";
+      ta.setAttribute("aria-label", "Notes for " + i.name);
+      ta.addEventListener("input", function () { state.notes[id] = ta.value; save(); });
+      row.appendChild(ta);
+      box.appendChild(row);
+    });
+  }
+
+  function renderBundles() {
+    var root = $("bundles");
+    BUNDLES.forEach(function (b) {
+      var btn = el("button", "chip", "+ " + b.name);
+      btn.type = "button";
+      btn.addEventListener("click", function () {
+        b.ids.forEach(function (id) { state.sel[id] = true; });
+        save(); syncCards(); renderPicks();
+      });
+      root.appendChild(btn);
+    });
+  }
+
+  var PROFILE = [["p-name", "name"], ["p-where", "where"], ["p-grow", "grow"], ["p-size", "size"], ["p-problems", "problems"], ["p-goals", "goals"]];
+  function bindProfile() {
+    PROFILE.forEach(function (p) {
+      var f = $(p[0]);
+      f.value = state.profile[p[1]] || "";
+      f.addEventListener("input", function () { state.profile[p[1]] = f.value; save(); });
+    });
+  }
+
+  function summaryText() {
+    var P = state.profile, L = [];
+    L.push("MY NRCS REQUEST WORKSHEET");
+    L.push("Prepared " + new Date().toLocaleDateString() + " with the Croaking Acres NRCS guide. This is a personal worksheet, not an NRCS application.");
+    L.push("");
+    L.push("ABOUT MY OPERATION");
+    if (P.name) L.push("Name: " + P.name);
+    if (P.where) L.push("Location: " + P.where);
+    if (P.grow) L.push("What I grow or raise: " + P.grow);
+    if (P.size) L.push("Size and existing structures: " + P.size);
+    if (P.problems) { L.push("What's not working today:"); L.push(P.problems); }
+    if (P.goals) { L.push("My goals:"); L.push(P.goals); }
+    L.push("");
+    L.push("PRACTICES I WANT TO DISCUSS");
+    var ids = selectedIds();
+    if (!ids.length) L.push("(none selected)");
+    CATS.forEach(function (c) {
+      var inCat = c.items.filter(function (i) { return state.sel[i.id]; });
+      if (!inCat.length) return;
+      L.push("");
+      L.push(c.title + ":");
+      inCat.forEach(function (i) {
+        L.push("- " + i.name + (i.code ? " (Practice " + i.code + ")" : ""));
+        if (state.notes[i.id]) L.push("    Notes: " + state.notes[i.id].replace(/\n/g, "\n    "));
+      });
+    });
+    L.push("");
+    L.push("QUESTIONS TO ASK");
+    QUESTIONS.forEach(function (q) { L.push("[ ] " + q); });
+    return L.join("\n");
+  }
+
+  function renderSummary() {
+    var P = state.profile, doc = $("doc");
+    doc.textContent = "";
+    doc.appendChild(el("h2", "", "My NRCS request worksheet"));
+    doc.appendChild(el("p", "small", "Prepared " + new Date().toLocaleDateString() + " with the Croaking Acres NRCS guide. This is a personal worksheet, not an NRCS application."));
+
+    doc.appendChild(el("h4", "", "About my operation"));
+    var ul = el("ul");
+    [["Name", P.name], ["Location", P.where], ["What I grow or raise", P.grow], ["Size and existing structures", P.size]].forEach(function (r) {
+      if (r[1]) { var li = el("li"); li.appendChild(el("b", "", r[0] + ": ")); li.appendChild(document.createTextNode(r[1])); ul.appendChild(li); }
+    });
+    if (ul.children.length) doc.appendChild(ul);
+    if (P.problems) { doc.appendChild(el("h4", "", "What's not working today")); doc.appendChild(el("p", "pre", P.problems)); }
+    if (P.goals) { doc.appendChild(el("h4", "", "My goals")); doc.appendChild(el("p", "pre", P.goals)); }
+
+    doc.appendChild(el("h4", "", "Practices I want to discuss"));
+    var any = false;
+    CATS.forEach(function (c) {
+      var inCat = c.items.filter(function (i) { return state.sel[i.id]; });
+      if (!inCat.length) return;
+      any = true;
+      doc.appendChild(el("p", "small", c.title));
+      var u = el("ul");
+      inCat.forEach(function (i) {
+        var li = el("li");
+        li.appendChild(el("b", "", i.name + (i.code ? " (Practice " + i.code + ")" : "")));
+        if (state.notes[i.id]) { li.appendChild(document.createElement("br")); li.appendChild(el("span", "pre", state.notes[i.id])); }
+        u.appendChild(li);
+      });
+      doc.appendChild(u);
+    });
+    if (!any) doc.appendChild(el("p", "", "No practices selected."));
+
+    doc.appendChild(el("h4", "", "Questions to ask"));
+    var q = el("ul");
+    QUESTIONS.forEach(function (t) { q.appendChild(el("li", "", "☐ " + t)); });
+    doc.appendChild(q);
+  }
+
+  function showSummary(show) {
+    $("summary").style.display = show ? "block" : "none";
+    var wrappers = document.querySelectorAll("body > .no-print");
+    for (var k = 0; k < wrappers.length; k++) wrappers[k].style.display = show ? "none" : "";
+    window.scrollTo(0, 0);
+  }
+
+  function init() {
+    load();
+    renderCatalog(); renderBundles(); renderPicks(); bindProfile();
+
+    $("catalog").addEventListener("change", function (e) {
+      var t = e.target;
+      if (t && t.matches && t.matches("input[type=checkbox]")) {
+        if (t.checked) state.sel[t.dataset.id] = true; else delete state.sel[t.dataset.id];
+        save(); syncCards(); renderPicks();
+      }
+    });
+
+    var q = $("qlist");
+    QUESTIONS.forEach(function (t) { q.appendChild(el("li", "", t)); });
+    $("year").textContent = new Date().getFullYear();
+
+    $("gen").addEventListener("click", function () { renderSummary(); showSummary(true); });
+    $("back").addEventListener("click", function () { showSummary(false); });
+    $("print").addEventListener("click", function () { window.print(); });
+    $("copy").addEventListener("click", function () {
+      var t = summaryText(), msg = $("copied");
+      function done(ok) { msg.textContent = ok ? "Copied." : "Copy failed. Select the text and copy it manually."; setTimeout(function () { msg.textContent = ""; }, 3000); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(t).then(function () { done(true); }, function () { done(false); });
+      } else { done(false); }
+    });
+    $("clear").addEventListener("click", function () {
+      if (!window.confirm("Clear your picks and notes?")) return;
+      state = { sel: {}, notes: {}, profile: {} };
+      save();
+      PROFILE.forEach(function (p) { $(p[0]).value = ""; });
+      syncCards(); renderPicks();
+    });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
