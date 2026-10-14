@@ -2214,7 +2214,8 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
           (s.type==='field'?fieldBody(s):dimField('w','Width',s.w,'ft',s.u.w)+
           dimField('h','Length',s.h,'ft',s.u.h)+
           '<div class="stat"><span>Area</span><span>'+(s.w*s.h).toFixed(1)+' sq ft</span></div>')+
-          '<label class="chk"><input id="fLock" type="checkbox"'+(s.locked?' checked':'')+'> Lock position and size</label>')+
+          '<label class="chk"><input id="fLock" type="checkbox"'+(s.locked?' checked':'')+'> Lock position and size</label>'+
+          '<div class="btnrow"><button id="dupBtn" type="button" title="Make a copy of this '+(canPlant?'bed':'shape')+' on the map">Duplicate '+(canPlant?'bed':'shape')+'</button></div>')+
         (s.type==='structure'?grp(2,'g2','Frost protection','How much longer the growing season runs for beds inside this house.',
           '<div class="row"><label>Weeks earlier in spring<input type="number" id="fPe" min="0" max="12" step="1" value="'+s.pe+'"></label><label>Weeks later in fall<input type="number" id="fPl" min="0" max="12" step="1" value="'+s.pl+'"></label></div>'+
           '<p class="hint">Applied to the last and first frost dates for any bed that is mostly (over half) inside this house. Beds inside: '+state.spaces.filter(function(b){return houseOf(b)===s;}).length+'. A double-layer unheated house is often 4 to 6 weeks on each end. A heated one can reach further.</p>'):'')+
@@ -2222,7 +2223,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
           (houseOf(s)?'<label class="chk"><input id="fHouse" type="checkbox"'+(s.useHouse!==false?' checked':'')+'> In '+esc(houseOf(s).name||'the hoop house')+': use its season (frost dates '+houseOf(s).pe+' wk earlier, '+houseOf(s).pl+' wk later)</label>':'')+
           plantingsHtml(s)):'')+
         '<label>Notes<textarea id="fNotes" style="font-family:var(--font-body);font-size:.85rem">'+esc(s.notes||'')+'</textarea></label>'+
-        '<div class="btnrow"><button id="dupBtn">Duplicate</button><button id="delBtn" class="danger"'+(s.locked?' disabled title="Unlock this first"':'')+'>'+(s.locked?'Unlock to delete':'Delete')+'</button></div>';
+        '<div class="btnrow"><button id="delBtn" class="danger"'+(s.locked?' disabled title="Unlock this first"':'')+'>'+(s.locked?'Unlock to delete':'Delete')+'</button></div>';
       wireSel(s,canPlant);
     }
     var bedArea=0,counts={},total=0,nBeds=0;
