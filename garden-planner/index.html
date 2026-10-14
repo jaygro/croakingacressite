@@ -3299,8 +3299,15 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     if(drag.mode==='pan'){
       view.x=drag.vx+(e.clientX-drag.sx);view.y=drag.vy+(e.clientY-drag.sy);clampView();render(true);return;
     }
-    var s=byId(drag.id);if(!s)return;
-    var w=world(e);
+    ptrLast={x:e.clientX,y:e.clientY};
+    if(applyDrag(e.clientX,e.clientY))render(true);
+    if(!edgeRaf&&edgeVel())edgeRaf=requestAnimationFrame(edgeStep);
+  });
+  /* Move the dragged shape, corner or handle to a pointer position. Edge auto-pan calls this again every frame so a held finger keeps carrying the shape. */
+  var ptrLast=null,edgeRaf=0,EDGE_SPEED=6;
+  function applyDrag(cx,cy){
+    var s=byId(drag.id);if(!s)return false;
+    var r=svg.getBoundingClientRect(),w={x:(cx-r.left-view.x)/view.s,y:(cy-r.top-view.y)/view.s};
     if(drag.mode==='pt'){s.pts[drag.i]=[Math.round(w.x),Math.round(w.y)];syncBox(s);}
     else if(drag.mode==='move'){
       var sn=drag.orig.pts?Math.round:snap,nx=sn(drag.orig.x+(w.x-drag.w0.x)),ny=sn(drag.orig.y+(w.y-drag.w0.y));
@@ -3309,9 +3316,30 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     }
     else{s.w=Math.max(0.5,snap(drag.orig.w+(w.x-drag.w0.x)));s.h=Math.max(0.5,snap(drag.orig.h+(w.y-drag.w0.y)));}
     drag.moved=true;
-    render(true);
-  });
+    return true;
+  }
+  /* How hard to pan, -1.5..1.5 per axis, when the pointer is within a margin of the board edge (the bottom margin sits above the dock). */
+  function edgeVel(){
+    if(!drag||drag.mode==='pan'||!ptrLast)return null;
+    var r=svg.getBoundingClientRect(),dk=document.querySelector('.dock'),bot=r.height-(dk?dk.offsetHeight+8:0);
+    var m=Math.min(56,r.width*0.2,r.height*0.2),x=ptrLast.x-r.left,y=ptrLast.y-r.top,dx=0,dy=0;
+    if(m<=0)return null;
+    if(x<m)dx=-(m-x)/m;else if(x>r.width-m)dx=(x-(r.width-m))/m;
+    if(y<m)dy=-(m-y)/m;else if(y>bot-m)dy=(y-(bot-m))/m;
+    if(!dx&&!dy)return null;
+    return {dx:Math.max(-1.5,Math.min(1.5,dx)),dy:Math.max(-1.5,Math.min(1.5,dy))};
+  }
+  function edgeStep(){
+    edgeRaf=0;
+    var v=edgeVel();if(!v)return;
+    view.x-=v.dx*EDGE_SPEED;view.y-=v.dy*EDGE_SPEED;
+    if(!applyDrag(ptrLast.x,ptrLast.y))return;
+    clampView();render(true);
+    edgeRaf=requestAnimationFrame(edgeStep);
+  }
   function endDrag(){
+    if(edgeRaf){cancelAnimationFrame(edgeRaf);edgeRaf=0;}
+    ptrLast=null;
     if(!drag)return;
     if(drag.moved)touchState();
     drag=null;svg.classList.remove('panning');
