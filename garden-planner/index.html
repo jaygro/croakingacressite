@@ -409,6 +409,7 @@ body.care .readout,body.care .dock-add{display:none}
         <h2>Save and restore</h2>
         <p class="hint">Saved automatically in this browser. To move your plan to another device or keep a backup, copy it out and paste it back in.</p>
         <div class="btnrow">
+          <button id="saveFileBtn" class="primary" title="Download your plan as a file you can keep">Save plan file</button>
           <button id="copyBtn">Copy plan</button>
           <label style="flex-direction:row;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--line);border-radius:4px;padding:6px 11px;color:var(--ink);background:var(--panel)">Open file<input type="file" id="fileIn" accept=".json,application/json" style="display:none"></label>
           <button id="undoBtn" disabled title="Bring back the most recent automatic snapshot">Restore snapshot</button>
@@ -3476,6 +3477,22 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     var ok=function(){toast('Plan copied. Paste it into a text file to keep a backup.');};
     var fail=function(){box.closest('details').open=true;box.focus();box.select();toast('Select and copy the text below to keep your plan.');};
     try{navigator.clipboard.writeText(txt).then(ok,fail);}catch(e){fail();}
+  });
+  el('saveFileBtn').addEventListener('click',function(){
+    var txt=exportText(),d=new Date(),p=function(n){return (n<10?'0':'')+n;};
+    var nm=((state.name||'garden-plan').replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'')||'garden-plan').toLowerCase()+'-'+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'.json';
+    var viaBlob=function(){
+      try{var b=new Blob([txt],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=nm;document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(u);},500);toast('Saved '+nm+'. Keep it somewhere safe.');}
+      catch(e){el('copyBtn').click();toast('Saving a file is not available here, so the plan was copied instead. Paste it into a text file.');}
+    };
+    try{
+      var CL=window.claude;
+      if(CL&&CL.use){Promise.resolve(CL.use('downloads')).then(function(dl){
+        if(!dl){viaBlob();return;}
+        dl.save({filename:nm,data:txt}).then(function(){toast('Saved '+nm+'.');},function(err){if(err&&err.code==='declined')return;viaBlob();});
+      },function(){viaBlob();});return;}
+    }catch(e){}
+    viaBlob();
   });
   function importText(txt,noSnap){
     try{
