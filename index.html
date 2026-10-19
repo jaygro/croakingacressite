@@ -73,7 +73,7 @@
     .theme-btn { width: 34px; height: 34px; margin-left: 4px; display: inline-grid; place-items: center; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; padding: 0; }
     .theme-btn:hover { border-color: var(--accent); }
     .theme-btn svg { width: 16px; height: 16px; }
-    @media (max-width: 560px) { .site-header .in { padding: 8px 16px; } .site-nav a { padding: 5px 8px; font-size: 0.88rem; } }
+    @media (max-width: 560px) { .site-header { position: static; } .site-header .in { padding: 8px 16px; } .site-nav a { padding: 5px 8px; font-size: 0.88rem; } html { scroll-padding-top: 8px; } }
 
     /* ---- Hero */
     .hero { padding: 64px 0 56px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
