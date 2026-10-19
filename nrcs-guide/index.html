@@ -109,6 +109,7 @@
     .theme-btn:hover { border-color: var(--accent); }
     .theme-btn svg { width: 16px; height: 16px; }
     @media (max-width: 560px) { .site-header { position: static; } .site-header .in { padding: 8px 16px; } .site-nav a { padding: 5px 8px; font-size: 0.88rem; } html { scroll-padding-top: 8px; } }
+    @media (max-width: 420px) { .site-nav { gap: 0; } .site-nav a { padding: 5px 5px; font-size: 0.82rem; } .theme-btn { width: 30px; height: 30px; margin-left: 2px; } }
     .hero p.kicker { font-size: 0.7rem; margin: 0 0 8px; }
     .site-footer { border-top: 1px solid var(--line); padding: 28px 0 36px; color: var(--muted); font-size: 0.9rem; margin-top: 32px; }
     .site-footer .in { max-width: var(--site-max, 1120px); margin: 0 auto; padding: 0 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; align-items: center; }
@@ -204,6 +205,7 @@
     #summary .pre { white-space: pre-wrap; margin: 0; }
 
 
+    .support-note { margin: 28px 0 8px; font-size: 0.88rem; color: var(--muted); text-align: center; }
     @media print {
       .no-print, .pickbar, .site-header { display: none !important; }
       body { background: #fff; }
@@ -224,6 +226,7 @@
         <a href="../garden-planner/">Garden Planner</a>
         <a href="./" aria-current="page">NRCS Guide</a>
         <a href="../#contact">Contact</a>
+        <a href="../#support">Support</a>
         <button class="theme-btn" id="themeBtn" type="button"></button>
       </nav>
     </div>
@@ -292,6 +295,7 @@
           </div>
         </div>
       </section>
+      <p class="support-note no-print">This guide is free. If it helped you, you can <a href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">chip in any amount</a> to keep it free and up to date. It is a gift to the farm, not a tax-deductible donation.</p>
     </div>
   </main>
   </div>
@@ -359,6 +363,7 @@
       <nav aria-label="Footer">
         <a href="../">Home</a>
         <a href="../garden-planner/">Garden Planner</a>
+        <a href="../#support">Support</a>
         <a href="mailto:james@croakingacres.com">Questions or corrections? james@croakingacres.com</a>
       </nav>
     </div>

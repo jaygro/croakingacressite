@@ -107,6 +107,7 @@
     .theme-btn:hover { border-color: var(--accent); }
     .theme-btn svg { width: 16px; height: 16px; }
     @media (max-width: 560px) { .site-header { position: static; } .site-header .in { padding: 8px 16px; } .site-nav a { padding: 5px 8px; font-size: 0.88rem; } html { scroll-padding-top: 8px; } }
+    @media (max-width: 420px) { .site-nav { gap: 0; } .site-nav a { padding: 5px 5px; font-size: 0.82rem; } .theme-btn { width: 30px; height: 30px; margin-left: 2px; } }
 
     /* ---- Hero */
     .hero { padding: 64px 0 56px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
@@ -168,7 +169,7 @@
     .facts li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; }
     .facts strong { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
     .card.support { background: linear-gradient(135deg, var(--accent-soft), var(--panel) 70%); }
-    .soon { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border: 1px dashed var(--line); border-radius: 999px; padding: 6px 12px; }
+    .fine { font-size: 0.82rem; color: var(--muted); margin: 12px 0 0; }
 
     /* ---- Footer (same markup and styles on every page) */
     .site-footer { border-top: 1px solid var(--line); padding: 28px 0 36px; color: var(--muted); font-size: 0.9rem; margin-top: 32px; }
@@ -191,6 +192,7 @@
         <a href="garden-planner/">Garden Planner</a>
         <a href="nrcs-guide/">NRCS Guide</a>
         <a href="#contact">Contact</a>
+        <a href="#support">Support</a>
         <button class="theme-btn" id="themeBtn" type="button"></button>
       </nav>
     </div>
@@ -299,8 +301,10 @@
           </div>
           <div class="card support" id="support">
             <h2>Support Us</h2>
-            <p>The tools and guides here are free. If they help you, a small donation keeps them going and helps us build more.</p>
-            <span class="soon">Online donations open soon</span>
+            <p>The garden planner and NRCS guide are free and always will be. If they help you, chip in any amount to keep the free tools running and the farm growing.</p>
+            <a class="btn" href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">Support Croaking Acres
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 13.5S2 10 2 6a3 3 0 0 1 6-1 3 3 0 0 1 6 1c0 4-6 7.5-6 7.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></a>
+            <p class="fine">You choose the amount. Secure checkout by Stripe. Your contribution is a gift to the farm. Croaking Acres is not a nonprofit, so it is not tax-deductible.</p>
           </div>
         </div>
       </section>
@@ -314,6 +318,7 @@
       <nav aria-label="Footer">
         <a href="garden-planner/">Garden Planner</a>
         <a href="nrcs-guide/">NRCS Guide</a>
+        <a href="#support">Support</a>
         <a href="mailto:james@croakingacres.com">james@croakingacres.com</a>
       </nav>
     </div>
