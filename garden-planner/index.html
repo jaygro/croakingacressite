@@ -4,13 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Garden Planner | Croaking Acres</title>
+<title>Free Garden Planner and Planting Calendar | Croaking Acres</title>
 <meta name="description" content="A free garden planner for small growers: lay out beds and hoop houses to scale, plan plantings from your frost dates, track tasks and forecast harvest. Runs in your browser, no account needed.">
 <meta name="theme-color" content="#f7f9f4" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#18211b" media="(prefers-color-scheme: dark)">
-<meta property="og:title" content="Garden Planner | Croaking Acres">
+<meta property="og:title" content="Free Garden Planner and Planting Calendar | Croaking Acres">
 <meta property="og:description" content="Free, local-first garden planner: beds to scale, season calendar, tasks, field log and harvest forecast.">
 <meta property="og:url" content="https://croakingacres.com/garden-planner/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Croaking Acres">
+<meta property="og:image" content="https://croakingacres.com/assets/og-planner.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Croaking Acres Garden Planner: a garden plan drawn to scale">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://croakingacres.com/garden-planner/">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -18,6 +26,101 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <script>try{var t=localStorage.getItem('ca-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Croaking Acres Garden Planner",
+  "alternateName": "Garden Plot Planner",
+  "url": "https://croakingacres.com/garden-planner/",
+  "image": "https://croakingacres.com/assets/og-planner.png",
+  "description": "A free garden planner and planting calendar for small growers. Lay out beds, paths and hoop houses to scale, plan plantings from your frost dates, and get a task list, calendar file, field log and harvest forecast. Runs in your browser with no account.",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "offers": {
+   "@type": "Offer",
+   "price": "0",
+   "priceCurrency": "USD"
+  },
+  "featureList": [
+   "Beds, paths, growing areas and hoop houses drawn to scale",
+   "Plants drawn at true spacing with row and plant counts",
+   "Planting calendar from your last and first frost dates",
+   "Hoop house season extension",
+   "Succession planting across beds",
+   "Transplant or direct sow advice",
+   "Task list by day, week or bed",
+   "Care jobs such as irrigation, feeding, weeding and cover crops",
+   "Calendar file (.ics) export and printable weekly or monthly plans",
+   "Field Log for observations and harvest yields",
+   "Harvest sales forecast",
+   "Works offline and installs on a phone"
+  ],
+  "publisher": {
+   "@type": "Organization",
+   "name": "Croaking Acres",
+   "url": "https://croakingacres.com/"
+  }
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+   {
+    "@type": "Question",
+    "name": "Is the garden planner free?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Yes. It is free to use, with no account, no sign-up and no ads."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Where is my garden plan saved?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "In your own browser on your own device. Nothing is uploaded. Use Save plan file or Copy plan to keep a backup or move your plan to another device."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Does it work on a phone or offline?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Yes. It works in any modern browser, can be installed to a phone's home screen, and keeps working offline once it has loaded."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "How does it decide when to plant?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Enter your last spring and first fall frost dates. Each crop has typical timing, such as weeks before or after the last frost and days to harvest, and the planner sets seed-starting, planting and harvest dates from those. Beds inside a hoop house get a longer season. You can change any date or number."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Can I put the planting schedule in my calendar?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Yes. Download a calendar file (.ics) with one event per task and import it into Google, Apple or Outlook calendar, or print a weekly or monthly plan."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Can I add a crop that is not in the list?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Yes. Add your own crops with your spacing, frost tolerance, days to harvest, harvest window and map color, and they appear in every crop menu."
+    }
+   }
+  ]
+ }
+]
+</script>
 <style>
 /* Layout: survey-sheet. A drawing board on the left, a ruled inspector on the right; stacks on phones. */
 :root{
@@ -260,6 +363,21 @@ details summary{cursor:pointer;font-family:var(--font-mono);font-size:.7rem;lett
 .svgtext{font-family:var(--font-body);fill:var(--ink);pointer-events:none}
 @media (prefers-reduced-motion:no-preference){button{transition:border-color .12s,background .12s}}
 
+/* ---- About section: plain text for readers, search engines and AI tools */
+.about{max-width:1280px;margin:28px auto 0;border-top:1px solid var(--line);padding-top:24px}
+.about-in{max-width:880px}
+.about h2{font-family:var(--font-display);font-size:1.35rem;letter-spacing:-.01em;margin:18px 0 8px}
+.about h2:first-child{margin-top:0}
+.about h3{font-family:var(--font-display);font-size:1rem;margin:0 0 4px}
+.about p{margin:0 0 10px;color:var(--muted);font-size:.92rem;line-height:1.55}
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:12px 0 6px}
+.about-grid>div{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.about-grid p{margin:0}
+.faq details{border-bottom:1px solid var(--line);padding:9px 0}
+.faq summary{font-family:var(--font-body);font-size:.95rem;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink)}
+.faq details p{margin:6px 0 0}
+.about a{color:var(--accent)}
+
 /* ---- Garden Suite tabs */
 .suite-tabs{display:flex;gap:4px;max-width:1280px;margin:0 auto 12px;border-bottom:1px solid var(--line,#ddd);overflow-x:auto}
 .suite-tabs button{appearance:none;background:none;border:0;border-bottom:3px solid transparent;padding:10px 16px;font:inherit;font-size:.95rem;font-weight:600;color:var(--muted,#666);cursor:pointer;white-space:nowrap;min-height:0;border-radius:0}
@@ -338,7 +456,7 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
   <header>
     <div>
       <h1>Garden Plot Planner</h1>
-      <p class="sub">Lay out beds, hoop houses and paths to scale. Everything stays in this browser.</p>
+      <p class="sub">A free garden planner and planting calendar. Lay out beds, hoop houses and paths to scale. Everything stays in this browser.</p>
     </div>
     <span class="example" id="exampleTag" hidden>Example layout. Edit it or clear it.</span>
   </header>
@@ -474,6 +592,28 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
   </div>
 </div>
 
+<section class="about" aria-labelledby="aboutH">
+  <div class="about-in">
+    <h2 id="aboutH">About this free garden planner</h2>
+    <p>The Croaking Acres Garden Planner is a free planning tool for home gardeners and small market growers. Draw your garden to scale, decide what goes where, and turn it into a season of dated tasks. It runs entirely in your browser with no account, and your plan never leaves your device.</p>
+    <div class="about-grid">
+      <div><h3>Lay out your space</h3><p>Add beds, paths, hoop houses and irregular growing areas on a one-foot grid. Set a north arrow, lock shapes in place, and see square footage and how much of each area is beds.</p></div>
+      <div><h3>Plan every planting</h3><p>Pick from about 50 common crops or add your own. Plants are drawn at true spacing with row and plant counts, and you can split a bed, stagger rows or repeat a crop across beds for succession planting.</p></div>
+      <div><h3>A calendar from your frost dates</h3><p>Seed-starting, transplant and harvest dates come from your last spring and first fall frost. Beds in a hoop house get a longer season, and the planner suggests whether to transplant or direct sow.</p></div>
+      <div><h3>Tasks, records and a forecast</h3><p>Check off tasks by day, week or bed, schedule care jobs like irrigation and cover crops, export a calendar file or printable plan, keep a field log, and project harvest sales.</p></div>
+    </div>
+    <h2>Common questions</h2>
+    <div class="faq">
+      <details><summary>Is the garden planner free?</summary><p>Yes. It is free to use, with no account, no sign-up and no ads.</p></details>
+      <details><summary>Where is my garden plan saved?</summary><p>In your own browser on your own device. Nothing is uploaded. Use Save plan file or Copy plan to keep a backup or move your plan to another device.</p></details>
+      <details><summary>Does it work on a phone or offline?</summary><p>Yes. It works in any modern browser, can be installed to a phone's home screen, and keeps working offline once it has loaded.</p></details>
+      <details><summary>How does it decide when to plant?</summary><p>Enter your last spring and first fall frost dates. Each crop has typical timing, such as weeks before or after the last frost and days to harvest, and the planner sets seed-starting, planting and harvest dates from those. Beds inside a hoop house get a longer season. You can change any date or number.</p></details>
+      <details><summary>Can I put the planting schedule in my calendar?</summary><p>Yes. Download a calendar file (.ics) with one event per task and import it into Google, Apple or Outlook calendar, or print a weekly or monthly plan.</p></details>
+      <details><summary>Can I add a crop that is not in the list?</summary><p>Yes. Add your own crops with your spacing, frost tolerance, days to harvest, harvest window and map color, and they appear in every crop menu.</p></details>
+    </div>
+    <p class="hint">Made by <a href="../">Croaking Acres</a>, a small market garden in Franklin Township, Indianapolis. Also see the free <a href="../nrcs-guide/">NRCS grant guide</a> for help paying for high tunnels, irrigation and soil work.</p>
+  </div>
+</section>
 <div id="printArea" aria-hidden="true"></div>
 </div>
 <div class="suite-panel" id="tab-doing" role="tabpanel" aria-labelledby="tb-doing" hidden></div>
@@ -1899,6 +2039,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     var sel3=function(k,l,opts){return '<label>'+l+'<select data-ccf="'+k+'">'+opts.map(function(o){return '<option value="'+o[0]+'"'+(v[k]===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select></label>';};
     h+='<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px"><label>Crop name<input type="text" data-ccf="n" maxlength="40" value="'+esc(v.n)+'" placeholder="Ground cherry"></label>'+
       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px">'+
+      '<label>Color on the map<input type="color" data-ccf="c" value="'+(/^#[0-9a-f]{6}$/i.test(v.c||'')?v.c:CCOL[0])+'" style="width:100%;min-height:36px;padding:2px;cursor:pointer"></label>'+
       inp('sp','Plant spacing (in)','any',0)+inp('rs','Row spacing (in)','any',0)+
       sel3('m','How you start it',[['transplant','Transplant'],['direct','Direct sow'],['either','Either']])+
       sel3('f','Frost tolerance',[['tender','Tender, killed by frost'],['half','Half-hardy'],['hardy','Hardy']])+
@@ -1910,13 +2051,13 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   }
   function initCustom(){
     var box=el('catSec');
-    box.addEventListener('input',function(e){var k=e.target.getAttribute&&e.target.getAttribute('data-ccf');if(!k||!cf.v)return;cf.v[k]=(k==='n')?e.target.value:+e.target.value;});
+    box.addEventListener('input',function(e){var k=e.target.getAttribute&&e.target.getAttribute('data-ccf');if(!k||!cf.v)return;cf.v[k]=(k==='n'||k==='c')?e.target.value:+e.target.value;});
     box.addEventListener('change',function(e){var k=e.target.getAttribute&&e.target.getAttribute('data-ccf');if(!k||!cf.v)return;
-      if(k==='n')cf.v.n=e.target.value;else if(e.target.tagName==='SELECT'){cf.v[k]=e.target.value;renderCatSec();}});
+      if(k==='n'||k==='c')cf.v[k]=e.target.value;else if(e.target.tagName==='SELECT'){cf.v[k]=e.target.value;renderCatSec();}});
     box.addEventListener('click',function(e){
       var a=e.target.getAttribute&&e.target.getAttribute('data-cc');if(!a)return;
       cf.err='';
-      if(a==='new'){cf={open:true,edit:'',v:ccBlank(),err:''};}
+      if(a==='new'){var nb=ccBlank();nb.c=CCOL[MYC.length%CCOL.length];cf={open:true,edit:'',v:nb,err:''};}
       else if(a==='cancel'){cf={open:false,edit:'',v:null,err:''};}
       else if(a.indexOf('edit:')===0){var id=a.slice(5);MYC.forEach(function(m){if(m.id===id)cf={open:true,edit:id,v:JSON.parse(JSON.stringify(m)),err:''};});}
       else if(a.indexOf('del:')===0){
@@ -1925,7 +2066,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         else{MYC=MYC.filter(function(m){return m.id!==id2;});saveCustom();rebuildCustom();render();return;}
       }
       else if(a==='save'){
-        var v=cf.v,c=ccClean({id:cf.edit||('my'+Date.now().toString(36)),n:v.n,c:cf.edit?(MYC.filter(function(m){return m.id===cf.edit;})[0]||{}).c:CCOL[MYC.length%CCOL.length],sp:v.sp,rs:v.rs,f:v.f,m:v.m,wk:v.wk,d:v.d,h:v.h,w:v.w});
+        var v=cf.v,c=ccClean({id:cf.edit||('my'+Date.now().toString(36)),n:v.n,c:v.c||CCOL[MYC.length%CCOL.length],sp:v.sp,rs:v.rs,f:v.f,m:v.m,wk:v.wk,d:v.d,h:v.h,w:v.w});
         if(!c){cf.err='Add a name and a number for each box, with days to harvest above zero.';renderCatSec();return;}
         if(cf.edit){MYC=MYC.map(function(m){return m.id===cf.edit?c:m;});}else MYC.push(c);
         saveCustom();rebuildCustom();cf={open:false,edit:'',v:null,err:''};render();toast('Saved '+c.n+'. Find it in the crop menu.');return;
