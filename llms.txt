@@ -1,0 +1,15 @@
+# Croaking Acres
+
+> Croaking Acres is a small market garden in Franklin Township, Indianapolis (Acton, Indiana) that publishes free, browser-based tools for small growers: a Garden Planner and an NRCS Grant Guide. Both are free, need no account, and keep the user's data in their own browser.
+
+Contact: james@croakingacres.com
+Support the free tools: https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00 (a gift to the farm; Croaking Acres is not a nonprofit and contributions are not tax-deductible)
+
+## Tools
+
+- [Garden Planner](https://croakingacres.com/garden-planner/): Free garden planner and planting calendar. Draw beds, paths, growing areas and hoop houses to scale (1 square = 1 ft). Add plantings from about 50 common crops (or your own) and the planner draws plants at true spacing, counts rows and plants, and sets sowing, transplant and harvest dates from your last spring and first fall frost dates. Hoop houses extend the season for beds inside them. Includes succession planting across beds, a transplant-or-direct-sow advisor, a task list, a care-job schedule (prep, irrigation, feeding, weeding, cover crops), a calendar file (.ics) export, printable weekly or monthly plans, a Field Log for observations and harvest yields, and a harvest sales forecast. Works offline once loaded and can be installed on a phone. Plans are saved in the browser and can be saved to a file to move between devices.
+- [NRCS Grant Guide](https://croakingacres.com/nrcs-guide/): Plain-language, state-neutral guide to what USDA NRCS (mainly EQIP) can help small and urban farms pay for. Explains 40 conservation practices with their practice codes, including high tunnel (325), low tunnel (821), raised bed (812), microirrigation (441), roof runoff structure (558), cover crop (340), mulching (484) and nutrient management (590). Offers starter bundles, a printable request worksheet, the steps of the EQIP process and questions to ask a conservationist. It is an independent guide, not an official USDA page.
+
+## About
+
+- [Home](https://croakingacres.com/): The farm, where to buy (farm stand and the Farmish app), and contact details.
