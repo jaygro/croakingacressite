@@ -205,6 +205,10 @@
     #summary .pre { white-space: pre-wrap; margin: 0; }
 
 
+    .hero .give-line { margin: 12px 0 0; font-size: 0.88rem; color: var(--muted); }
+    .give-box { margin: 36px 0 8px; padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(135deg, var(--accent-soft), var(--panel) 70%); }
+    .give-box h2 { margin-top: 0; }
+    .give-box .fine { font-size: 0.82rem; color: var(--muted); margin: 12px 0 0; }
     .support-note { margin: 28px 0 8px; font-size: 0.88rem; color: var(--muted); text-align: center; }
     @media print {
       .no-print, .pickbar, .site-header { display: none !important; }
@@ -226,7 +230,7 @@
         <a href="../garden-planner/">Garden Planner</a>
         <a href="./" aria-current="page">NRCS Guide</a>
         <a href="../#contact">Contact</a>
-        <a href="../#support">Support</a>
+        <a href="mailto:support@croakingacres.com">Support</a>
         <button class="theme-btn" id="themeBtn" type="button"></button>
       </nav>
     </div>
@@ -242,6 +246,7 @@
         <h1>NRCS grants: see everything that's possible, then ask for it.</h1>
         <p>Many small farms apply for one thing, like a high tunnel, and never hear that NRCS can also help pay for irrigation, rainwater capture, soil and fertility planning, pest management, wind protection, and more. This guide shows the full range and helps you turn your ideas into a clear request.</p>
         <div class="notice">This is an independent guide, not an official USDA or NRCS page. Programs, practice lists, payment rates, and deadlines change, and they differ by state. Always confirm details with your local NRCS office before you plan around anything here.</div>
+        <p class="give-line">Free to use, no sign-up. If it saves you time, <a href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">chip in any amount</a> to keep it free and up to date. It is a gift to the farm, not a tax-deductible donation.</p>
         <nav aria-label="On this page"><ul class="toc">
           <li><a href="#explore">What's possible</a></li>
           <li><a href="#build">Build your worksheet</a></li>
@@ -308,6 +313,7 @@
       <span id="copied" class="count"></span>
     </div>
     <div class="doc" id="doc"></div>
+    <p class="support-note no-print">Did this worksheet help? <a href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">chip in any amount</a> to keep the guide free. It is a gift to the farm, not a tax-deductible donation.</p>
   </div>
 
   <div class="no-print">
@@ -354,6 +360,12 @@
           <li><a href="https://www.farmers.gov" rel="noopener">farmers.gov</a></li>
         </ul>
       </section>
+      <section class="give-box" aria-labelledby="giveH">
+        <h2 id="giveH">Keep this guide free</h2>
+        <p>Croaking Acres is a small farm in Indianapolis. We keep this guide and the garden planner free for every grower. If they helped you, chip in any amount you like.</p>
+        <a class="btn" href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">Chip in any amount</a>
+        <p class="fine">Secure checkout by Stripe. Your contribution is a gift to the farm. Croaking Acres is not a nonprofit, so it is not tax-deductible.</p>
+      </section>
     </div>
   </div>
 
@@ -363,8 +375,8 @@
       <nav aria-label="Footer">
         <a href="../">Home</a>
         <a href="../garden-planner/">Garden Planner</a>
-        <a href="../#support">Support</a>
-        <a href="mailto:james@croakingacres.com">Questions or corrections? james@croakingacres.com</a>
+        <a href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">Donate</a>
+        <a href="mailto:support@croakingacres.com">Questions or corrections? support@croakingacres.com</a>
       </nav>
     </div>
   </footer>
