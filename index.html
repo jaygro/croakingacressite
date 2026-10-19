@@ -4,159 +4,297 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>Croaking Acres | Market Garden</title>
-  <meta name="description" content="Croaking Acres is a small market garden in Acton, Indiana, with free tools for growers.">
+  <title>Croaking Acres | Market Garden and Free Grower Tools</title>
+  <meta name="description" content="Croaking Acres is a small market garden in Franklin Township, Indianapolis, with free tools for growers: a garden planner and an NRCS grant guide.">
+  <meta name="theme-color" content="#f7f9f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18211b" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://croakingacres.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Croaking Acres">
+  <meta property="og:title" content="Croaking Acres | Small farm, fresh food, free tools for growers">
+  <meta property="og:description" content="A small market garden in Franklin Township, Indianapolis, with a free garden planner and NRCS grant guide for growers.">
+  <meta property="og:url" content="https://croakingacres.com/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="garden-planner/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>try{var t=localStorage.getItem('ca-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
   <style>
-    /* Palette and fonts match the Garden Planner (garden-planner/index.html). */
+    /* Palette and fonts are shared with garden-planner/ and nrcs-guide/. Change them in all three. */
     :root {
-      --bg: #edf1ea;
-      --panel: #f7f9f4;
-      --ink: #1b2a21;
-      --muted: #5b6a60;
-      --line: #cbd5ca;
-      --accent: #2e7a4d;
-      --accent-ink: #ffffff;
-      --accent-soft: #bfe0c7;
+      --bg: #edf1ea; --panel: #f7f9f4; --ink: #1b2a21; --muted: #5b6a60; --line: #cbd5ca;
+      --accent: #2e7a4d; --accent-ink: #ffffff; --accent-soft: #bfe0c7; --tint: #e3ebe0;
+      --t-bed: #c2a883; --t-structure: #a9cbd4; --t-path: #d3d5cb; --grid: #dde5da; --edge: #3b4a3f;
+      --c-red: #d9503f; --c-green: #58b36b; --c-orange: #e08a3c; --c-teal: #4fb08a;
+      --shadow: 0 1px 2px rgba(27,42,33,.06), 0 8px 24px rgba(27,42,33,.07);
       --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
       --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
       --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
-        --bg: #111814;
-        --panel: #18211b;
-        --ink: #e3ece5;
-        --muted: #8fa196;
-        --line: #2c3a31;
-        --accent: #58b97f;
-        --accent-ink: #0c140f;
-        --accent-soft: #2b4a37;
+        --bg: #111814; --panel: #18211b; --ink: #e3ece5; --muted: #8fa196; --line: #2c3a31;
+        --accent: #58b97f; --accent-ink: #0c140f; --accent-soft: #2b4a37; --tint: #1c2720;
+        --t-bed: #5d4b36; --t-structure: #2f4f5a; --t-path: #3a3f3a; --grid: #1c2720; --edge: #a9bcae;
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+        color-scheme: dark;
       }
     }
     :root[data-theme="dark"] {
-      --bg: #111814;
-      --panel: #18211b;
-      --ink: #e3ece5;
-      --muted: #8fa196;
-      --line: #2c3a31;
-      --accent: #58b97f;
-      --accent-ink: #0c140f;
-      --accent-soft: #2b4a37;
+      --bg: #111814; --panel: #18211b; --ink: #e3ece5; --muted: #8fa196; --line: #2c3a31;
+      --accent: #58b97f; --accent-ink: #0c140f; --accent-soft: #2b4a37; --tint: #1c2720;
+      --t-bed: #5d4b36; --t-structure: #2f4f5a; --t-path: #3a3f3a; --grid: #1c2720; --edge: #a9bcae;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+      color-scheme: dark;
     }
+    :root[data-theme="light"] { color-scheme: light; }
 
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.6;
-    }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body { margin: 0; font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
     a { color: var(--accent); }
-    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+    .skip { position: absolute; left: -999px; top: 8px; background: var(--panel); padding: 8px 12px; border-radius: 6px; z-index: 50; }
+    .skip:focus { left: 8px; }
 
-    header { border-bottom: 1px solid var(--line); background: var(--panel); }
-    header .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; padding-bottom: 16px; flex-wrap: wrap; gap: 12px; }
-    .brand { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
-    nav a { margin-left: 18px; text-decoration: none; color: var(--muted); font-size: 0.95rem; }
-    nav a:hover { color: var(--accent); }
+    /* ---- Site header (same markup and styles on every page) */
+    .site-header { position: sticky; top: 0; z-index: 20; background: var(--panel); border-bottom: 1px solid var(--line); }
+    @supports (backdrop-filter: blur(8px)) { .site-header { background: color-mix(in srgb, var(--panel) 86%, transparent); backdrop-filter: saturate(1.4) blur(10px); } }
+    .site-header .in { max-width: var(--site-max, 1120px); margin: 0 auto; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+    .brand svg { width: 30px; height: 30px; flex: none; }
+    .site-nav { display: flex; align-items: center; gap: 2px; flex-wrap: wrap; }
+    .site-nav a { padding: 6px 10px; border-radius: 6px; text-decoration: none; color: var(--muted); font-size: 0.93rem; font-weight: 500; }
+    .site-nav a:hover { color: var(--ink); background: var(--bg); }
+    .site-nav a[aria-current="page"] { color: var(--ink); background: var(--accent-soft); }
+    .theme-btn { width: 34px; height: 34px; margin-left: 4px; display: inline-grid; place-items: center; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; padding: 0; }
+    .theme-btn:hover { border-color: var(--accent); }
+    .theme-btn svg { width: 16px; height: 16px; }
+    @media (max-width: 560px) { .site-header .in { padding: 8px 16px; } .site-nav a { padding: 5px 8px; font-size: 0.88rem; } }
 
-    .hero { padding: 64px 0 48px; }
-    .hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.01em; margin: 0 0 12px; line-height: 1.15; color: var(--ink); text-wrap: balance; }
-    .hero p { font-size: 1.15rem; color: var(--muted); max-width: 600px; margin: 0; }
+    /* ---- Hero */
+    .hero { padding: 64px 0 56px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+    .kicker { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+    .kicker::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.3rem, 5.4vw, 3.6rem); letter-spacing: -0.02em; margin: 0 0 18px; line-height: 1.04; text-wrap: balance; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p.lede { font-size: 1.15rem; color: var(--muted); max-width: 540px; margin: 0 0 28px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .art { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px; box-shadow: var(--shadow); position: relative; }
+    .art svg { display: block; width: 100%; height: auto; border-radius: 8px; }
+    .art figcaption { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 2px 0; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .art .g { stroke: var(--grid); stroke-width: 1; }
+    .art .bed { fill: var(--t-bed); stroke: var(--edge); stroke-width: 1.2; }
+    .art .house { fill: var(--t-structure); fill-opacity: .5; stroke: var(--edge); stroke-width: 1.2; stroke-dasharray: 6 4; }
+    .art .path { fill: var(--t-path); stroke: var(--edge); stroke-width: 1; }
+    .art .lbl { font: 600 11px var(--font-body); fill: var(--ink); paint-order: stroke; stroke: var(--panel); stroke-width: 3px; }
+    .art .d1 { fill: var(--c-red); } .art .d2 { fill: var(--c-green); } .art .d3 { fill: var(--c-orange); } .art .d4 { fill: var(--c-teal); }
+    .art .dot { stroke: var(--edge); stroke-width: .6; }
+    @media (max-width: 860px) { .hero { grid-template-columns: 1fr; gap: 32px; padding: 40px 0 32px; } }
 
-    section { padding: 40px 0; }
-    h2 { font-family: var(--font-display); font-weight: 700; margin: 0 0 8px; font-size: 1.6rem; letter-spacing: -0.01em; color: var(--ink); }
-    .lead { color: var(--muted); margin: 0 0 24px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--accent-ink); padding: 11px 20px; border: 1px solid var(--accent); border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.98rem; transition: transform .12s, filter .12s; }
+    .btn:hover { filter: brightness(1.08); }
+    .btn:active { transform: translateY(1px); }
+    .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+    .btn.ghost:hover { border-color: var(--accent); filter: none; }
+    .btn svg { width: 16px; height: 16px; }
 
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 24px; }
-    .card h3 { font-family: var(--font-display); font-weight: 700; margin: 0 0 8px; }
-    .card p { margin: 0 0 16px; color: var(--muted); }
-    .tag { display: inline-block; font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; background: var(--accent-soft); color: var(--ink); padding: 3px 10px; border-radius: 3px; margin-bottom: 12px; }
+    /* ---- Sections */
+    section { padding: 56px 0; }
+    .sec-head { max-width: 640px; margin-bottom: 28px; }
+    h2 { font-family: var(--font-display); font-weight: 700; margin: 0 0 8px; font-size: clamp(1.6rem, 3.2vw, 2.1rem); letter-spacing: -0.015em; line-height: 1.15; }
+    .lead { color: var(--muted); margin: 0; font-size: 1.05rem; }
 
-    .btn { display: inline-block; background: var(--accent); color: var(--accent-ink); padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 600; }
-    .btn:hover { filter: brightness(1.1); }
-    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .btn.disabled { background: var(--line); color: var(--muted); pointer-events: none; }
+    .tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .tool { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); transition: border-color .15s, transform .15s; }
+    .tool:hover { border-color: var(--accent); }
+    .tool-top { display: flex; align-items: center; gap: 14px; }
+    .tool-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; flex: none; color: var(--accent); }
+    .tool-icon svg { width: 26px; height: 26px; }
+    .tool h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; margin: 0; letter-spacing: -0.01em; }
+    .tag { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .tool p { margin: 0; color: var(--muted); }
+    .feat { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+    .feat li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.95rem; }
+    .feat li::before { content: ""; flex: none; width: 18px; height: 18px; margin-top: 3px; border-radius: 50%; background: var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='%232e7a4d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px no-repeat; }
+    .tool .btn { align-self: flex-start; margin-top: auto; }
 
-    .contact-list { list-style: none; padding: 0; margin: 0; }
-    .contact-list li { margin-bottom: 8px; }
-    .contact-list strong { display: inline-block; min-width: 90px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .promise { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-top: 28px; }
+    .promise div { background: var(--panel); padding: 18px 20px; }
+    .promise b { display: block; font-family: var(--font-display); font-size: 1.02rem; }
+    .promise span { color: var(--muted); font-size: 0.92rem; }
 
-    .donate { background: var(--panel); border: 1px dashed var(--line); border-radius: 6px; padding: 24px; margin-top: 8px; }
-    .donate p { margin: 0 0 14px; }
+    .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 28px; }
+    .card h2 { font-size: 1.5rem; }
+    .card p { color: var(--muted); margin: 0 0 18px; }
+    .facts { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 10px; }
+    .facts li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; }
+    .facts strong { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .card.support { background: linear-gradient(135deg, var(--accent-soft), var(--panel) 70%); }
+    .soon { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border: 1px dashed var(--line); border-radius: 999px; padding: 6px 12px; }
 
-    footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted); font-size: 0.9rem; margin-top: 24px; }
+    /* ---- Footer (same markup and styles on every page) */
+    .site-footer { border-top: 1px solid var(--line); padding: 28px 0 36px; color: var(--muted); font-size: 0.9rem; margin-top: 32px; }
+    .site-footer .in { max-width: var(--site-max, 1120px); margin: 0 auto; padding: 0 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; align-items: center; }
+    .site-footer nav { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+    .site-footer a { color: var(--muted); text-decoration: none; }
+    .site-footer a:hover { color: var(--accent); text-decoration: underline; }
   </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <header>
-    <div class="wrap">
-      <a class="brand" href="#top">Croaking Acres</a>
-      <nav>
-        <a href="#tools">Free Tools</a>
+  <header class="site-header">
+    <div class="in">
+      <a class="brand" href="./" aria-label="Croaking Acres home">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#2e7a4d"/><circle cx="10.5" cy="12" r="4.6" fill="#a8d98a"/><circle cx="21.5" cy="12" r="4.6" fill="#a8d98a"/><ellipse cx="16" cy="19.5" rx="11" ry="7.5" fill="#a8d98a"/><circle cx="10.5" cy="11.4" r="1.9" fill="#1b2a21"/><circle cx="21.5" cy="11.4" r="1.9" fill="#1b2a21"/><path d="M10.5 20.5q5.5 3.6 11 0" fill="none" stroke="#1b2a21" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Croaking Acres
+      </a>
+      <nav class="site-nav" aria-label="Site">
+        <a href="garden-planner/">Garden Planner</a>
+        <a href="nrcs-guide/">NRCS Guide</a>
         <a href="#contact">Contact</a>
-        <a href="#support">Support Us</a>
+        <button class="theme-btn" id="themeBtn" type="button"></button>
       </nav>
     </div>
   </header>
 
-  <main id="top">
+  <main id="main">
     <div class="wrap">
 
       <div class="hero">
-        <h1>Small farm. Fresh food. Free tools for growers.</h1>
-        <p>Located in southeastern Indianapolis in Franklin Township. Food available at the stand or through the Farmish app!</p>
+        <div>
+          <p class="kicker">Franklin Township, Indianapolis</p>
+          <h1>Small farm. Fresh food. <em>Free tools for growers.</em></h1>
+          <p class="lede">Located in southeastern Indianapolis in Franklin Township. Food available at the stand or through the Farmish app!</p>
+          <div class="cta">
+            <a class="btn" href="garden-planner/">Open the Garden Planner
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn ghost" href="nrcs-guide/">NRCS grant guide</a>
+          </div>
+        </div>
+
+        <figure class="art" style="margin:0">
+          <svg viewBox="0 0 480 330" role="img" aria-label="A garden plan drawn to scale: a hoop house with three beds, a center path and four outdoor beds with plants shown as dots.">
+            <defs>
+              <pattern id="grid" width="12" height="12" patternUnits="userSpaceOnUse"><path class="g" d="M12 0H0V12" fill="none"/></pattern>
+              <pattern id="pT" width="22" height="22" patternUnits="userSpaceOnUse"><circle class="d1 dot" cx="11" cy="11" r="8"/></pattern>
+              <pattern id="pB" width="10" height="10" patternUnits="userSpaceOnUse"><circle class="d2 dot" cx="5" cy="5" r="3.6"/></pattern>
+              <pattern id="pC" width="12" height="6" patternUnits="userSpaceOnUse"><circle class="d3 dot" cx="6" cy="3" r="2.2"/></pattern>
+              <pattern id="pK" width="18" height="16" patternUnits="userSpaceOnUse"><circle class="d4 dot" cx="9" cy="8" r="6"/></pattern>
+            </defs>
+            <rect width="480" height="330" fill="url(#grid)"/>
+            <rect class="house" x="24" y="24" width="192" height="282" rx="2"/>
+            <text class="lbl" x="32" y="40">Hoop house</text>
+            <rect class="bed" x="36" y="52" width="48" height="240"/>
+            <rect class="bed" x="96" y="52" width="48" height="240"/>
+            <rect x="109" y="56" width="22" height="232" fill="url(#pT)"/>
+            <rect class="bed" x="156" y="52" width="48" height="240"/>
+            <rect x="161" y="56" width="40" height="232" fill="url(#pB)"/>
+            <rect class="path" x="234" y="24" width="30" height="282"/>
+            <rect class="bed" x="288" y="44" width="48" height="120"/>
+            <rect x="294" y="48" width="36" height="112" fill="url(#pC)"/>
+            <rect class="bed" x="288" y="186" width="48" height="120"/>
+            <rect x="303" y="190" width="18" height="112" fill="url(#pK)"/>
+            <rect class="bed" x="356" y="186" width="48" height="120"/>
+            <rect x="361" y="190" width="40" height="112" fill="url(#pB)"/>
+            <rect class="bed" x="424" y="186" width="40" height="120"/>
+            <text class="lbl" x="294" y="38">Bed A</text>
+            <g transform="translate(440 56)"><circle r="20" style="fill:var(--panel);stroke:var(--line)"/><polygon points="0,-13 4,0 0,-3 -4,0" style="fill:#c0503f"/><polygon points="0,13 4,0 0,3 -4,0" style="fill:var(--muted);opacity:.45"/></g>
+            <g transform="translate(36 316)"><line x1="0" y1="0" x2="60" y2="0" style="stroke:var(--ink);stroke-width:2"/><line x1="0" y1="-4" x2="0" y2="4" style="stroke:var(--ink);stroke-width:2"/><line x1="60" y1="-4" x2="60" y2="4" style="stroke:var(--ink);stroke-width:2"/></g>
+          </svg>
+          <figcaption><span>Garden Planner</span><span>1 square = 1 ft</span></figcaption>
+        </figure>
       </div>
 
       <section id="tools">
-        <h2>Free Tools</h2>
-        <p class="lead">Built for small growers, free to use.</p>
-        <div class="cards">
-          <div class="card">
-            <span class="tag">Free tool</span>
-            <h3>Garden Planner</h3>
-            <p>Lay out beds, plan spacing and rotations, and print your plan. Runs in your browser, no account needed.</p>
+        <div class="sec-head">
+          <h2>Free tools for small growers</h2>
+          <p class="lead">Built on our own farm, for the questions we keep asking ourselves. Free to use, with no account and nothing to install.</p>
+        </div>
+        <div class="tools">
+          <article class="tool">
+            <div class="tool-top">
+              <div class="tool-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/></svg></div>
+              <div><span class="tag">Free tool</span><h3>Garden Planner</h3></div>
+            </div>
+            <p>Lay out your beds, hoop houses and paths to scale, then plan every planting through the season.</p>
+            <ul class="feat">
+              <li>Plants drawn at true spacing, with row and plant counts</li>
+              <li>Season calendar built from your own frost dates</li>
+              <li>Task list, calendar file and a printable weekly plan</li>
+              <li>Field Log for notes and a harvest sales forecast</li>
+            </ul>
             <a class="btn" href="garden-planner/">Open the planner</a>
-          </div>
-          <div class="card">
-            <span class="tag">Free guide</span>
-            <h3>NRCS Grant Guide</h3>
+          </article>
+          <article class="tool">
+            <div class="tool-top">
+              <div class="tool-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12l1.8 1.8L15 10.5M10 17h5"/></svg></div>
+              <div><span class="tag">Free guide</span><h3>NRCS Grant Guide</h3></div>
+            </div>
             <p>See everything NRCS can help small farms pay for, from irrigation to rainwater capture to soil health, and build a worksheet to take to your meeting.</p>
+            <ul class="feat">
+              <li>40 conservation practices explained in plain language</li>
+              <li>Starter bundles for common goals like season extension</li>
+              <li>A printable worksheet and questions for your conservationist</li>
+            </ul>
             <a class="btn" href="nrcs-guide/">Open the guide</a>
-          </div>
+          </article>
+        </div>
+        <div class="promise">
+          <div><b>Free, no account</b><span>Open it and start. Nothing to sign up for.</span></div>
+          <div><b>Private by design</b><span>Your plans stay in your own browser and are never uploaded.</span></div>
+          <div><b>Works in the field</b><span>The planner installs on your phone and keeps working offline.</span></div>
         </div>
       </section>
 
       <section id="contact">
-        <h2>Contact</h2>
-        <p class="lead">Questions, orders, or feedback on the tools? Get in touch.</p>
-        <ul class="contact-list">
-          <li><strong>Email:</strong> <a href="mailto:james@croakingacres.com">james@croakingacres.com</a></li>
-          <li><strong>Location:</strong> Acton, Indiana</li>
-        </ul>
-      </section>
-
-      <section id="support">
-        <h2>Support Us</h2>
-        <div class="donate">
-          <p>The tools and guides here are free. If they help you, a small donation keeps them going and helps us build more.</p>
-          <a class="btn" href="#">Donate</a>
+        <div class="split">
+          <div class="card">
+            <h2>Contact</h2>
+            <p>Questions, orders, or feedback on the tools? Get in touch.</p>
+            <ul class="facts">
+              <li><strong>Email</strong> <a href="mailto:james@croakingacres.com">james@croakingacres.com</a></li>
+              <li><strong>Location</strong> <span>Acton, Indiana</span></li>
+              <li><strong>Buy food</strong> <span>At the stand, or through the Farmish app</span></li>
+            </ul>
+            <a class="btn ghost" href="mailto:james@croakingacres.com">Send an email</a>
+          </div>
+          <div class="card support" id="support">
+            <h2>Support Us</h2>
+            <p>The tools and guides here are free. If they help you, a small donation keeps them going and helps us build more.</p>
+            <span class="soon">Online donations open soon</span>
+          </div>
         </div>
       </section>
 
     </div>
   </main>
 
-  <footer>
-    <div class="wrap">&copy; <span id="year"></span> Croaking Acres. Acton, Indiana.</div>
+  <footer class="site-footer">
+    <div class="in">
+      <span>&copy; <span id="year">2026</span> Croaking Acres. Acton, Indiana.</span>
+      <nav aria-label="Footer">
+        <a href="garden-planner/">Garden Planner</a>
+        <a href="nrcs-guide/">NRCS Guide</a>
+        <a href="mailto:james@croakingacres.com">james@croakingacres.com</a>
+      </nav>
+    </div>
   </footer>
 
-  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    /* Theme toggle: follows the system until you pick one, then remembers it on every page. */
+    (function(){var b=document.getElementById('themeBtn');if(!b)return;var mq=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)');
+      var SUN='<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/></svg>',MOON='<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"/></svg>';
+      function cur(){return document.documentElement.getAttribute('data-theme')||(mq&&mq.matches?'dark':'light');}
+      function paint(){var d=cur()==='dark';b.innerHTML=d?SUN:MOON;b.setAttribute('aria-label',d?'Switch to light theme':'Switch to dark theme');b.title=b.getAttribute('aria-label');}
+      b.addEventListener('click',function(){var n=cur()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('ca-theme',n);}catch(e){}paint();document.dispatchEvent(new CustomEvent('ca-theme'));});
+      if(mq&&mq.addEventListener)mq.addEventListener('change',paint);paint();})();
+  </script>
 </body>
 </html>
