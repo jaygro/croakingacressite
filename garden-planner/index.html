@@ -1,16 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Garden Planner | Croaking Acres</title>
+<meta name="description" content="A free garden planner for small growers: lay out beds and hoop houses to scale, plan plantings from your frost dates, track tasks and forecast harvest. Runs in your browser, no account needed.">
+<meta name="theme-color" content="#f7f9f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#18211b" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Garden Planner | Croaking Acres">
+<meta property="og:description" content="Free, local-first garden planner: beds to scale, season calendar, tasks, field log and harvest forecast.">
+<meta property="og:url" content="https://croakingacres.com/garden-planner/">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Garden Suite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<script>try{var t=localStorage.getItem('ca-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <style>
 /* Layout: survey-sheet. A drawing board on the left, a ruled inspector on the right; stacks on phones. */
 :root{
   --bg:#edf1ea; --panel:#f7f9f4; --ink:#1b2a21; --muted:#5b6a60; --line:#cbd5ca;
-  --grid:#dde5da; --grid-major:#c4d0c2; --accent:#2e7a4d; --accent-ink:#ffffff; --danger:#a63d2f;
+  --grid:#dde5da; --grid-major:#c4d0c2; --accent:#2e7a4d; --accent-ink:#ffffff; --accent-soft:#bfe0c7; --danger:#a63d2f;
   --t-bed:#c2a883; --t-structure:#a9cbd4; --t-path:#d3d5cb; --t-container:#d2a98c; --t-field:#9c7650; --b-sow:#3f9b63; --b-late:#d9a441; --b-grow:#bfe0c7; --b-hold:#e2cfa8; --b-no:#c9cdc9; --edge:#3b4a3f; --frost:#3b7fc0;
   --font-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
   --font-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -19,33 +31,36 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#111814; --panel:#18211b; --ink:#e3ece5; --muted:#8fa196; --line:#2c3a31;
-    --grid:#1c2720; --grid-major:#28372d; --accent:#58b97f; --accent-ink:#0c140f; --danger:#e07b6a;
+    --grid:#1c2720; --grid-major:#28372d; --accent:#58b97f; --accent-ink:#0c140f; --accent-soft:#2b4a37; --danger:#e07b6a;
     --t-bed:#5d4b36; --t-structure:#2f4f5a; --t-path:#3a3f3a; --t-container:#6b4a3a; --t-field:#5a4430; --b-sow:#58b97f; --b-late:#c79a3c; --b-grow:#2b4a37; --b-hold:#5a4e35; --b-no:#2c332e; --edge:#a9bcae; --frost:#6fb0ee;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#111814; --panel:#18211b; --ink:#e3ece5; --muted:#8fa196; --line:#2c3a31;
-  --grid:#1c2720; --grid-major:#28372d; --accent:#58b97f; --accent-ink:#0c140f; --danger:#e07b6a;
+  --grid:#1c2720; --grid-major:#28372d; --accent:#58b97f; --accent-ink:#0c140f; --accent-soft:#2b4a37; --danger:#e07b6a;
   --t-bed:#5d4b36; --t-structure:#2f4f5a; --t-path:#3a3f3a; --t-container:#6b4a3a; --t-field:#5a4430; --b-sow:#58b97f; --b-late:#c79a3c; --b-grow:#2b4a37; --b-hold:#5a4e35; --b-no:#2c332e; --edge:#a9bcae; --frost:#6fb0ee;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:14px 28px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:14px 28px;-webkit-font-smoothing:antialiased}
+:root[data-theme="light"]{color-scheme:light}
 .app{max-width:1280px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
 header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
 h1{font-family:var(--font-display);font-weight:700;font-size:1.55rem;letter-spacing:-.01em;margin:0;text-wrap:balance}
 .sub{color:var(--muted);font-size:.85rem;margin:0}
 .example{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);border:1px dashed var(--line);padding:2px 8px;border-radius:3px}
 .main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:12px;align-items:start}
-@media (max-width:860px){.main{grid-template-columns:minmax(0,1fr)}}
+
 .board{display:flex;flex-direction:column;gap:8px;min-width:0}
 .bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .bar .grow{flex:1}
 button,select,input,textarea{font:inherit;color:inherit}
 button{background:var(--panel);border:1px solid var(--line);padding:6px 11px;border-radius:4px;cursor:pointer;min-height:32px}
 button:hover{border-color:var(--accent)}
-button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button.primary,button.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button.primary:hover,button.pri:hover{filter:brightness(1.08)}
+button:disabled{opacity:.5;cursor:default}button:disabled:hover{border-color:var(--line)}
 button.danger{color:var(--danger)}
 button.danger.armed{background:var(--danger);color:var(--accent-ink);border-color:var(--danger)}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,svg:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -60,7 +75,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .dock-add .chip[data-add=bed]{background:var(--t-bed)}.dock-add .chip[data-add=structure]{background:var(--t-structure)}.dock-add .chip[data-add=field]{background:var(--t-field)}.dock-add .chip[data-add=path]{background:var(--t-path)}
 .dock-ctl button{min-height:30px;padding:4px 10px;font-size:.8rem}
 .dock-ctl .zb{width:32px;padding:0;font-family:var(--font-mono);font-size:1rem}
-@media (max-width:560px){.dock{left:4px;right:4px;bottom:4px;padding:5px 6px;gap:5px 10px}.dock-l{display:none}.dock-add .chip{padding:5px 8px;font-size:.8rem}.dock-ctl button{padding:4px 7px}}
+@media (max-width:560px){.dock{left:4px;right:4px;bottom:4px;padding:5px 6px;gap:5px 10px}.dock-l{display:none}.dock-add,.dock-ctl{flex-wrap:nowrap;width:100%;justify-content:flex-start;overflow-x:auto;scrollbar-width:none}.dock-add::-webkit-scrollbar,.dock-ctl::-webkit-scrollbar{display:none}.dock-ctl{justify-content:center}.dock-add .chip{padding:5px 8px;font-size:.8rem}.dock-ctl button{padding:4px 7px}}
 .canvas-wrap{border:1px solid var(--line);background:var(--panel);height:min(68vh,640px);min-height:340px;position:relative;overflow:hidden}
 svg#board{width:100%;height:100%;display:block;touch-action:manipulation;cursor:grab;user-select:none}
 svg#board.panning{cursor:grabbing}
@@ -79,6 +94,17 @@ svg#board.panning{cursor:grabbing}
 .side{border:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;min-width:0}
 .sec{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .sec:last-child{border-bottom:0}
+@media (max-width:860px){
+  /* Phones and tablets: put the editor for the selected bed right under the map instead of after the whole calendar. */
+  .main{display:flex;flex-direction:column;align-items:stretch}
+  .board>*,.side>*{min-width:0}
+  .board,.side{display:contents}
+  .canvas-wrap{order:1}
+  #selSec{order:2}
+  .board>:not(.canvas-wrap){order:3}
+  .side>.sec:not(#selSec){order:4}
+  .side>.sec{border:1px solid var(--line);background:var(--panel)}
+}
 .sec h2{font-family:var(--font-mono);font-size:.7rem;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 label{display:flex;flex-direction:column;gap:3px;font-size:.78rem;color:var(--muted);min-width:0}
@@ -169,11 +195,12 @@ td button{padding:2px 8px;min-height:24px;font-size:.74rem}
 .srows em{font-style:normal;color:var(--accent);font-family:var(--font-mono);font-size:.72rem}
 .grp details>summary{cursor:pointer;font-size:.82rem;color:var(--muted)}
 .tool{border:1px solid var(--line);background:var(--panel)}
-.tool>summary{cursor:pointer;padding:10px 12px;font-weight:600;font-size:.9rem;list-style:none;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.tool>summary{cursor:pointer;padding:12px 14px;font-family:var(--font-display);font-weight:700;font-size:1rem;letter-spacing:0;text-transform:none;color:var(--ink);list-style:none;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.tool>summary:hover{background:var(--bg)}
 .tool>summary::-webkit-details-marker{display:none}
 .tool>summary::before{content:"\25B8";color:var(--muted)}
 .tool[open]>summary::before{content:"\25BE"}
-.tool>summary span{font-weight:400;color:var(--muted);font-size:.78rem}
+.tool>summary span{font-family:var(--font-body);font-weight:400;color:var(--muted);font-size:.82rem}
 .tool .sec h2{display:none}
 .tool .sec{border-top:1px solid var(--line);border-bottom:0}
 .orow{display:flex;gap:10px;flex-wrap:wrap}.orow label{flex:1;min-width:130px}
@@ -189,7 +216,7 @@ td button{padding:2px 8px;min-height:24px;font-size:.74rem}
 #printArea{display:none}
 @media print{body>*{display:none!important}body>#printArea{display:block!important;background:#fff}.pg{border:0;page-break-after:always;padding:0}}
 .tkbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 12px;border:1px solid var(--line);background:var(--panel)}
-.tkbar h2{margin:0 auto 0 0}
+.tkbar h2{margin:0 auto 0 0;font-family:var(--font-display);font-size:1.1rem}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
 .seg button{border:0;border-radius:0;padding:6px 12px;background:var(--panel);color:var(--ink);cursor:pointer;font:inherit;font-size:.82rem}
 .seg button[aria-pressed=true]{background:var(--ink);color:var(--panel)}
@@ -227,14 +254,16 @@ fieldset.beds input{width:auto}
 .cropline{display:flex;align-items:center;gap:8px;justify-content:space-between}
 .cropline .dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:6px}
 .btnrow{display:flex;flex-wrap:wrap;gap:6px}
-.toast{font-size:.8rem;color:var(--accent);min-height:1.2em;margin:0}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);z-index:70;max-width:min(92vw,480px);margin:0;padding:10px 16px;border-radius:8px;background:var(--ink);color:var(--panel);font-size:.86rem;line-height:1.4;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
 details summary{cursor:pointer;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .svgtext{font-family:var(--font-body);fill:var(--ink);pointer-events:none}
 @media (prefers-reduced-motion:no-preference){button{transition:border-color .12s,background .12s}}
 
 /* ---- Garden Suite tabs */
 .suite-tabs{display:flex;gap:4px;max-width:1280px;margin:0 auto 12px;border-bottom:1px solid var(--line,#ddd);overflow-x:auto}
-.suite-tabs button{appearance:none;background:none;border:0;border-bottom:3px solid transparent;padding:10px 16px;font:inherit;font-weight:600;color:var(--muted,#666);cursor:pointer;white-space:nowrap}
+.suite-tabs button{appearance:none;background:none;border:0;border-bottom:3px solid transparent;padding:10px 16px;font:inherit;font-size:.95rem;font-weight:600;color:var(--muted,#666);cursor:pointer;white-space:nowrap;min-height:0;border-radius:0}
+.suite-tabs button:hover{color:var(--ink)}
 .suite-tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent,var(--ink))}
 .suite-tabs button:disabled{opacity:.5;cursor:default}
 .suite-tabs small{font-weight:400;margin-left:4px}
@@ -264,34 +293,43 @@ body.care .readout,body.care .dock-add{display:none}
 .mini{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:12px 0 4px}
 .carebar .cb-d{flex-direction:row;align-items:center;white-space:nowrap}
 .carebar .cb-d input{flex:1}
-/* Site bar: matches the Croaking Acres header on the other pages. */
-.sitebar{margin:-14px -16px 12px;padding:0 16px;background:var(--panel);border-bottom:1px solid var(--line)}
-.sitebar-in{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding:10px 0}
-.sitebar-brand{font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
-.sitebar-links a{margin-left:16px;text-decoration:none;color:var(--muted);font-size:.92rem}
-.sitebar-links a:first-child{margin-left:0}
-.sitebar-links a:hover{color:var(--accent)}
-.sitebar-links a[aria-current]{color:var(--ink);font-weight:600}
-.sitebar a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* Site header: same markup and styles as the other pages (index.html, nrcs-guide/). */
+.site-header{display:block;margin:-14px -16px 12px;background:var(--panel);border-bottom:1px solid var(--line)}
+.site-header .in{max-width:1280px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:6px 16px;flex-wrap:wrap}
+.brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.brand svg{width:30px;height:30px;flex:none}
+.site-nav{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.site-nav a{padding:6px 10px;border-radius:6px;text-decoration:none;color:var(--muted);font-size:.93rem;font-weight:500}
+.site-nav a:hover{color:var(--ink);background:var(--bg)}
+.site-nav a[aria-current="page"]{color:var(--ink);background:var(--accent-soft)}
+.theme-btn{width:34px;height:34px;min-height:0;margin-left:4px;display:inline-grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;padding:0}
+.theme-btn svg{width:16px;height:16px}
+.site-header a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:560px){.site-header .in{padding:8px 16px}.site-nav a{padding:5px 8px;font-size:.88rem}}
 </style>
-<div class="sitebar" role="navigation" aria-label="Croaking Acres site">
-  <div class="sitebar-in">
-    <a class="sitebar-brand" href="../">Croaking Acres</a>
-    <span class="sitebar-links">
-      <a href="../">Home</a>
+</head>
+<body>
+<header class="site-header">
+  <div class="in">
+    <a class="brand" href="../" aria-label="Croaking Acres home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#2e7a4d"/><circle cx="10.5" cy="12" r="4.6" fill="#a8d98a"/><circle cx="21.5" cy="12" r="4.6" fill="#a8d98a"/><ellipse cx="16" cy="19.5" rx="11" ry="7.5" fill="#a8d98a"/><circle cx="10.5" cy="11.4" r="1.9" fill="#1b2a21"/><circle cx="21.5" cy="11.4" r="1.9" fill="#1b2a21"/><path d="M10.5 20.5q5.5 3.6 11 0" fill="none" stroke="#1b2a21" stroke-width="1.6" stroke-linecap="round"/></svg>
+      Croaking Acres
+    </a>
+    <nav class="site-nav" aria-label="Site">
       <a href="./" aria-current="page">Garden Planner</a>
       <a href="../nrcs-guide/">NRCS Guide</a>
       <a href="../#contact">Contact</a>
-    </span>
+      <button class="theme-btn" id="themeBtn" type="button"></button>
+    </nav>
   </div>
-</div>
+</header>
 <nav class="suite-tabs" role="tablist" aria-label="Garden Suite">
-  <button type="button" role="tab" data-tab="plan" aria-selected="true">Plan</button>
-  <button type="button" role="tab" data-tab="care" aria-selected="false">Care</button>
-  <button type="button" role="tab" data-tab="doing" aria-selected="false">Field Log</button>
-  <button type="button" role="tab" data-tab="forecast" aria-selected="false">Forecast</button>
+  <button type="button" role="tab" id="tb-plan" data-tab="plan" aria-controls="tab-plan" aria-selected="true">Plan</button>
+  <button type="button" role="tab" id="tb-care" data-tab="care" aria-controls="tab-plan" aria-selected="false" tabindex="-1">Care</button>
+  <button type="button" role="tab" id="tb-doing" data-tab="doing" aria-controls="tab-doing" aria-selected="false" tabindex="-1">Field Log</button>
+  <button type="button" role="tab" id="tb-forecast" data-tab="forecast" aria-controls="tab-forecast" aria-selected="false" tabindex="-1">Forecast</button>
 </nav>
-<div id="tab-plan">
+<div id="tab-plan" role="tabpanel" aria-labelledby="tb-plan">
 
 <div class="app">
   <header>
@@ -435,11 +473,11 @@ body.care .readout,body.care .dock-add{display:none}
 
 <div id="printArea" aria-hidden="true"></div>
 </div>
-<div class="suite-panel" id="tab-doing" hidden></div>
-<div class="suite-panel" id="tab-forecast" hidden></div>
+<div class="suite-panel" id="tab-doing" role="tabpanel" aria-labelledby="tb-doing" hidden></div>
+<div class="suite-panel" id="tab-forecast" role="tabpanel" aria-labelledby="tb-forecast" hidden></div>
 <script type="text/plain" id="app-doing"><title>Garden Field Log</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* Layout: one narrow working column, tabs on top, tasks as a checklist grouped by urgency. Built to use with dirty hands on a phone. */
 :root{
@@ -457,7 +495,7 @@ body.care .readout,body.care .dock-add{display:none}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.4;padding-inline:16px;padding-block:16px 48px}
 .wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
-h1{font-size:22px;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h1{font-family:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;font-size:24px;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
 .date{font-family:var(--mono);font-size:12px;color:var(--mute)}
 .ex{font-size:12px;color:var(--mute);background:var(--tint);border-radius:4px;padding:6px 10px}
 nav{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
@@ -743,19 +781,20 @@ body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);padding-i
 h1{font:700 1.7rem/1.1 var(--f-display);margin:0;text-wrap:balance}
 h2{font:600 1.05rem/1.2 var(--f-display);margin:0 0 10px}
 .sub{color:var(--muted);margin:6px 0 0;max-width:62ch}
-.panel{background:var(--panel);border:1px solid var(--line);padding:14px 16px;min-width:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
 .top{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between}
 .src{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-button,.btn{font:inherit;font-size:.86rem;padding:7px 12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+button,.btn{font:inherit;font-size:.86rem;padding:7px 12px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);cursor:pointer}
+button:hover,.btn:hover{border-color:var(--accent)}
 button.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .tag{font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);border:1px solid var(--warn);padding:2px 7px}
 .ctl{display:flex;flex-wrap:wrap;gap:18px 28px;align-items:center}
 .ctl label{display:flex;flex-direction:column;gap:3px;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.seg{display:flex}.seg button{border-radius:0;margin-left:-1px}.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.seg{display:flex}.seg button{border-radius:0;margin-left:-1px}.seg button:first-child{border-radius:6px 0 0 6px;margin-left:0}.seg button:last-child{border-radius:0 6px 6px 0}.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 input[type=number]{font:inherit;font-family:var(--f-mono);width:5.6em;padding:5px 7px;border:1px solid var(--line);background:var(--field);color:var(--ink);text-align:right}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.tile{background:var(--panel);border:1px solid var(--line);padding:12px 14px;min-width:0}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
 .tile .k{font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .tile .v{font:600 1.6rem/1.2 var(--f-mono);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .tile.main .v{color:var(--accent)}
@@ -798,7 +837,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   </header>
 
   <details class="panel" id="pasteBox">
-    <summary>Or paste the plan JSON from the planner (Outputs, Plan for other apps)</summary>
+    <summary>Or paste a plan copied from the planner (Save and restore, then Copy plan)</summary>
     <textarea id="pasteTa" placeholder='{"app":"garden-plot-planner","tasks":[...]}'></textarea>
     <p class="note" id="loadMsg" role="status"></p>
     <button type="button" class="pri" id="pasteBtn">Load pasted plan</button>
@@ -907,7 +946,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       var j=JSON.parse(txt),w=fromPlan(j);
       if(!w.length){m.textContent='That plan has no harvest windows yet. Add plantings with dates in the planner, then export again.';m.className='note warn';return;}
       ls('plan',txt);setPlan(w,(j.name||'Your plan'));m.textContent='Loaded '+w.length+' harvest windows.';m.className='note';
-    }catch(e){m.textContent='That does not look like a plan from the planner. Use the Plan for other apps export.';m.className='note warn';}
+    }catch(e){m.textContent='That does not look like a plan from the planner. In the planner, use Copy plan or Save plan file under Save and restore.';m.className='note warn';}
   }
 
   function buildNote(){
@@ -1408,6 +1447,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   function addD(iso,n){return new Date(pd(iso)+n*864e5).toISOString().slice(0,10);}
   function diffD(a,b){return Math.round((pd(b)-pd(a))/864e5);}
   function fmtD(iso){var d=new Date(pd(iso));return MON[d.getUTCMonth()]+' '+d.getUTCDate();}
+  function todayIso(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
   function defaultSeason(){
     var now=new Date(),y=now.getFullYear();
     if(now.getMonth()>=8)y+=1;
@@ -1686,7 +1726,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         var t=mk('text',{x:sp.x+0.4*Math.min(1,fs*2),y:sp.y+fs*1.15,'font-size':fs,'font-weight':'600',class:'svgtext'},grp);
         var full=label+(cropNames.length?' · '+cropNames.join(', '):'');
         var maxCh=Math.floor((sp.w*view.s-8)/(12*0.58));
-        if(full.length>maxCh)full=maxCh>4?full.slice(0,maxCh-1)+'…':label.slice(0,Math.max(0,maxCh));
+        if(full.length>maxCh)full=label.length<=maxCh?label:(maxCh>4?label.slice(0,maxCh-1)+'…':label.slice(0,Math.max(0,maxCh)));
         t.textContent=full;
         t.setAttribute('paint-order','stroke');
         t.setAttribute('stroke','var(--panel)');
@@ -2017,7 +2057,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   /* ---- date shown on the map in Care mode (shares the calendar's date slider) */
   function careDate(){
     if(scrub.date)return scrub.date;
-    var y=seasonYear(),today=new Date().toISOString().slice(0,10);
+    var y=seasonYear(),today=todayIso();
     return today.slice(0,4)===String(y)?today:addD(state.season.lastFrost,45);
   }
   function syncCarebar(){
@@ -2190,7 +2230,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       render(true);renderCal();
     });
     el('cbToday').addEventListener('click',function(){
-      var y=seasonYear(),today=new Date().toISOString().slice(0,10);
+      var y=seasonYear(),today=todayIso();
       scrub.date=today.slice(0,4)===String(y)?today:addD(state.season.lastFrost,45);
       render(true);renderCal();syncCarebar();
     });
@@ -2239,8 +2279,8 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       return '<div class="cropline"><span><span class="dot" style="background:'+e.c+'"></span>'+esc(e.n)+'</span><span style="font-family:var(--font-mono)">'+counts[k]+'</span></div>';
     }).join('');
     el('sumSec').innerHTML='<h2>Garden totals</h2>'+
-      '<div class="big">'+bedArea.toFixed(0)+' <span style="font-size:.9rem;font-weight:500;color:var(--muted)">sq ft growing space, '+nBeds+' beds</span></div>'+
-      '<div class="stat"><span>Plants planned</span><span>'+total+'</span></div>'+
+      '<div class="big">'+Math.round(bedArea).toLocaleString()+' <span style="font-size:.9rem;font-weight:500;color:var(--muted)">sq ft growing space, '+nBeds+' bed'+(nBeds===1?'':'s')+'</span></div>'+
+      '<div class="stat"><span>Plants planned</span><span>'+total.toLocaleString()+'</span></div>'+
       containerGroups(bedList()).map(function(g){var st=groupStats(g);return '<div class="stat"><span>'+esc(g.c?(g.c.name||TYPES[g.c.type].n):'Other beds')+' <small style="color:var(--muted)">'+g.beds.length+' bed'+(g.beds.length===1?'':'s')+'</small></span><span>'+Math.round(st.area).toLocaleString()+' sq ft</span></div>'+(g.c&&mixText(g)?'<div class="hint" style="margin:-4px 0 4px">'+mixText(g)+' of '+Math.round(layoutMix(g).A).toLocaleString()+' sq ft</div>':'');}).join('')+
       (rows||'<p class="hint">Add a planting to a bed to see plants drawn at true spacing.</p>');
     renderCatSec();
@@ -2600,7 +2640,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     if(e.spMin&&(succ.sp<e.spMin-1e-6||succ.sp>e.spMax+1e-6))lines.push('Plant spacing '+succ.sp+' in is outside the usual '+rng(e.spMin,e.spMax)+' for '+e.n+'.');
     picks.forEach(function(b){
       var lay=layoutIn(planRect(b,p),p);
-      lines.push((lay.n===0?'WARN:':'')+(b.name||'Bed')+': '+(lay.n===0?'no rows fit at this row spacing.':lay.n+' row'+(lay.n===1?'':'s')+' &times; '+lay.per+' plants = '+(lay.n*lay.per)+'.'));
+      lines.push((lay.n===0?'WARN:':'')+esc(b.name||'Bed')+': '+(lay.n===0?'no rows fit at this row spacing.':lay.n+' row'+(lay.n===1?'':'s')+' &times; '+lay.per+' plants = '+(lay.n*lay.per)+'.'));
     });
     box.innerHTML=lines.map(function(l){return l.indexOf('WARN:')===0?'<span class="warn">'+l.slice(5)+'</span>':(l.indexOf('outside the usual')>=0?'<span class="warn">'+esc(l)+'</span>':(l.indexOf('&times;')>=0?l:esc(l)));}).join('<br>');
   }
@@ -2935,7 +2975,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   function mondayOf(iso){var w=new Date(pd(iso)).getUTCDay();return addD(iso,-((w+6)%7));}
   function renderTasks(){
     var box=el('tkList');if(!box)return;
-    var today=new Date().toISOString().slice(0,10),hide=el('tkFuture').checked;
+    var today=todayIso(),hide=el('tkFuture').checked;
     Array.prototype.forEach.call(document.querySelectorAll('[data-tm]'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-tm')===taskMode?'true':'false');});
     var raw=tasksAll(),list=mergeTasks(raw,taskMode==='bed');
     if(hide)list=list.filter(function(g){return (g.end||g.date)>=today;});
@@ -2991,8 +3031,9 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     });
   }
   function updateOut(){var c=el('oCount');if(c)c.textContent=outGroups().length+' events in the calendar file';}
-  function icsEsc(t){return String(t).replace(/\\/g,'\\\\').replace(/;/g,'\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');}
-  function icsFold(l){var o=[];while(l.length>60){o.push(l.slice(0,60));l=' '+l.slice(60);}o.push(l);return o.join('\r\n');}
+  function icsEsc(t){return String(t).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');}
+  /* fold lines at 75 octets (RFC 5545), never splitting a multi-byte character */
+  function icsFold(l){var o=[],cur='',n=0,lim=75;for(var ch of l){var b=new TextEncoder().encode(ch).length;if(n+b>lim){o.push(cur);cur=' ';n=1;lim=75;}cur+=ch;n+=b;}o.push(cur);return o.join('\r\n');}
   function icsText(){
     var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
     var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Garden Plot Planner//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:'+icsEsc((state.name||'Garden')+' tasks')];
@@ -3049,7 +3090,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     return out;
   }
   function initOut(){
-    ['oFrom','oTo','oA','oB','oC','oDone'].forEach(function(id){el(id).addEventListener('change',updateOut);});
+    ['oFrom','oTo','oA','oB','oC','oD','oDone'].forEach(function(id){el(id).addEventListener('change',updateOut);});
     function dl(name,text,type){
       var fb=function(){toast('Saving is not available here. Use Copy text instead.');};
       var go=function(nm,note){
@@ -3095,7 +3136,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     el('scrubOn').addEventListener('change',function(){
       scrub.on=el('scrubOn').checked;
       if(scrub.on&&!scrub.date){
-        var y=seasonYear(),today=new Date().toISOString().slice(0,10);
+        var y=seasonYear(),today=todayIso();
         scrub.date=today.slice(0,4)===String(y)?today:addD(state.season.lastFrost,45);
       }
       render();
@@ -3463,7 +3504,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
 
   // save and restore
   var toastT=null;
-  function toast(msg){var t=el('toast');t.textContent=msg;clearTimeout(toastT);toastT=setTimeout(function(){t.textContent='';},4000);}
+  function toast(msg){var t=el('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},Math.max(3500,Math.min(8000,msg.length*60)));}
   function planTasks(){
     var TY={a:'start-seed-indoors',b:'plant',c:'harvest-window',d:'care'},d=state.done||{};
     return mergeTasks(tasksAll(),false).map(function(g){
@@ -3524,7 +3565,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     if(!armed){armed=true;b.textContent='Tap again to clear';b.classList.add('armed');armT=setTimeout(function(){armed=false;b.textContent='Clear all';b.classList.remove('armed');},3000);return;}
     clearTimeout(armT);armed=false;b.textContent='Clear all';b.classList.remove('armed');
     snapPlan('Before clearing all');
-    state={name:'My garden',spaces:[],catalog:state.catalog,season:state.season,done:{},north:state.north};sel=null;touchState();render();toast('Plan cleared. Press Undo above the map to bring it back.');
+    state={name:'My garden',spaces:[],catalog:state.catalog,season:state.season,done:{},north:state.north};sel=null;touchState();render();toast('Plan cleared. Press Undo on the map to bring it back.');
   });
 
   el('undoBtn').addEventListener('click',function(){restoreSnap(0);});
@@ -3568,7 +3609,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       var shown=(id==='plan'||id==='care')?'tab-plan':'tab-'+id;
       ['tab-plan','tab-doing','tab-forecast'].forEach(function(p){var n=document.getElementById(p);if(n)n.hidden=(p!==shown);});
       tabs.forEach(function(t){
-        var b=document.querySelector('.suite-tabs [data-tab="'+t+'"]');if(b)b.setAttribute('aria-selected',t===id?'true':'false');
+        var b=document.querySelector('.suite-tabs [data-tab="'+t+'"]');if(b){b.setAttribute('aria-selected',t===id?'true':'false');b.tabIndex=t===id?0:-1;}
       });
       if(id==='plan'||id==='care')setMode(id==='care'?'care':'plan');
       if(id==='doing'||id==='forecast'){
@@ -3584,9 +3625,18 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       try{history.replaceState(null,'','#'+id);}catch(e){}
       window.scrollTo(0,0);
     }
-    document.querySelector('.suite-tabs').addEventListener('click',function(e){
+    var bar=document.querySelector('.suite-tabs');
+    bar.addEventListener('click',function(e){
       var b=e.target.closest&&e.target.closest('[data-tab]');if(b)open(b.getAttribute('data-tab'));
     });
+    /* arrow keys move between tabs, as for any tab strip */
+    bar.addEventListener('keydown',function(e){
+      var i=tabs.indexOf(cur),n=e.key==='ArrowRight'?i+1:e.key==='ArrowLeft'?i-1:e.key==='Home'?0:e.key==='End'?tabs.length-1:null;
+      if(n===null)return;
+      e.preventDefault();n=(n+tabs.length)%tabs.length;open(tabs[n]);
+      var b=bar.querySelector('[data-tab="'+tabs[n]+'"]');if(b)b.focus();
+    });
+    document.addEventListener('ca-theme',function(){Object.keys(frames).forEach(function(k){var f=frames[k];if(!f.ready)return;try{var t=theme(),d=f.el.contentDocument;if(t)d.documentElement.setAttribute('data-theme',t);else d.documentElement.removeAttribute('data-theme');}catch(e){}});});
     window.addEventListener('message',function(e){
       if(!e.data||e.data.suite!=='h')return;
       Object.keys(frames).forEach(function(k){if(frames[k].el.contentWindow===e.source)frames[k].el.style.height=Math.max(400,e.data.h+8)+'px';});
@@ -3596,4 +3646,15 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   })();
 })();
 </script>
+<script>
+/* Theme toggle: follows the system until you pick one, then remembers it on every page. Same code on every page. */
+(function(){var b=document.getElementById('themeBtn');if(!b)return;var mq=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)');
+  var SUN='<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/></svg>',MOON='<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"/></svg>';
+  function cur(){return document.documentElement.getAttribute('data-theme')||(mq&&mq.matches?'dark':'light');}
+  function paint(){var d=cur()==='dark';b.innerHTML=d?SUN:MOON;b.setAttribute('aria-label',d?'Switch to light theme':'Switch to dark theme');b.title=b.getAttribute('aria-label');}
+  b.addEventListener('click',function(){var n=cur()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('ca-theme',n);}catch(e){}paint();document.dispatchEvent(new CustomEvent('ca-theme'));});
+  if(mq&&mq.addEventListener)mq.addEventListener('change',paint);paint();})();
+</script>
 <script>if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){window.addEventListener('load',function(){try{navigator.serviceWorker.register('sw.js').catch(function(){});}catch(e){}});}</script>
+</body>
+</html>
