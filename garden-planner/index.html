@@ -276,6 +276,8 @@ details summary{cursor:pointer;font-family:var(--font-mono);font-size:.7rem;lett
 .carebar{display:none;position:absolute;left:8px;right:8px;top:8px;z-index:3;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:6px 8px;background:var(--panel);border:1px solid var(--edge);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.12);font-size:.82rem}
 body.care .carebar{display:flex}
 body.care .readout,body.care .dock-add{display:none}
+body.care .compass{top:60px}
+input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--accent)}
 .carebar .cb-d{display:flex;align-items:center;gap:8px;flex:1 1 200px;min-width:160px}
 .carebar input[type=range]{flex:1;min-width:80px}
 .carebar output{font-family:var(--font-mono);min-width:3.6em}
@@ -614,7 +616,7 @@ h2 em{font-style:normal;font-family:var(--mono);letter-spacing:0}
     var when=t.end?fmt(t.date)+' to '+fmt(t.end):dlab(t.date);
     var tag=late?(' &middot; '+(diff(last(t),today))+' day'+(diff(last(t),today)===1?'':'s')+' late'):(t.end&&t.date<=today&&today<=t.end&&!d?' &middot; open now':'');
     var n=st.log.filter(function(l){return l.taskId===t.id;}).length;
-    return '<div class="task'+(d?' done':'')+(late?' late':'')+'"><div class="trow"><input type="checkbox" data-done="'+esc(t.id)+'"'+(d?' checked':'')+' aria-label="Mark done"><span class="dot" style="background:'+colOf(t.crop)+'"></span><div class="tb"><div class="tt">'+esc(label(t))+' '+esc(t.crop)+'</div><div class="tw">'+esc(where(t))+(t.plants?' &middot; '+t.plants+' plants':'')+'</div><div class="meta">'+when+tag+(d&&st.done[t.id]!==1?' &middot; done '+fmt(st.done[t.id]):'')+'</div></div></div>'+
+    return '<div class="task'+(d?' done':'')+(late?' late':'')+'"><div class="trow"><input type="checkbox" data-done="'+esc(t.id)+'"'+(d?' checked':'')+' aria-label="Mark done"><span class="dot" style="background:'+(t.color||colOf(t.crop))+'"></span><div class="tb"><div class="tt">'+esc(label(t))+' '+esc(t.crop)+'</div><div class="tw">'+esc(where(t))+(t.plants?' &middot; '+t.plants+' plants':'')+'</div><div class="meta">'+when+tag+(d&&st.done[t.id]!==1?' &middot; done '+fmt(st.done[t.id]):'')+'</div></div></div>'+
       '<div class="acts"><button class="btn sm" data-obs="'+esc(t.id)+'" type="button">'+(o?'Close':'Add note')+(n&&!o?' ('+n+')':'')+'</button></div>'+(o?obsForm(t):'')+'</div>';
   }
   function typeOpts(sel){return TYPES.map(function(x){return '<option value="'+x[0]+'"'+(x[0]===sel?' selected':'')+'>'+x[1]+'</option>';}).join('');}
@@ -695,7 +697,7 @@ h2 em{font-style:normal;font-family:var(--mono);letter-spacing:0}
     var d;try{d=JSON.parse(txt);}catch(e){toast('That is not a plan. Copy it again from the planner.');return;}
     if(!d||!Array.isArray(d.tasks)){toast('This plan has no task list. Update the planner and copy the plan again.');return;}
     var keep=st.example?{done:{},log:[]}:{done:st.done,log:st.log};
-    var tk=d.tasks.filter(function(t){return t&&t.id&&t.date&&t.crop;}).map(function(t){return {id:String(t.id),action:t.action||'plant',crop:String(t.crop),date:t.date,end:t.end||null,plants:t.plants||0,done:!!t.done,where:Array.isArray(t.where)?t.where:[]};});
+    var tk=d.tasks.filter(function(t){return t&&t.id&&t.date&&t.crop;}).map(function(t){return {id:String(t.id),action:t.action||'plant',crop:String(t.crop),color:/^#[0-9a-f]{3,8}$/i.test(t.color||'')?t.color:'',date:t.date,end:t.end||null,plants:t.plants||0,done:!!t.done,where:Array.isArray(t.where)?t.where:[]};});
     var done=keep.done;tk.forEach(function(t){if(t.done&&!done[t.id])done[t.id]=1;});
     var ids={};tk.forEach(function(t){ids[t.id]=1;});
     st={example:false,plan:{name:d.name||'My garden',exported:d.exported||'',tasks:tk},done:done,log:keep.log};
@@ -742,7 +744,7 @@ h2 em{font-style:normal;font-family:var(--mono);letter-spacing:0}
     var d;try{d=JSON.parse(txt);}catch(e){return;}
     if(!d||!Array.isArray(d.tasks))return;
     if(ex){
-      var tk=d.tasks.filter(function(t){return t&&t.id&&t.date&&t.crop;}).map(function(t){return {id:String(t.id),action:t.action||'plant',crop:String(t.crop),date:t.date,end:t.end||null,plants:t.plants||0,done:false,where:Array.isArray(t.where)?t.where:[]};});
+      var tk=d.tasks.filter(function(t){return t&&t.id&&t.date&&t.crop;}).map(function(t){return {id:String(t.id),action:t.action||'plant',crop:String(t.crop),color:/^#[0-9a-f]{3,8}$/i.test(t.color||'')?t.color:'',date:t.date,end:t.end||null,plants:t.plants||0,done:false,where:Array.isArray(t.where)?t.where:[]};});
       st={example:true,plan:{name:d.name||'Example garden',exported:'',tasks:tk},done:{},log:[]};render();return;
     }
     var base=null;try{base=JSON.parse(localStorage.getItem(KEY));}catch(e){}
@@ -901,6 +903,8 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   var $=function(i){return document.getElementById(i);};
   function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('gardenforecast.v1.'+k));localStorage.setItem('gardenforecast.v1.'+k,JSON.stringify(v));}catch(e){return null;}}
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  /* the planner's own crop color when the plan carries one, so a crop looks the same on every tab */
+  function colOf(k,i){var c=S.crops[k];return c&&c.col?c.col:'var('+COLORS[i%8]+')';}
   function slug(t){return t.toLowerCase().replace(/[^a-z0-9]+/g,'-');}
   function pd(s){var a=s.split('-');return Date.UTC(+a[0],+a[1]-1,+a[2]);}
   function ds(t){return new Date(t).toISOString().slice(0,10);}
@@ -921,7 +925,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     list.forEach(function(w){
       var k=w.crop.toLowerCase();
       if(!S.crops[k]){var d=defFor(w.crop,DEF),e=defFor(w.crop,EA);
-        var c={name:w.crop,u:'lb',lb:{y:d?d[0]:0,p:d?d[1]:0},ea:{y:e?e[0]:0,p:e?e[1]:0}},sv=saved[k];
+        var c={name:w.crop,col:w.col||'',u:'lb',lb:{y:d?d[0]:0,p:d?d[1]:0},ea:{y:e?e[0]:0,p:e?e[1]:0}},sv=saved[k];
         if(sv){
           if(sv.y!==undefined){c.lb={y:+sv.y||0,p:+sv.p||0};}
           if(sv.lb)c.lb={y:+sv.lb.y||0,p:+sv.lb.p||0};
@@ -937,7 +941,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   function fromPlan(j){
     var t=(j&&j.tasks)||[];
     var w=t.filter(function(x){return x.action==='harvest-window'&&x.date&&x.crop;}).map(function(x){
-      return {crop:x.crop,date:x.date,end:x.end||x.date,plants:+x.plants||0};});
+      return {crop:x.crop,date:x.date,end:x.end||x.date,plants:+x.plants||0,col:/^#[0-9a-f]{3,8}$/i.test(x.color||'')?x.color:''};});
     return w;
   }
   function loadText(txt){
@@ -959,7 +963,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       var c=S.crops[k],w=S.wins.filter(function(x){return x.crop.toLowerCase()===k;});
       var mn=w.map(function(x){return x.date;}).sort()[0],mx=w.map(function(x){return x.end;}).sort().pop();
       var a=c[c.u];
-      h+='<tr data-k="'+esc(k)+'"><td><span class="sw" style="background:var('+COLORS[i%8]+')"></span>'+esc(c.name)+'<div class="dates">'+fmtD(mn)+' to '+fmtD(mx)+'</div>'+
+      h+='<tr data-k="'+esc(k)+'"><td><span class="sw" style="background:'+colOf(k,i)+'"></span>'+esc(c.name)+'<div class="dates">'+fmtD(mn)+' to '+fmtD(mx)+'</div>'+
         '<select data-f="u" aria-label="Sell '+esc(c.name)+' by"><option value="lb"'+(c.u==='lb'?' selected':'')+'>Sell by the pound</option><option value="ea"'+(c.u==='ea'?' selected':'')+'>Sell each (per fruit)</option></select></td>'+
         '<td data-f="plants"></td>'+
         '<td><input type="number" min="0" step="any" data-f="y" aria-label="Yield per plant for '+esc(c.name)+'" value="'+a.y+'"> <span class="un" data-f="yu"></span></td>'+
@@ -1046,14 +1050,14 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       S.order.forEach(function(k,ci){
         var r=w[k]||0;if(r<=0)return;
         var h=r/sc.top*ph,y=T+ph-(acc+r)/sc.top*ph;
-        o+='<rect x="'+(x+bw*0.12)+'" y="'+y+'" width="'+(bw*0.76)+'" height="'+Math.max(h,0.5)+'" fill="var('+COLORS[ci%8]+')"><title>'+esc(S.crops[k].name)+', week of '+fmtD(ds(t))+': '+money(r)+'</title></rect>';
+        o+='<rect x="'+(x+bw*0.12)+'" y="'+y+'" width="'+(bw*0.76)+'" height="'+Math.max(h,0.5)+'" fill="'+colOf(k,ci)+'"><title>'+esc(S.crops[k].name)+', week of '+fmtD(ds(t))+': '+money(r)+'</title></rect>';
         acc+=r;});
       var d=new Date(t),first=d.getUTCDate()<=7;
       if(first&&x-lastLab>46||i===0){o+='<text x="'+(x+bw/2)+'" y="'+(H-12)+'" text-anchor="middle">'+d.toLocaleDateString('en-US',{month:'short',timeZone:'UTC'})+'</text>';lastLab=x;}
     }
     o+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+(T+ph)+'" y2="'+(T+ph)+'" stroke="var(--muted)" stroke-width="1"/>';
     svg.innerHTML=o;
-    $('legend').innerHTML=S.order.map(function(k,ci){return '<span><i style="background:var('+COLORS[ci%8]+')"></i>'+esc(S.crops[k].name)+'</span>';}).join('');
+    $('legend').innerHTML=S.order.map(function(k,ci){return '<span><i style="background:'+colOf(k,ci)+'"></i>'+esc(S.crops[k].name)+'</span>';}).join('');
   }
 
   function csv(){
@@ -3508,7 +3512,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   function planTasks(){
     var TY={a:'start-seed-indoors',b:'plant',c:'harvest-window',d:'care'},d=state.done||{};
     return mergeTasks(tasksAll(),false).map(function(g){
-      return {id:gid(g),action:TY[g.type],crop:g.crop,date:g.date,end:g.end||null,plants:g.n,done:gAllDone(g),
+      return {id:gid(g),action:TY[g.type],crop:g.crop,color:/^#[0-9a-f]{3,8}$/i.test(g.col||'')?g.col:undefined,date:g.date,end:g.end||null,plants:g.n,done:gAllDone(g),
         where:g.items.map(function(i){return {bedId:i.bed.id,bed:i.bed.name||'',rows:i.rt};}),keys:g.keys};
     });
   }
