@@ -2,7 +2,7 @@
 
 > Croaking Acres is a small market garden in Franklin Township, Indianapolis (Acton, Indiana) that publishes free, browser-based tools for small growers: a Garden Planner and an NRCS Grant Guide. Both are free, need no account, and keep the user's data in their own browser.
 
-Contact: james@croakingacres.com
+Contact: james@croakingacres.com (farm), support@croakingacres.com (help with the tools)
 Support the free tools: https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00 (a gift to the farm; Croaking Acres is not a nonprofit and contributions are not tax-deductible)
 
 ## Tools

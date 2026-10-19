@@ -168,6 +168,7 @@
     .facts { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 10px; }
     .facts li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; }
     .facts strong { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    @media (max-width: 420px) { .facts li { grid-template-columns: 1fr; gap: 2px; } }
     .card.support { background: linear-gradient(135deg, var(--accent-soft), var(--panel) 70%); }
     .fine { font-size: 0.82rem; color: var(--muted); margin: 12px 0 0; }
 
@@ -192,7 +193,7 @@
         <a href="garden-planner/">Garden Planner</a>
         <a href="nrcs-guide/">NRCS Guide</a>
         <a href="#contact">Contact</a>
-        <a href="#support">Support</a>
+        <a href="mailto:support@croakingacres.com">Support</a>
         <button class="theme-btn" id="themeBtn" type="button"></button>
       </nav>
     </div>
@@ -294,6 +295,7 @@
             <p>Questions, orders, or feedback on the tools? Get in touch.</p>
             <ul class="facts">
               <li><strong>Email</strong> <a href="mailto:james@croakingacres.com">james@croakingacres.com</a></li>
+              <li><strong>Tool help</strong> <a href="mailto:support@croakingacres.com">support@croakingacres.com</a></li>
               <li><strong>Location</strong> <span>Acton, Indiana</span></li>
               <li><strong>Buy food</strong> <span>At the stand, or through the Farmish app</span></li>
             </ul>
@@ -318,7 +320,7 @@
       <nav aria-label="Footer">
         <a href="garden-planner/">Garden Planner</a>
         <a href="nrcs-guide/">NRCS Guide</a>
-        <a href="#support">Support</a>
+        <a href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">Donate</a>
         <a href="mailto:james@croakingacres.com">james@croakingacres.com</a>
       </nav>
     </div>
