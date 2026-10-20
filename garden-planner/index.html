@@ -206,7 +206,6 @@ svg#board.panning{cursor:grabbing}
   .canvas-wrap{order:1}
   #selSec{order:2}
   .board>:not(.canvas-wrap){order:3}
-  .board>.modeseg{order:0}
   .side>.sec:not(#selSec){order:4}
   .side>.sec{border:1px solid var(--line);background:var(--panel)}
 }
@@ -272,6 +271,9 @@ td button{padding:2px 8px;min-height:24px;font-size:.74rem}
 .g-prot{position:absolute;top:0;bottom:0;background:var(--accent);opacity:.1;pointer-events:none}
 .g-tag{font-size:.62rem;color:var(--accent);font-family:var(--font-mono);display:block;line-height:1}
 .g-empty{color:var(--muted);padding:5px 8px}
+.g-job{position:absolute;height:6px;border-radius:3px;opacity:.85}.g-job.once{width:6px;margin-left:-3px}
+.kindrow{display:flex;flex-wrap:wrap;gap:4px}.kindrow button{padding:4px 10px;min-height:28px;font-size:.8rem;border-radius:99px}.kindrow button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.calbar .lyr{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted)}
 .grp{border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--bg);display:flex;flex-direction:column;gap:10px;padding:10px 12px}
 .grp.g2{border-left-color:#c98a3a}.grp.g3{border-left-color:var(--frost)}
 .grp-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
@@ -389,24 +391,13 @@ details summary{cursor:pointer;font-family:var(--font-mono);font-size:.7rem;lett
 .suite-tabs small{font-weight:400;margin-left:4px}
 @media (max-width:480px){.suite-tabs button{padding:10px 10px}}
 .suite-panel{max-width:1280px;margin:0 auto}
-.modeseg{align-self:flex-start}
 .tasks-app .tklist{max-height:none;overflow:visible}
 .suite-panel iframe{display:block;width:100%;border:0;min-height:70vh;background:transparent}
 .suite-care{padding:28px 8px;color:var(--muted,#666)}
 .suite-care h2{margin:0 0 6px;color:var(--ink);font-size:1.15rem}
 
-/* ---- Care mode */
-.carebar{display:none;position:absolute;left:8px;right:8px;top:8px;z-index:3;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:6px 8px;background:var(--panel);border:1px solid var(--edge);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.12);font-size:.82rem}
-body.care .carebar{display:flex}
-body.care .readout,body.care .dock-add{display:none}
-body.care .compass{top:60px}
-@media (max-width:560px){body.care .compass{top:108px;width:44px;height:44px}}
+/* ---- Care jobs */
 input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--accent)}
-.carebar .cb-d{display:flex;align-items:center;gap:8px;flex:1 1 200px;min-width:160px}
-.carebar input[type=range]{flex:1;min-width:80px}
-.carebar output{font-family:var(--font-mono);min-width:3.6em}
-.carebar button{font:inherit;padding:3px 9px;border:1px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:5px;cursor:pointer}
-.carebar .cb-l{display:flex;gap:10px}
 .jobs{display:flex;flex-direction:column;gap:6px;margin:8px 0}
 .jobrow{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line);border-radius:6px}
 .jobrow .jb{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -417,8 +408,6 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
 .clashbox ul{margin:4px 0 0;padding-left:18px}
 .clash{color:var(--danger)}
 .mini{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:12px 0 4px}
-.carebar .cb-d{flex-direction:row;align-items:center;white-space:nowrap}
-.carebar .cb-d input{flex:1}
 /* Site header: same markup and styles as the other pages (index.html, nrcs-guide/). */
 .site-header{display:block;margin:-14px -16px 12px;background:var(--panel);border-bottom:1px solid var(--line)}
 .site-header .in{max-width:1280px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:6px 16px;flex-wrap:wrap}
@@ -486,16 +475,11 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
 
   <div class="main">
     <section class="board" aria-label="Growing space editor">
-      <div class="seg modeseg" role="group" aria-label="What the map shows"><button type="button" data-mode="plan" aria-pressed="true">Plan plantings</button><button type="button" data-mode="care" aria-pressed="false">Care jobs</button></div>
       <div class="canvas-wrap">
         <svg id="board" tabindex="0" role="application" aria-label="Garden plan canvas. Drag shapes to move, drag the corner handle to resize."></svg>
         <button class="compass" id="compass" type="button" aria-label="Compass" title="Shows where north is. Click to turn it 90 degrees to match your map."></button>
         <div class="totals" id="totals" aria-live="polite"></div>
         <div class="readout" id="readout">1 square = 1 ft</div>
-        <div class="carebar" role="group" aria-label="Care view">
-          <label class="cb-d">View date<input type="range" id="cbR" min="0" max="364" value="150" aria-label="Date shown on the map"></label><output id="cbL" for="cbR"></output><button type="button" id="cbToday">Today</button>
-          <span class="cb-l"><label class="chk" for="lyPlant"><input type="checkbox" id="lyPlant" checked> Plantings</label><label class="chk" for="lyJobs"><input type="checkbox" id="lyJobs" checked> Jobs</label></span>
-        </div>
         <div class="dock">
           <div class="dock-add" role="toolbar" aria-label="Add to the plan"><span class="dock-l">Add</span>
             <button class="chip" data-add="bed">Bed</button>
@@ -515,6 +499,7 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
         <div class="calbar">
           <label for="bandCrop">Best times for<select id="bandCrop"></select></label>
           <span class="calnote" id="calNote"></span>
+          <span class="lyr">Map shows<label class="chk" for="lyPlant"><input type="checkbox" id="lyPlant" checked> Plantings</label><label class="chk" for="lyJobs"><input type="checkbox" id="lyJobs" checked> Jobs</label></span>
           <div class="scrub">
             <label class="chk" for="scrubOn"><input type="checkbox" id="scrubOn"> Show plan on the map for</label>
             <input type="range" id="scrubR" min="0" max="364" value="150" aria-label="Date shown on the map" disabled>
@@ -522,7 +507,7 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
           </div>
         </div>
         <div class="ganttwrap"><div class="gantt" id="gantt"></div></div>
-        <div class="legend"><span>Hatched: seed started indoors</span><span>Light: growing</span><span>Solid: harvest</span><span>Dashed blue: frost dates</span><span>Green wash: extended season inside a hoop house</span></div>
+        <div class="legend"><span>Hatched: seed started indoors</span><span>Light: growing</span><span>Solid: harvest</span><span>Dashed blue: frost dates</span><span>Green wash: extended season inside a hoop house</span><span>Thin bars and dots under a bed: its jobs</span></div>
         <div class="bandnote" id="bandNote"></div>
       </section>
       <details class="cal tool" id="succWrap">
@@ -1876,8 +1861,8 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         rect.setAttribute('stroke-dasharray',(6/view.s)+' '+(4/view.s));
       }
       if(sp.type==='path'){rect.setAttribute('fill-opacity','0.8');}
-      var cropNames=(sp.type==='field'||(careOn()&&!LAYERS.plant))?[]:drawPlants(sp,grp);
-      if(careOn())drawJobs(sp,grp);
+      var cropNames=(sp.type==='field'||!LAYERS.plant)?[]:drawPlants(sp,grp);
+      drawJobs(sp,grp);
       var label=sp.name||TYPES[sp.type].n;
       if(sp.type==='field')label+=' · '+fmtArea(polyArea(sp.pts));
       if(sp.w*view.s>40&&sp.h*view.s>22){
@@ -1895,7 +1880,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         mk('rect',{x:ix,y:iy+is*0.45,width:is,height:is*0.7,fill:'var(--edge)','pointer-events':'none'},grp);
         mk('path',{d:'M'+(ix+is*0.2)+' '+(iy+is*0.45)+' v'+(-is*0.2)+' a'+(is*0.3)+' '+(is*0.3)+' 0 0 1 '+(is*0.6)+' 0 v'+(is*0.2),fill:'none',stroke:'var(--edge)','stroke-width':1.6/view.s,'pointer-events':'none'},grp);
       }
-      if(isSel&&!sp.locked&&!careOn()&&sp.type!=='field'){
+      if(isSel&&!sp.locked&&sp.type!=='field'){
         var hs=11/view.s;
         mk('rect',{x:sp.x+sp.w-hs/2,y:sp.y+sp.h-hs/2,width:hs,height:hs,fill:'var(--accent)',stroke:'var(--panel)','stroke-width':1/view.s,'data-id':sp.id,'data-handle':'1',style:'cursor:nwse-resize'},grp);
       }
@@ -1909,7 +1894,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
           var r2=sp.pts[(i+1)%np],len=Math.hypot(r2[0]-q[0],r2[1]-q[1]),mx=(q[0]+r2[0])/2,my=(q[1]+r2[1])/2;
           if(len*view.s>34){var tl=mk('text',{x:mx,y:my-5/view.s,'font-size':11/view.s,'text-anchor':'middle',class:'svgtext','pointer-events':'none',style:'font-family:var(--font-mono)'},og);tl.textContent=fmtN(len)+' ft';tl.setAttribute('paint-order','stroke');tl.setAttribute('stroke','var(--panel)');tl.setAttribute('stroke-width',3/view.s);}
         });
-        if(!sp.locked&&!careOn()){
+        if(!sp.locked){
           sp.pts.forEach(function(q,i){
             var r2=sp.pts[(i+1)%np];
             if(Math.hypot(r2[0]-q[0],r2[1]-q[1])*view.s>26)mk('circle',{cx:(q[0]+r2[0])/2,cy:(q[1]+r2[1])/2,r:5/view.s,fill:'var(--panel)',stroke:'var(--accent)','stroke-width':1.5/view.s,'data-id':sp.id,'data-mid':i,style:'cursor:copy'},og);
@@ -2100,8 +2085,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   }
   /* ---- Care jobs: things done to an area that are not a planting (prep, install, feed, care, rest).
      Each job has one of three shapes: once (one date), span (start and end tasks), repeat (every N days). */
-  var MODE='plan',LAYERS={plant:true,jobs:true},prevScrub=false;
-  function careOn(){return MODE==='care';}
+  var LAYERS={plant:true,jobs:true};
   var JOBCATS=[
     {id:'prep',n:'Prep',col:'#b08957',types:[
       {id:'dig',n:'Dig',g:'D',shape:'once',blocks:true},
@@ -2213,33 +2197,12 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     return out;
   }
 
-  /* ---- date shown on the map in Care mode (shares the calendar's date slider) */
+  /* ---- date the job markers on the map are drawn for: the calendar's date slider, else today */
   function careDate(){
     if(scrub.date)return scrub.date;
     var y=seasonYear(),today=todayIso();
     return today.slice(0,4)===String(y)?today:addD(state.season.lastFrost,45);
   }
-  function syncCarebar(){
-    var r=el('cbR');if(!r||!careOn())return;
-    var d=careDate();
-    r.value=String(Math.max(0,Math.min(364,diffD(seasonYear()+'-01-01',d))));
-    el('cbL').textContent=fmtD(d);
-  }
-  function setMode(m){
-    if(m===MODE)return;
-    var was=careOn();
-    MODE=m;
-    document.body.classList.toggle('care',careOn());
-    if(careOn()){
-      prevScrub=scrub.on;
-      scrub.on=true;if(!scrub.date)scrub.date=careDate();
-    }else if(was){scrub.on=prevScrub;}
-    var so=el('scrubOn');if(so)so.checked=scrub.on;
-    cj=null;
-    render();renderCal();syncCarebar();
-    if(state.spaces.length)fit();
-  }
-
   /* ---- drawing jobs on the map */
   function drawJobs(sp,grp){
     if(!LAYERS.jobs||!jobable(sp)||!sp.jobs||!sp.jobs.length)return;
@@ -2275,8 +2238,8 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     }
   }
 
-  /* ---- Care side panel */
-  var cj=null,cjFor=null;
+  /* ---- Jobs in the side panel. A bed's panel adds plantings and jobs from one row of kinds; other areas add jobs only. */
+  var cj=null,cjFor=null,addKind='plant',kindFor=null;
   function cjDefaults(s,type){
     var T=JT[type]||JT.water,st=careDate(),S=state.season,fall=S.firstFrost>st?S.firstFrost:addD(st,60);
     var o={id:null,cat:T.cat,type:T.id,label:'',shape:T.shape,start:st,end:T.shape==='once'?'':fall,every:T.every||14,note:'',scope:'self'};
@@ -2294,33 +2257,33 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     if((x=v('cjScope'))!==null)cj.scope=x;
   }
   function opts(list,sel){return list.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===sel?' selected':'')+'>'+esc(o[1])+'</option>';}).join('');}
-  function careHtml(s){
-    if(!s){
-      var rows='',n=0;
-      state.spaces.forEach(function(sp){
-        if(!jobable(sp)||!sp.jobs||!sp.jobs.length)return;
-        n+=sp.jobs.length;
-        var cl=jobClashes(sp).length;
-        rows+='<div class="cropline"><span>'+esc(sp.name||TYPES[sp.type].n)+'</span><span style="font-family:var(--font-mono)">'+sp.jobs.length+' job'+(sp.jobs.length>1?'s':'')+(cl?' <b class="clash">'+cl+' clash'+(cl>1?'es':'')+'</b>':'')+'</span></div>';
-      });
-      return '<h2>Care</h2><p class="hint">Click a bed or area to plan jobs for it: prep, water lines, feeding, checks and rest periods. Slide the date above the map to see what is happening where. Circles on a bed are jobs active or due around that date; a red dashed outline means a job clashes with a crop.</p>'+(rows?'<h3 class="mini">All jobs ('+n+')</h3>'+rows:'<p class="hint">No jobs yet.</p>');
-    }
-    if(!jobable(s))return '<h2>Path</h2><p class="hint">Paths do not take jobs. Pick a bed, container, field or structure.</p>';
-    if(cjFor!==s.id||!cj){cjFor=s.id;cj=cjDefaults(s,'water');}
-    var jobs=(s.jobs||[]).slice().sort(function(a,b){return a.start<b.start?-1:a.start>b.start?1:0;});
-    var list=jobs.map(function(j){
-      var C=jcat(j);
-      return '<div class="jobrow"><span class="dot" style="background:'+C.col+'"></span><div class="jb"><b>'+esc(jname(j))+'</b><small>'+esc(C.n)+' · '+esc(jobSpan(j))+(j.note?' · '+esc(j.note):'')+'</small></div><button type="button" data-cj-edit="'+j.id+'">Edit</button><button type="button" data-cj-del="'+j.id+'" class="danger">Delete</button></div>';
-    }).join('');
-    var cl=jobClashes(s).map(function(c){return '<li>'+esc(c.msg)+'</li>';}).join('');
-    var T=JT[cj.type]||JT.other;
+  function allJobsHtml(){
+    var rows='',n=0;
+    state.spaces.forEach(function(sp){
+      if(!jobable(sp)||!sp.jobs||!sp.jobs.length)return;
+      n+=sp.jobs.length;
+      var cl=jobClashes(sp).length;
+      rows+='<div class="cropline"><span>'+esc(sp.name||TYPES[sp.type].n)+'</span><span style="font-family:var(--font-mono)">'+sp.jobs.length+' job'+(sp.jobs.length>1?'s':'')+(cl?' <b class="clash">'+cl+' clash'+(cl>1?'es':'')+'</b>':'')+'</span></div>';
+    });
+    return rows?'<h3 class="mini">All jobs ('+n+')</h3>'+rows:'';
+  }
+  function kindRow(canPlant){
+    var ks=(canPlant?[['plant','Planting']]:[]).concat(JOBCATS.map(function(c){return [c.id,c.n];}));
+    return '<div class="kindrow" role="group" aria-label="What to add">'+ks.map(function(k){return '<button type="button" data-kind="'+k[0]+'" aria-pressed="'+(k[0]===addKind?'true':'false')+'">'+esc(k[1])+'</button>';}).join('')+'</div>';
+  }
+  function jobRowHtml(j){
+    var C=jcat(j);
+    return '<div class="jobrow"><span class="dot" style="background:'+C.col+'"></span><div class="jb"><b>'+esc(jname(j))+'</b><small>'+esc(C.n)+' · '+esc(jobSpan(j))+(j.note?' · '+esc(j.note):'')+'</small></div><button type="button" data-cj-edit="'+j.id+'">Edit</button><button type="button" data-cj-del="'+j.id+'" class="danger">Delete</button></div>';
+  }
+  function jobFormHtml(s){
+    if(cjFor!==s.id||!cj){cjFor=s.id;cj=cjDefaults(s,(JC[addKind]||JC.install).types[0].id);}
+    var T=JT[cj.type]||JT.other,C=JC[cj.cat]||JC.other;
     var houseS=s.type==='structure'?s:houseOf(s);
-    var scopeOpts=[['self','Just this '+(s.type==='structure'?'structure':'area')],['all','Every bed']];
+    var scopeOpts=[['self','Just this '+(s.type==='structure'?'structure':(s.type==='bed'||s.type==='container'?'bed':'area'))],['all','Every bed']];
     if(houseS)scopeOpts.push(['house','Beds in '+(houseS.name||'the hoop house')]);
-    var f=
-      '<div class="grp g2"><div class="grp-h"><span class="num">+</span><b>'+(cj.id?'Edit job':'Add a job')+'</b><small>Pick a kind, then the dates.</small></div>'+
-      '<div class="row"><label>Kind<select id="cjCat">'+opts(JOBCATS.map(function(c){return [c.id,c.n];}),cj.cat)+'</select></label>'+
-      '<label>Job<select id="cjType">'+opts(JC[cj.cat].types.map(function(t){return [t.id,t.n];}),cj.type)+'</select></label></div>'+
+    return '<div id="jform" class="addp'+(cj.id?' editing':'')+'">'+
+      '<div class="subh"><b>'+(cj.id?'Edit job':C.id==='other'?'Add a job':'Add '+(/^[aeiou]/i.test(C.n)?'an ':'a ')+esc(C.n.toLowerCase())+' job')+'</b>'+(cj.id?'<button type="button" id="cjCancel">Cancel</button>':'')+'</div>'+
+      (C.types.length>1?'<label>Job<select id="cjType">'+opts(C.types.map(function(t){return [t.id,t.n];}),cj.type)+'</select></label>':'')+
       (cj.type==='other'?'<label>Name<input id="cjLabel" type="text" maxlength="60" value="'+esc(cj.label)+'" placeholder="e.g. Move the cold frame"></label>':'')+
       '<label>Happens<select id="cjShape">'+opts(SHAPES,cj.shape)+'</select></label>'+
       '<div class="row"><label>'+(cj.shape==='once'?'Date':'Start')+'<input id="cjStart" type="date" value="'+esc(cj.start)+'"></label>'+
@@ -2329,25 +2292,25 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       (cj.shape==='span'?'<p class="hint">Makes two tasks: "'+esc(T.s||('Start '+jname(cj).toLowerCase()))+'" on the start date and "'+esc(T.e||('End '+jname(cj).toLowerCase()))+'" on the end date.</p>':'')+
       '<label>Note<input id="cjNote" type="text" maxlength="200" value="'+esc(cj.note)+'" placeholder="optional"></label>'+
       (cj.id?'':'<label>Add to<select id="cjScope">'+opts(scopeOpts,cj.scope)+'</select></label>')+
-      '<div class="btnrow"><button type="button" id="cjSave" class="pri">'+(cj.id?'Save changes':'Add job')+'</button>'+(cj.id?'<button type="button" id="cjCancel">Cancel</button>':'')+'</div></div>';
-    return '<h2>Care: '+esc(s.name||TYPES[s.type].n)+'</h2>'+
-      (cl?'<div class="clashbox"><b>Clashes with crops</b><ul>'+cl+'</ul></div>':'')+
-      (list?'<div class="jobs">'+list+'</div>':'<p class="hint">No jobs on this '+(s.type==='structure'?'structure':'area')+' yet.</p>')+f;
+      '<div class="btnrow"><button type="button" id="cjSave" class="primary">'+(cj.id?'Save changes':'Add job')+'</button></div></div>';
   }
-  function careSide(box,s){
-    box.innerHTML=careHtml(s);
-    if(!s||!jobable(s))return;
-    var again=function(){cjRead(box);renderSide();};
+  function wireJobs(box,s){
     function on(id,fn){var n=box.querySelector('#'+id);if(n)n.addEventListener('change',fn);}
-    on('cjCat',function(){cjRead(box);var c=JC[box.querySelector('#cjCat').value];var keep={id:cj.id,note:cj.note,start:cj.start,scope:cj.scope};cj=cjDefaults(s,c.types[0].id);cj.id=keep.id;cj.note=keep.note;cj.start=keep.start||cj.start;cj.scope=keep.scope;renderSide();});
     on('cjType',function(){cjRead(box);var keep={id:cj.id,note:cj.note,start:cj.start,scope:cj.scope,label:cj.label};cj=cjDefaults(s,box.querySelector('#cjType').value);cj.id=keep.id;cj.note=keep.note;cj.start=keep.start||cj.start;cj.scope=keep.scope;cj.label=keep.label;renderSide();});
     on('cjShape',function(){cjRead(box);var sh=box.querySelector('#cjShape').value;cj.shape=sh;if(sh==='once')cj.end='';else if(!okDate(cj.end))cj.end=state.season.firstFrost>cj.start?state.season.firstFrost:addD(cj.start,60);renderSide();});
     box.onclick=function(e){
       var t=e.target,v;
       if(!t.getAttribute)return;
+      if((v=t.getAttribute('data-kind'))){
+        if(v===addKind)return;
+        addKind=v;
+        if(v!=='plant'){cj=cjDefaults(s,JC[v].types[0].id);cjFor=s.id;}
+        renderSide();return;
+      }
       if((v=t.getAttribute('data-cj-edit'))){
         var j=(s.jobs||[]).filter(function(x){return x.id===v;})[0];
-        if(j){cj={id:j.id,cat:j.cat,type:j.type,label:j.label,shape:j.shape,start:j.start,end:j.end,every:j.every,note:j.note,scope:'self'};renderSide();}
+        if(j){cj={id:j.id,cat:j.cat,type:j.type,label:j.label,shape:j.shape,start:j.start,end:j.end,every:j.every,note:j.note,scope:'self'};cjFor=s.id;addKind=j.cat;renderSide();
+          var jf=el('jform');if(jf&&jf.scrollIntoView)jf.scrollIntoView({block:'nearest'});}
         return;
       }
       if((v=t.getAttribute('data-cj-del'))){
@@ -2355,7 +2318,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         if(cj&&cj.id===v)cj=null;
         touchState();render();return;
       }
-      if(t.id==='cjCancel'){cj=cjDefaults(s,'water');renderSide();return;}
+      if(t.id==='cjCancel'){cj=null;renderSide();return;}
       if(t.id==='cjSave'){
         cjRead(box);
         if(!okDate(cj.start)){toast('Pick a start date.');return;}
@@ -2374,7 +2337,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
           else if(cj.scope==='house'){var h=s.type==='structure'?s:houseOf(s);targets=state.spaces.filter(function(b){return (b.type==='bed'||b.type==='container')&&houseOf(b)===h;});}
           if(!targets.length)targets=[s];
           targets.forEach(function(b){b.jobs=b.jobs||[];b.jobs.push(Object.assign({id:nid()},rec));});
-          toast('Added to '+targets.length+(targets.length===1?' area.':' areas.'));
+          toast('Added '+jname(rec)+' to '+(targets.length===1?(targets[0].name||'this area'):targets.length+' beds')+'.');
         }
         cj=cjDefaults(s,cj.type);
         touchState();render();
@@ -2382,29 +2345,20 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     };
   }
   function initCare(){
-    var r=el('cbR');if(!r)return;
-    r.addEventListener('input',function(){
-      scrub.date=addD(seasonYear()+'-01-01',parseInt(r.value,10));
-      el('cbL').textContent=fmtD(scrub.date);
-      render(true);renderCal();
-    });
-    el('cbToday').addEventListener('click',function(){
-      var y=seasonYear(),today=todayIso();
-      scrub.date=today.slice(0,4)===String(y)?today:addD(state.season.lastFrost,45);
-      render(true);renderCal();syncCarebar();
-    });
     el('lyPlant').addEventListener('change',function(){LAYERS.plant=el('lyPlant').checked;render(true);});
     el('lyJobs').addEventListener('change',function(){LAYERS.jobs=el('lyJobs').checked;render(true);});
   }
   function renderSide(){
     var s=sel?byId(sel):null;
     var box=el('selSec');
-    if(careOn()){
-      careSide(box,s);
-    }else if(!s){
-      box.innerHTML='<h2>Selection</h2><p class="hint">Click a bed or structure to edit it. Drag to move. Drag the green corner to resize. Drag empty space to pan, scroll to zoom. Locked shapes stay put and dragging them pans the view.</p>';
+    box.onclick=null;
+    if(!s){
+      box.innerHTML='<h2>Selection</h2><p class="hint">Click a bed or structure to edit it, or to add plantings and jobs like water lines, weeding and cover crops. Drag to move. Drag the green corner to resize. Drag empty space to pan, scroll to zoom. Locked shapes stay put and dragging them pans the view.</p>'+allJobsHtml();
     }else{
-      var canPlant=(s.type==='bed'||s.type==='container');
+      var canPlant=(s.type==='bed'||s.type==='container'),canJob=jobable(s);
+      if(kindFor!==s.id){kindFor=s.id;addKind=canPlant?'plant':'prep';cj=null;}
+      if(!canPlant&&addKind==='plant')addKind='prep';
+      var adding=canJob?(kindRow(canPlant)+(addKind==='plant'?plantingsHtml(s):jobFormHtml(s))+scheduledHtml(s)):'';
       function grp(n,cls,title,sub,body){return '<div class="grp '+cls+'"><div class="grp-h"><span class="num">'+n+'</span><b>'+title+'</b><small>'+sub+'</small></div>'+body+'</div>';}
       box.innerHTML=
         '<h2>'+TYPES[s.type].n+(s.locked?' (locked)':'')+'</h2>'+
@@ -2418,12 +2372,14 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         (s.type==='structure'?grp(2,'g2','Frost protection','How much longer the growing season runs for beds inside this house.',
           '<div class="row"><label>Weeks earlier in spring<input type="number" id="fPe" min="0" max="12" step="1" value="'+s.pe+'"></label><label>Weeks later in fall<input type="number" id="fPl" min="0" max="12" step="1" value="'+s.pl+'"></label></div>'+
           '<p class="hint">Applied to the last and first frost dates for any bed that is mostly (over half) inside this house. Beds inside: '+state.spaces.filter(function(b){return houseOf(b)===s;}).length+'. A double-layer unheated house is often 4 to 6 weeks on each end. A heated one can reach further.</p>'):'')+
-        (canPlant?grp(2,'g2','Plantings','Add what you will grow, then see what is scheduled in this bed.',
+        (canPlant?grp(2,'g2','Plantings and jobs','Add what you will grow and the work the bed needs, then see everything scheduled for it.',
           (houseOf(s)?'<label class="chk"><input id="fHouse" type="checkbox"'+(s.useHouse!==false?' checked':'')+'> In '+esc(houseOf(s).name||'the hoop house')+': use its season (frost dates '+houseOf(s).pe+' wk earlier, '+houseOf(s).pl+' wk later)</label>':'')+
-          plantingsHtml(s)):'')+
+          adding):'')+
+        (!canPlant&&canJob?grp(s.type==='structure'?3:2,'g3','Jobs','Prep, water lines, feeding, checks and rest for this '+(s.type==='structure'?'structure':'area')+'.',adding):'')+
         '<label>Notes<textarea id="fNotes" style="font-family:var(--font-body);font-size:.85rem">'+esc(s.notes||'')+'</textarea></label>'+
         '<div class="btnrow"><button id="delBtn" class="danger"'+(s.locked?' disabled title="Unlock this first"':'')+'>'+(s.locked?'Unlock to delete':'Delete')+'</button></div>';
       wireSel(s,canPlant);
+      if(canJob)wireJobs(box,s);
     }
     var bedArea=0,counts={},total=0,nBeds=0;
     state.spaces.forEach(function(sp){
@@ -2606,25 +2562,30 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       '</div>';
   }
   function scheduledHtml(sp){
-    var list=(sp.plantings||[]).slice().sort(function(a,b){return a.plant<b.plant?-1:(a.plant>b.plant?1:0);});
-    var rows=list.map(function(p){
+    var list=(sp.plantings||[]).slice(),jobs=(sp.jobs||[]).slice(),items=[];
+    list.forEach(function(p){
       var e=cropOf(p),ins=instances(sp,p),f=ins[0],l=ins[ins.length-1],par=parentOf(sp,p),multi=ins.length>1;
       var nw=warningsFor(p,sp).concat(spacingWarns(sp,p)).length+(conflictsWith(sp,p).length?1:0);
-      return '<div class="sch'+((draft&&draft.editId===p.id)?' cur':'')+'" data-sch="'+p.id+'">'+
+      items.push({d:p.plant,h:'<div class="sch'+((draft&&draft.editId===p.id)?' cur':'')+'" data-sch="'+p.id+'">'+
         '<span class="dot" style="background:'+(e?e.c:'#6aa')+'"></span>'+
         '<div class="sch-b"><b>'+esc(e?e.n:'Crop')+(p.variety?' ('+esc(p.variety)+')':'')+'</b>'+(par?' <em class="fl">follows</em>':'')+(nw?' <span class="warn" title="Open it to see the warnings">&#9888; '+nw+'</span>':'')+
         '<div class="sch-m">'+(multi?plantsIn(sp,p)+' plants, '+ins.length+' staggered plantings':f.lay.n+' row'+(f.lay.n===1?'':'s')+' &times; '+f.lay.per+' plants')+'</div>'+
         '<div class="sch-m">'+(p.method==='transplant'?'Plant ':'Sow ')+fmtD(f.L.plant)+(multi?' to '+fmtD(l.L.plant):'')+' &middot; done '+fmtD(l.L.end)+'</div></div>'+
-        '<div class="sch-a"><button data-edit="'+p.id+'">Edit</button>'+(par?'<button data-unlink="'+p.id+'">Unlink</button>':'')+'<button data-del="'+p.id+'">Remove</button></div></div>';
-    }).join('');
-    return '<div class="schp"><div class="subh"><b>Scheduled</b><span class="hint">'+list.length+' planting'+(list.length===1?'':'s')+'</span></div>'+
-      (rows||'<p class="hint">Nothing scheduled yet. Fill in the form above and press Add to schedule.</p>')+
+        '<div class="sch-a"><button data-edit="'+p.id+'">Edit</button>'+(par?'<button data-unlink="'+p.id+'">Unlink</button>':'')+'<button data-del="'+p.id+'">Remove</button></div></div>'});
+    });
+    jobs.forEach(function(j){items.push({d:j.start,h:jobRowHtml(j)});});
+    items.sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:0;});
+    var cl=jobClashes(sp).map(function(c){return '<li>'+esc(c.msg)+'</li>';}).join('');
+    var cnt=[];if(list.length||!jobs.length)cnt.push(list.length+' planting'+(list.length===1?'':'s'));if(jobs.length)cnt.push(jobs.length+' job'+(jobs.length===1?'':'s'));
+    if(!(sp.type==='bed'||sp.type==='container'))cnt=[jobs.length+' job'+(jobs.length===1?'':'s')];
+    return '<div class="schp"><div class="subh"><b>Scheduled</b><span class="hint">'+cnt.join(', ')+'</span></div>'+
+      (cl?'<div class="clashbox"><b>Jobs that clash with crops</b><ul>'+cl+'</ul></div>':'')+
+      (items.length?'<div class="jobs">'+items.map(function(x){return x.h;}).join('')+'</div>':'<p class="hint">Nothing scheduled yet. Pick what to add above, fill in the form and add it.</p>')+
       (list.length?'<div class="btnrow"><button id="clrPl" class="danger">Clear all plantings</button></div>':'')+'</div>';
   }
   function plantingsHtml(sp){
     if(!draft||draft.bedId!==sp.id||!draft.p)newDraft(sp);
-    var editing=!!draft.editId;
-    return '<div style="display:flex;flex-direction:column;gap:12px">'+plantFormHtml(sp,draft.p,editing)+scheduledHtml(sp)+'</div>';
+    return plantFormHtml(sp,draft.p,!!draft.editId);
   }
   function wirePlantings(sp){
     function find(id){return (sp.plantings||[]).filter(function(p){return p.id===id;})[0];}
@@ -2693,7 +2654,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       var p=find(row.getAttribute('data-sch'));
       if(!p)return;
       row.querySelector('[data-edit]').addEventListener('click',function(){
-        draft={bedId:sp.id,p:clone(p),editId:p.id};renderSide();
+        draft={bedId:sp.id,p:clone(p),editId:p.id};addKind='plant';renderSide();
         var f2=el('pform');if(f2&&f2.scrollIntoView)f2.scrollIntoView({block:'nearest'});
       });
       var ul=row.querySelector('[data-unlink]');
@@ -3066,9 +3027,15 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         if(stag)html+='<div class="g-txt"'+dat+' style="left:'+pct(ins[0].L.plant)+'%;width:'+Math.max(0.3,pct(ins[0].L.end)-pct(ins[0].L.plant))+'%;top:'+lane.top+'px;color:var(--ink)">'+esc(e?e.n:'')+'</div>';
       });
       var h=4;lanes.forEach(function(l){h=Math.max(h,l.top+l.h+4);});
-      if(!lanes.length)h=32;
+      if(!lanes.length)h=(b.jobs&&b.jobs.length)?26:32;
+      (b.jobs||[]).slice().sort(function(x,z){return x.start<z.start?-1:x.start>z.start?1:0;}).forEach(function(j,ji){
+        var C=jcat(j),top=h+ji*9,t=esc(jname(j)+': '+jobSpan(j));
+        if(j.shape!=='once'){var je=okDate(j.end)&&j.end>=j.start?j.end:j.start;html+='<i class="g-job" title="'+t+'" style="left:'+pct(j.start)+'%;width:'+Math.max(0.6,pct(je)-pct(j.start))+'%;top:'+top+'px;background:'+C.col+';opacity:.45"></i>';}
+        occ(j).forEach(function(o){html+='<i class="g-job once" title="'+t+'" style="left:'+pct(o.d)+'%;top:'+top+'px;background:'+C.col+'"></i>';});
+      });
+      if(b.jobs&&b.jobs.length)h+=b.jobs.length*9+2;
       return '<div class="g-row'+(sel===b.id?' sel':'')+'" data-bed="'+b.id+'"><div class="g-label" title="'+esc(b.name)+'">'+esc(b.name||TYPES[b.type].n)+(sf.prot?'<span class="g-tag">in hoop house</span>':'')+'</div>'+
-        '<div class="g-track" style="height:'+h+'px">'+(sf.prot?'<div class="g-prot" title="'+esc((sf.house.name||'Hoop house')+' season: '+fmtD(sf.lastFrost)+' to '+fmtD(sf.firstFrost))+'" style="left:'+pct(sf.lastFrost)+'%;width:'+Math.max(0.3,pct(sf.firstFrost)-pct(sf.lastFrost))+'%"></div>':'')+(pls.length?html:'<span class="g-empty">No plantings</span>')+'</div></div>';
+        '<div class="g-track" style="height:'+h+'px">'+(sf.prot?'<div class="g-prot" title="'+esc((sf.house.name||'Hoop house')+' season: '+fmtD(sf.lastFrost)+' to '+fmtD(sf.firstFrost))+'" style="left:'+pct(sf.lastFrost)+'%;width:'+Math.max(0.3,pct(sf.firstFrost)-pct(sf.lastFrost))+'%"></div>':'')+(pls.length?'':'<span class="g-empty">No plantings</span>')+html+'</div></div>';
     };
     var rows=containerGroups(beds).map(function(g){return groupHead(g,beds)+g.beds.map(rowFn).join('');}).join('');
     var lines='<div class="g-line" style="left:calc(var(--lw) + (100% - var(--lw)) * '+(pct(S.lastFrost)/100)+')"><b>Last frost</b></div>'+
@@ -3081,7 +3048,6 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     r.max=String(total-1);r.disabled=!scrub.on;
     if(scrub.on&&scrub.date)r.value=String(diffD(start,scrub.date));
     el('scrubL').textContent=scrub.on&&scrub.date?fmtD(scrub.date):'';
-    syncCarebar();
   }
 
   var taskMode='day';
@@ -3470,7 +3436,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       else if(s.type==='field'&&!s.locked&&ptA!==null){selPt=+ptA;drag={mode:'pt',id:s.id,i:selPt};}
       else if(s.type==='field'&&!s.locked&&midA!==null){var mi=+midA,a1=s.pts[mi],b1=s.pts[(mi+1)%s.pts.length];s.pts.splice(mi+1,0,[Math.round((a1[0]+b1[0])/2),Math.round((a1[1]+b1[1])/2)]);selPt=mi+1;drag={mode:'pt',id:s.id,i:selPt,moved:true};}
       else if(t.getAttribute('data-handle')){drag={mode:'resize',id:s.id,w0:w,orig:{w:s.w,h:s.h}};}
-      else if(s.locked||careOn()){drag={mode:'pan',sx:e.clientX,sy:e.clientY,vx:view.x,vy:view.y};svg.classList.add('panning');}
+      else if(s.locked){drag={mode:'pan',sx:e.clientX,sy:e.clientY,vx:view.x,vy:view.y};svg.classList.add('panning');}
       else{drag={mode:'move',id:s.id,w0:w,orig:{x:s.x,y:s.y,pts:s.pts?s.pts.map(function(q){return q.slice();}):null}};}
       if(e.pointerType==='touch'&&drag&&drag.mode==='pan'){drag=null;svg.classList.remove('panning');}
       if(e.pointerType==='touch'&&drag&&drag.mode!=='pan'){
@@ -3611,7 +3577,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     if(!state.spaces.length){view={x:20,y:20,s:14};render();return;}
     var a=1e9,b=1e9,c=-1e9,d=-1e9;
     state.spaces.forEach(function(s,i){fixPos(s,i);a=Math.min(a,s.x);b=Math.min(b,s.y);c=Math.max(c,s.x+s.w);d=Math.max(d,s.y+s.h);});
-    var cb=careOn()?document.querySelector('.carebar'):null,topX=cb?cb.offsetHeight+8:0;
+    var topX=0;
     var pad=32,dk=document.querySelector('.dock'),padB=pad+(dk?dk.offsetHeight+8:0),ah=Math.max(40,r.height-pad-padB-topX);
     var sx=(r.width-pad*2)/Math.max(1,c-a), sy=ah/Math.max(1,d-b);
     view.s=clamp(Math.min(sx,sy),1.5,60);
@@ -3763,9 +3729,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       }catch(e){}
     }
     function open(id){
-      /* Plan and Care share one tab; #care still opens it in Care mode */
-      var mode=id==='care'?'care':id==='plan'?'plan':null;
-      if(mode)id='plan';
+      if(id==='care')id='plan'; /* old links to the Care tab */
       if(tabs.indexOf(id)<0)id='plan';
       cur=id;
       var shown='tab-'+id;
@@ -3773,8 +3737,6 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       tabs.forEach(function(t){
         var b=document.querySelector('.suite-tabs [data-tab="'+t+'"]');if(b){b.setAttribute('aria-selected',t===id?'true':'false');b.tabIndex=t===id?0:-1;}
       });
-      if(mode)setMode(mode);
-      if(id==='plan')Array.prototype.forEach.call(document.querySelectorAll('[data-mode]'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-mode')===MODE?'true':'false');});
       if(id==='tasks')renderTasks();
       if(id==='doing'||id==='forecast'){
         if(!frames[id]){
@@ -3786,21 +3748,18 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         }else push(id);
       }
       if(id==='plan'){try{render();renderSide();}catch(e){}}
-      try{history.replaceState(null,'','#'+(id==='plan'&&MODE==='care'?'care':id));}catch(e){}
+      try{history.replaceState(null,'','#'+id);}catch(e){}
       window.scrollTo(0,0);
     }
-    Array.prototype.forEach.call(document.querySelectorAll('[data-mode]'),function(b){
-      b.addEventListener('click',function(){open(b.getAttribute('data-mode'));});
-    });
     var bar=document.querySelector('.suite-tabs');
     bar.addEventListener('click',function(e){
-      var b=e.target.closest&&e.target.closest('[data-tab]');if(b){var t=b.getAttribute('data-tab');open(t==='plan'?MODE:t);}
+      var b=e.target.closest&&e.target.closest('[data-tab]');if(b)open(b.getAttribute('data-tab'));
     });
     /* arrow keys move between tabs, as for any tab strip */
     bar.addEventListener('keydown',function(e){
       var i=tabs.indexOf(cur),n=e.key==='ArrowRight'?i+1:e.key==='ArrowLeft'?i-1:e.key==='Home'?0:e.key==='End'?tabs.length-1:null;
       if(n===null)return;
-      e.preventDefault();n=(n+tabs.length)%tabs.length;open(tabs[n]==='plan'?MODE:tabs[n]);
+      e.preventDefault();n=(n+tabs.length)%tabs.length;open(tabs[n]);
       var b=bar.querySelector('[data-tab="'+tabs[n]+'"]');if(b)b.focus();
     });
     document.addEventListener('ca-theme',function(){Object.keys(frames).forEach(function(k){var f=frames[k];if(!f.ready)return;try{var t=theme(),d=f.el.contentDocument;if(t)d.documentElement.setAttribute('data-theme',t);else d.documentElement.removeAttribute('data-theme');}catch(e){}});});
