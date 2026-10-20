@@ -206,6 +206,7 @@ svg#board.panning{cursor:grabbing}
   .canvas-wrap{order:1}
   #selSec{order:2}
   .board>:not(.canvas-wrap){order:3}
+  .board>.modeseg{order:0}
   .side>.sec:not(#selSec){order:4}
   .side>.sec{border:1px solid var(--line);background:var(--panel)}
 }
@@ -386,7 +387,10 @@ details summary{cursor:pointer;font-family:var(--font-mono);font-size:.7rem;lett
 .suite-tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent,var(--ink))}
 .suite-tabs button:disabled{opacity:.5;cursor:default}
 .suite-tabs small{font-weight:400;margin-left:4px}
+@media (max-width:480px){.suite-tabs button{padding:10px 10px}}
 .suite-panel{max-width:1280px;margin:0 auto}
+.modeseg{align-self:flex-start}
+.tasks-app .tklist{max-height:none;overflow:visible}
 .suite-panel iframe{display:block;width:100%;border:0;min-height:70vh;background:transparent}
 .suite-care{padding:28px 8px;color:var(--muted,#666)}
 .suite-care h2{margin:0 0 6px;color:var(--ink);font-size:1.15rem}
@@ -448,10 +452,10 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
   </div>
 </header>
 <nav class="suite-tabs" role="tablist" aria-label="Garden Suite">
-  <button type="button" role="tab" id="tb-plan" data-tab="plan" aria-controls="tab-plan" aria-selected="true">Plan</button>
-  <button type="button" role="tab" id="tb-care" data-tab="care" aria-controls="tab-plan" aria-selected="false" tabindex="-1">Care</button>
-  <button type="button" role="tab" id="tb-doing" data-tab="doing" aria-controls="tab-doing" aria-selected="false" tabindex="-1">Field Log</button>
+  <button type="button" role="tab" id="tb-plan" data-tab="plan" aria-controls="tab-plan" aria-selected="true">Plan/Care</button>
+  <button type="button" role="tab" id="tb-tasks" data-tab="tasks" aria-controls="tab-tasks" aria-selected="false" tabindex="-1">Tasks</button>
   <button type="button" role="tab" id="tb-forecast" data-tab="forecast" aria-controls="tab-forecast" aria-selected="false" tabindex="-1">Forecast</button>
+  <button type="button" role="tab" id="tb-doing" data-tab="doing" aria-controls="tab-doing" aria-selected="false" tabindex="-1">Field Log</button>
 </nav>
 <div id="tab-plan" role="tabpanel" aria-labelledby="tb-plan">
 
@@ -482,6 +486,7 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
 
   <div class="main">
     <section class="board" aria-label="Growing space editor">
+      <div class="seg modeseg" role="group" aria-label="What the map shows"><button type="button" data-mode="plan" aria-pressed="true">Plan plantings</button><button type="button" data-mode="care" aria-pressed="false">Care jobs</button></div>
       <div class="canvas-wrap">
         <svg id="board" tabindex="0" role="application" aria-label="Garden plan canvas. Drag shapes to move, drag the corner handle to resize."></svg>
         <button class="compass" id="compass" type="button" aria-label="Compass" title="Shows where north is. Click to turn it 90 degrees to match your map."></button>
@@ -523,44 +528,6 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
       <details class="cal tool" id="succWrap">
         <summary>Plan across beds <span>Repeat one crop over several beds. Optional tool.</span></summary>
         <div class="sec" id="succSec"></div>
-      </details>
-      <section class="cal" aria-label="Task list">
-        <div class="tkbar">
-          <h2>Tasks</h2>
-          <div class="seg" role="group" aria-label="Group tasks by"><button type="button" data-tm="day" aria-pressed="true">By day</button><button type="button" data-tm="week" aria-pressed="false">By week</button><button type="button" data-tm="bed" aria-pressed="false">By bed</button></div>
-          <label class="chk" for="tkFuture"><input type="checkbox" id="tkFuture"> Upcoming only</label>
-        </div>
-        <div class="tklist" id="tkList"></div>
-      </section>
-      <details class="cal tool" id="outWrap">
-        <summary>Calendar file and printable plan <span>Send tasks to a calendar or print them. Optional.</span></summary>
-        <div class="sec" id="outSec">
-          <div class="orow">
-            <label for="oFrom">From<input type="date" id="oFrom"></label>
-            <label for="oTo">To<input type="date" id="oTo"></label>
-          </div>
-          <p class="hint">Leave the dates blank to use the whole plan.</p>
-          <div class="ochk">
-            <label class="chk" for="oA"><input type="checkbox" id="oA" checked> Seed starting</label>
-            <label class="chk" for="oB"><input type="checkbox" id="oB" checked> Planting</label>
-            <label class="chk" for="oC"><input type="checkbox" id="oC" checked> Harvest windows</label>
-            <label class="chk" for="oD"><input type="checkbox" id="oD" checked> Care jobs</label>
-            <label class="chk" for="oDone"><input type="checkbox" id="oDone"> Include checked-off tasks</label>
-          </div>
-          <h3>Calendar file (.ics)</h3>
-          <p class="hint">One all-day event per action. Each lists the beds and rows, and harvest is one event spanning its window. Import it into Google, Apple or Outlook calendar, or whichever calendar your Skylight shows. If saving renames it to .txt, change the ending back to .ics. Each event keeps the same ID, so importing again later updates it.</p>
-          <div class="btnrow"><button type="button" id="icsDl">Download .ics</button><button type="button" id="icsCp">Copy text</button></div>
-          <p class="hint" id="oCount"></p>
-          <textarea id="icsBox" aria-label="Calendar file text" hidden readonly></textarea>
-          <h3>Printable plan</h3>
-          <div class="btnrow">
-            <select id="pKind" aria-label="Plan layout"><option value="week">One page per week</option><option value="month">Monthly calendar</option></select>
-            <button type="button" id="pvBtn">Preview</button>
-            <button type="button" id="prBtn" disabled>Save page to print</button>
-          </div>
-          <p class="hint">Preview it, then save the page and open that file in your browser to print it.</p>
-          <div class="pv" id="pvBox"></div>
-        </div>
       </details>
     </section>
 
@@ -618,8 +585,50 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
     <p class="hint">Made by <a href="../">Croaking Acres</a>, a small market garden in Franklin Township, Indianapolis. Also see the free <a href="../nrcs-guide/">NRCS grant guide</a> for help paying for high tunnels, irrigation and soil work. If the planner helps you, you can <a href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">chip in any amount</a> to keep it free. It is a gift to the farm, not a tax-deductible donation.</p>
   </div>
 </section>
-<div id="printArea" aria-hidden="true"></div>
 </div>
+<div class="suite-panel" id="tab-tasks" role="tabpanel" aria-labelledby="tb-tasks" hidden>
+<div class="app tasks-app">
+  <section class="cal" aria-label="Task list">
+    <div class="tkbar">
+      <h2>Tasks</h2>
+      <div class="seg" role="group" aria-label="Group tasks by"><button type="button" data-tm="day" aria-pressed="true">By day</button><button type="button" data-tm="week" aria-pressed="false">By week</button><button type="button" data-tm="bed" aria-pressed="false">By bed</button></div>
+      <label class="chk" for="tkFuture"><input type="checkbox" id="tkFuture"> Upcoming only</label>
+    </div>
+    <div class="tklist" id="tkList"></div>
+  </section>
+  <details class="cal tool" id="outWrap">
+    <summary>Calendar file and printable plan <span>Send tasks to a calendar or print them. Optional.</span></summary>
+    <div class="sec" id="outSec">
+      <div class="orow">
+        <label for="oFrom">From<input type="date" id="oFrom"></label>
+        <label for="oTo">To<input type="date" id="oTo"></label>
+      </div>
+      <p class="hint">Leave the dates blank to use the whole plan.</p>
+      <div class="ochk">
+        <label class="chk" for="oA"><input type="checkbox" id="oA" checked> Seed starting</label>
+        <label class="chk" for="oB"><input type="checkbox" id="oB" checked> Planting</label>
+        <label class="chk" for="oC"><input type="checkbox" id="oC" checked> Harvest windows</label>
+        <label class="chk" for="oD"><input type="checkbox" id="oD" checked> Care jobs</label>
+        <label class="chk" for="oDone"><input type="checkbox" id="oDone"> Include checked-off tasks</label>
+      </div>
+      <h3>Calendar file (.ics)</h3>
+      <p class="hint">One all-day event per action. Each lists the beds and rows, and harvest is one event spanning its window. Import it into Google, Apple or Outlook calendar, or whichever calendar your Skylight shows. If saving renames it to .txt, change the ending back to .ics. Each event keeps the same ID, so importing again later updates it.</p>
+      <div class="btnrow"><button type="button" id="icsDl">Download .ics</button><button type="button" id="icsCp">Copy text</button></div>
+      <p class="hint" id="oCount"></p>
+      <textarea id="icsBox" aria-label="Calendar file text" hidden readonly></textarea>
+      <h3>Printable plan</h3>
+      <div class="btnrow">
+        <select id="pKind" aria-label="Plan layout"><option value="week">One page per week</option><option value="month">Monthly calendar</option></select>
+        <button type="button" id="pvBtn">Preview</button>
+        <button type="button" id="prBtn" disabled>Save page to print</button>
+      </div>
+      <p class="hint">Preview it, then save the page and open that file in your browser to print it.</p>
+      <div class="pv" id="pvBox"></div>
+    </div>
+  </details>
+</div>
+</div>
+<div id="printArea" aria-hidden="true"></div>
 <div class="suite-panel" id="tab-doing" role="tabpanel" aria-labelledby="tb-doing" hidden></div>
 <div class="suite-panel" id="tab-forecast" role="tabpanel" aria-labelledby="tb-forecast" hidden></div>
 <script type="text/plain" id="app-doing"><title>Garden Field Log</title>
@@ -700,7 +709,7 @@ h2 em{font-style:normal;font-family:var(--mono);letter-spacing:0}
     <div><h1>Garden Field Log</h1><div class="date" id="today"></div></div>
     <button class="btn pri" id="addObs" type="button">+ Observation</button>
   </header>
-  <div class="ex" id="exTag" hidden>Showing an example plan. Edit the layout on the Plan tab and your own tasks appear here.</div>
+  <div class="ex" id="exTag" hidden>Showing an example plan. Edit the layout on the Plan/Care tab and your own tasks appear here.</div>
   <div id="quick" hidden></div>
   <nav role="tablist" aria-label="Views">
     <button role="tab" data-v="today" aria-selected="true">Today</button>
@@ -808,7 +817,7 @@ h2 em{font-style:normal;font-family:var(--mono);letter-spacing:0}
   function viewPlan(){
     var p=st.plan,all=p.tasks,n=all.length,dn=all.filter(isDone).length;
     return '<div class="imp"><b>'+esc(p.name||'Plan')+'</b><div class="stat">'+n+' tasks'+(p.exported?', exported '+esc(String(p.exported).slice(0,10)):'')+', '+dn+' checked off, '+st.log.length+' log entries'+(st.example?' (example)':'')+'</div></div>'+
-      (window.UNIFIED?'<div class="imp"><b>Your plan</b><p>This tab reads the plan from the Plan tab automatically. Change the plan there and it shows up here with your check-offs and notes kept.</p></div>':'<div class="imp"><b>Load your plan</b><p>In the planner, press Copy plan, then paste it here. Or open the saved plan file. Loading again after you change the plan keeps your check-offs and notes.</p><textarea id="pasteIn" placeholder="Paste plan text here" aria-label="Plan text"></textarea><div class="acts"><button class="btn pri" id="loadPaste" type="button">Load pasted plan</button><label class="btn" style="cursor:pointer">Open file<input type="file" id="fileIn" accept=".json,application/json,text/plain" style="display:none"></label></div></div>')+
+      (window.UNIFIED?'<div class="imp"><b>Your plan</b><p>This tab reads the plan from the Plan/Care tab automatically. Change the plan there and it shows up here with your check-offs and notes kept.</p></div>':'<div class="imp"><b>Load your plan</b><p>In the planner, press Copy plan, then paste it here. Or open the saved plan file. Loading again after you change the plan keeps your check-offs and notes.</p><textarea id="pasteIn" placeholder="Paste plan text here" aria-label="Plan text"></textarea><div class="acts"><button class="btn pri" id="loadPaste" type="button">Load pasted plan</button><label class="btn" style="cursor:pointer">Open file<input type="file" id="fileIn" accept=".json,application/json,text/plain" style="display:none"></label></div></div>')+
       '<div class="imp"><b>Save your log</b><p>Take your notes and harvest data to a spreadsheet or to the forecasting tool later.</p><div class="acts"><button class="btn" id="exCsv" type="button">Save log (.csv)</button><button class="btn" id="exJson" type="button">Save log and checklist (.json)</button><button class="btn" id="cpJson" type="button">Copy as text</button></div><textarea id="outBox" hidden readonly aria-label="Exported log"></textarea></div>'+
       '<div class="imp"><b>Reset</b><p>Removes the plan, check-offs and log from this browser. Save the log first.</p><div class="acts"><button class="btn" id="reset" type="button">Reset everything</button></div></div>';
   }
@@ -1243,7 +1252,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     if(!done)setPlan(EXAMPLE.slice(),'Example plan');
   }
   init();
-  if(window.UNIFIED){var sb=document.querySelector('.sub');if(sb)sb.textContent='Reads the live plan from the Plan tab, spreads each harvest window across its dates and prices it. Change the yield and price per crop to see sales by week and month.';}
+  if(window.UNIFIED){var sb=document.querySelector('.sub');if(sb)sb.textContent='Reads the live plan from the Plan/Care tab, spreads each harvest window across its dates and prices it. Change the yield and price per crop to see sales by week and month.';}
   window.__suitePush=function(txt,ex){
     var j;try{j=JSON.parse(txt);}catch(e){return;}
     var w=fromPlan(j);
@@ -3739,7 +3748,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   fit();
   /* ---- Garden Suite: tabs. Plan is this app; Field Log and Forecast are loaded on first open and fed the live plan. */
   (function(){
-    var tabs=['plan','care','doing','forecast'],frames={},cur='plan';
+    var tabs=['plan','tasks','forecast','doing'],frames={},cur='plan';
     function appSrc(id){
       var n=document.getElementById('app-'+id);if(!n)return '';
       return '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script>window.UNIFIED=1;<\/script>'+n.textContent.replace(/<\\\/script/g,'</script');
@@ -3754,14 +3763,19 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       }catch(e){}
     }
     function open(id){
+      /* Plan and Care share one tab; #care still opens it in Care mode */
+      var mode=id==='care'?'care':id==='plan'?'plan':null;
+      if(mode)id='plan';
       if(tabs.indexOf(id)<0)id='plan';
       cur=id;
-      var shown=(id==='plan'||id==='care')?'tab-plan':'tab-'+id;
-      ['tab-plan','tab-doing','tab-forecast'].forEach(function(p){var n=document.getElementById(p);if(n)n.hidden=(p!==shown);});
+      var shown='tab-'+id;
+      ['tab-plan','tab-tasks','tab-doing','tab-forecast'].forEach(function(p){var n=document.getElementById(p);if(n)n.hidden=(p!==shown);});
       tabs.forEach(function(t){
         var b=document.querySelector('.suite-tabs [data-tab="'+t+'"]');if(b){b.setAttribute('aria-selected',t===id?'true':'false');b.tabIndex=t===id?0:-1;}
       });
-      if(id==='plan'||id==='care')setMode(id==='care'?'care':'plan');
+      if(mode)setMode(mode);
+      if(id==='plan')Array.prototype.forEach.call(document.querySelectorAll('[data-mode]'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-mode')===MODE?'true':'false');});
+      if(id==='tasks')renderTasks();
       if(id==='doing'||id==='forecast'){
         if(!frames[id]){
           var host=document.getElementById('tab-'+id),el=document.createElement('iframe');
@@ -3771,19 +3785,22 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
           el.srcdoc=appSrc(id);host.appendChild(el);
         }else push(id);
       }
-      if(id==='plan'||id==='care'){try{render();renderSide();}catch(e){}}
-      try{history.replaceState(null,'','#'+id);}catch(e){}
+      if(id==='plan'){try{render();renderSide();}catch(e){}}
+      try{history.replaceState(null,'','#'+(id==='plan'&&MODE==='care'?'care':id));}catch(e){}
       window.scrollTo(0,0);
     }
+    Array.prototype.forEach.call(document.querySelectorAll('[data-mode]'),function(b){
+      b.addEventListener('click',function(){open(b.getAttribute('data-mode'));});
+    });
     var bar=document.querySelector('.suite-tabs');
     bar.addEventListener('click',function(e){
-      var b=e.target.closest&&e.target.closest('[data-tab]');if(b)open(b.getAttribute('data-tab'));
+      var b=e.target.closest&&e.target.closest('[data-tab]');if(b){var t=b.getAttribute('data-tab');open(t==='plan'?MODE:t);}
     });
     /* arrow keys move between tabs, as for any tab strip */
     bar.addEventListener('keydown',function(e){
       var i=tabs.indexOf(cur),n=e.key==='ArrowRight'?i+1:e.key==='ArrowLeft'?i-1:e.key==='Home'?0:e.key==='End'?tabs.length-1:null;
       if(n===null)return;
-      e.preventDefault();n=(n+tabs.length)%tabs.length;open(tabs[n]);
+      e.preventDefault();n=(n+tabs.length)%tabs.length;open(tabs[n]==='plan'?MODE:tabs[n]);
       var b=bar.querySelector('[data-tab="'+tabs[n]+'"]');if(b)b.focus();
     });
     document.addEventListener('ca-theme',function(){Object.keys(frames).forEach(function(k){var f=frames[k];if(!f.ready)return;try{var t=theme(),d=f.el.contentDocument;if(t)d.documentElement.setAttribute('data-theme',t);else d.documentElement.removeAttribute('data-theme');}catch(e){}});});
