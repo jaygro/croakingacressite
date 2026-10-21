@@ -511,7 +511,7 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
         <div class="bandnote" id="bandNote"></div>
       </section>
       <details class="cal tool" id="succWrap">
-        <summary>Plan across beds <span>Repeat one crop over several beds. Optional tool.</span></summary>
+        <summary>Plan across beds <span>Repeat a crop or a job over several beds. Optional tool.</span></summary>
         <div class="sec" id="succSec"></div>
       </details>
     </section>
@@ -2672,6 +2672,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   function succPicked(){
     var all=bedList();
     if(succ.touched)return all.filter(function(b){return succ.beds[b.id];});
+    if(succ.kind&&succ.kind!=='plant')return all;
     var free=all.filter(function(b){return !(b.plantings&&b.plantings.length);});
     return free.length?free:all;
   }
@@ -2766,19 +2767,13 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   }
   function renderSucc(){
     var c=succEnsure(),box=el('succSec');
+    if(succ.kind&&succ.kind!=='plant'){renderSuccJobs(box);return;}
     if(!c){box.innerHTML='<h2>Succession planner</h2><p class="hint">No timing data for this catalog yet.</p>';return;}
     var cat=state.catalog;
     var copts=c.ents.slice().sort(function(a,b){return a.n<b.n?-1:1;}).map(function(e){return '<option value="'+e.id+'"'+(e.id===succ.crop?' selected':'')+'>'+esc(e.n)+'</option>';}).join('');
     var mopts=c.ms.map(function(m){return '<option value="'+m+'"'+(m===succ.method?' selected':'')+'>'+(m==='transplant'?'Transplant':'Direct sow')+'</option>';}).join('');
-    var picked0=succPicked(),grps=containerGroups(bedList());
-    var beds=grps.map(function(g,gi){
-      var nOn=g.beds.filter(function(b){return picked0.indexOf(b)>=0;}).length;
-      var head='<label class="bgh"><input type="checkbox" data-sg="'+gi+'"'+(nOn===g.beds.length?' checked':'')+' data-part="'+(nOn>0&&nOn<g.beds.length?1:0)+'"> '+esc(g.c?(g.c.name||TYPES[g.c.type].n):'Other beds')+' <small>'+(g.c?TYPES[g.c.type].n+', ':'')+g.beds.length+' bed'+(g.beds.length===1?'':'s')+'</small></label>';
-      return '<div class="bgrp">'+head+g.beds.map(function(b){
-        return '<label class="bed1"><input type="checkbox" data-sb="'+b.id+'"'+(picked0.indexOf(b)>=0?' checked':'')+'> '+esc(b.name||TYPES[b.type].n)+'</label>';
-      }).join('')+'</div>';
-    }).join('')||'<span class="hint">Add a bed to the map first.</span>';
-    box.innerHTML='<h2>Succession planner</h2>'+
+    var picked0=succPicked(),grps=containerGroups(bedList()),beds=succBedsHtml(picked0,grps);
+    box.innerHTML='<h2>Succession planner</h2>'+succKindRow()+
       '<p class="hint">Repeat one crop every few weeks. Plantings are spread across the beds you tick, and a bed that is still busy is skipped. Beds with no plantings are ticked to start.</p>'+
       '<label>Crop ('+esc(CAT[cat].short)+')<select id="sCrop">'+copts+'</select></label>'+
       '<label>Method<select id="sMethod">'+mopts+'</select></label>'+
@@ -2808,10 +2803,27 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     el('sFirst').addEventListener('change',function(){if(okDate(el('sFirst').value)){var gap=diffD(succ.first,succ.last);succ.first=el('sFirst').value;succ.last=addD(succ.first,Math.max(0,gap));}renderSucc();});
     var si=el('sInt');if(si)si.addEventListener('change',function(){var v=parseInt(si.value,10);if(v>0)succ.interval=v;succInfo();});
     var sc=el('sCount');if(sc)sc.addEventListener('change',function(){var v=parseInt(sc.value,10);if(v>0)succ.count=Math.min(20,v);});
+    wireSuccBeds(box,grps,succInfo);
+    wireSuccKinds(box);
+    el('sGo').addEventListener('click',runSuccession);
+    var su=el('sUndo');if(su)su.addEventListener('click',function(){restoreSnap(0);});
+    succInfo();
+  }
+  /* Plan across beds for jobs: one job on every ticked bed, each bed optionally a few days after the one before */
+  function succBedsHtml(picked0,grps){
+    return grps.map(function(g,gi){
+      var nOn=g.beds.filter(function(b){return picked0.indexOf(b)>=0;}).length;
+      var head='<label class="bgh"><input type="checkbox" data-sg="'+gi+'"'+(nOn===g.beds.length?' checked':'')+' data-part="'+(nOn>0&&nOn<g.beds.length?1:0)+'"> '+esc(g.c?(g.c.name||TYPES[g.c.type].n):'Other beds')+' <small>'+(g.c?TYPES[g.c.type].n+', ':'')+g.beds.length+' bed'+(g.beds.length===1?'':'s')+'</small></label>';
+      return '<div class="bgrp">'+head+g.beds.map(function(b){
+        return '<label class="bed1"><input type="checkbox" data-sb="'+b.id+'"'+(picked0.indexOf(b)>=0?' checked':'')+'> '+esc(b.name||TYPES[b.type].n)+'</label>';
+      }).join('')+'</div>';
+    }).join('')||'<span class="hint">Add a bed to the map first.</span>';
+  }
+  function wireSuccBeds(box,grps,after){
     Array.prototype.forEach.call(box.querySelectorAll('[data-sb]'),function(cb){
       cb.addEventListener('change',function(){
         if(!succ.touched){var pk0=succPicked();succ.touched=true;pk0.forEach(function(b){succ.beds[b.id]=true;});}
-        succ.beds[cb.getAttribute('data-sb')]=cb.checked;succInfo();
+        succ.beds[cb.getAttribute('data-sb')]=cb.checked;after();
       });
     });
     Array.prototype.forEach.call(box.querySelectorAll('[data-sg]'),function(cb){
@@ -2822,9 +2834,67 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         renderSucc();
       });
     });
-    el('sGo').addEventListener('click',runSuccession);
+  }
+  function succKindRow(){
+    var cur=succ.kind||'plant',ks=[['plant','Planting']].concat(JOBCATS.map(function(c){return [c.id,c.n];}));
+    return '<div class="kindrow" role="group" aria-label="What to plan across beds">'+ks.map(function(k){return '<button type="button" data-skind="'+k[0]+'" aria-pressed="'+(k[0]===cur?'true':'false')+'">'+esc(k[1])+'</button>';}).join('')+'</div>';
+  }
+  function wireSuccKinds(box){
+    Array.prototype.forEach.call(box.querySelectorAll('[data-skind]'),function(b){
+      b.addEventListener('click',function(){
+        var k=b.getAttribute('data-skind');if(k===(succ.kind||'plant'))return;
+        succ.kind=k;if(k!=='plant')succ.job=cjDefaults(null,JC[k].types[0].id);
+        renderSucc();
+      });
+    });
+  }
+  function renderSuccJobs(box){
+    var j=succ.job||(succ.job=cjDefaults(null,JC[succ.kind].types[0].id)),C=JC[j.cat]||JC.other;
+    var picked=succPicked(),grps=containerGroups(bedList()),st=Math.max(0,succ.jstag|0);
+    var lastStart=addD(j.start,st*Math.max(0,picked.length-1));
+    var info=!picked.length?'Tick at least one bed.':
+      esc(jname(j))+' goes on '+picked.length+' bed'+(picked.length===1?'':'s')+
+      (st&&picked.length>1?', the first on '+fmtD(j.start)+' and the last on '+fmtD(lastStart)+' ('+st+' day'+(st===1?'':'s')+' apart, in the order listed)':', starting '+fmtD(j.start))+'.';
+    box.innerHTML='<h2>Succession planner</h2>'+succKindRow()+
+      '<p class="hint">Add the same job to several beds at once. Stagger it to start each bed a few days after the one before, for example weeding one bed a day.</p>'+
+      (C.types.length>1?'<label>Job<select id="sjType">'+opts(C.types.map(function(t){return [t.id,t.n];}),j.type)+'</select></label>':'')+
+      (j.type==='other'?'<label>Name<input id="sjLabel" type="text" maxlength="60" value="'+esc(j.label)+'" placeholder="e.g. Move the cold frame"></label>':'')+
+      '<label>Happens<select id="sjShape">'+opts(SHAPES,j.shape)+'</select></label>'+
+      '<div class="row"><label>'+(j.shape==='once'?'Date':'Start')+' (first bed)<input id="sjStart" type="date" value="'+esc(j.start)+'"></label>'+
+      (j.shape!=='once'?'<label>End (first bed)<input id="sjEnd" type="date" value="'+esc(j.end)+'"></label>':'')+'</div>'+
+      (j.shape==='repeat'?'<label>Every (days)<input id="sjEvery" type="number" min="1" max="365" step="1" value="'+j.every+'"></label>':'')+
+      '<label>Days between beds<input id="sjStag" type="number" min="0" max="60" step="1" value="'+st+'"></label>'+
+      '<label>Note<input id="sjNote" type="text" maxlength="200" value="'+esc(j.note)+'" placeholder="optional"></label>'+
+      '<fieldset class="beds"><legend>Beds to use</legend>'+succBedsHtml(picked,grps)+'</fieldset>'+
+      '<p class="hint" id="sInfo">'+info+'</p>'+
+      '<div class="btnrow"><button class="primary" id="sjGo">Add jobs</button>'+((snaps()[0]||{}).label==='Before succession'?'<button id="sUndo">Undo last run</button>':'')+'</div>';
+    wireSuccKinds(box);
+    wireSuccBeds(box,grps,renderSucc);
+    function ch(id,fn){var n=el(id);if(n)n.addEventListener('change',function(){fn(n.value);renderSucc();});}
+    function tx(id,k){var n=el(id);if(n)n.addEventListener('input',function(){j[k]=n.value;});}
+    ch('sjType',function(v){var keep={start:j.start,note:j.note};succ.job=j=cjDefaults(null,v);j.start=keep.start;j.note=keep.note;});
+    ch('sjShape',function(v){j.shape=v;if(v==='once')j.end='';else if(!okDate(j.end))j.end=state.season.firstFrost>j.start?state.season.firstFrost:addD(j.start,60);});
+    ch('sjStart',function(v){if(okDate(v))j.start=v;});
+    ch('sjEnd',function(v){if(okDate(v))j.end=v;});
+    ch('sjEvery',function(v){j.every=Math.max(1,Math.min(365,parseInt(v,10)||j.every));});
+    ch('sjStag',function(v){succ.jstag=Math.max(0,Math.min(60,parseInt(v,10)||0));});
+    tx('sjLabel','label');tx('sjNote','note');
+    el('sjGo').addEventListener('click',function(){
+      var pk=succPicked();
+      if(!pk.length){toast('Tick at least one bed.');return;}
+      if(!okDate(j.start)){toast('Pick a start date.');return;}
+      if(j.shape!=='once'&&(!okDate(j.end)||j.end<j.start)){toast('Pick an end date on or after the start.');return;}
+      snapPlan('Before succession');
+      var gap=Math.max(0,succ.jstag|0);
+      pk.forEach(function(b,i){
+        var off=i*gap;
+        b.jobs=b.jobs||[];
+        b.jobs.push({id:nid(),cat:j.cat,type:j.type,label:j.label,shape:j.shape,start:addD(j.start,off),end:j.shape==='once'?'':addD(j.end,off),every:j.every,note:j.note});
+      });
+      touchState();render();
+      toast('Added '+jname(j)+' to '+pk.length+' bed'+(pk.length===1?'':'s')+'.');
+    });
     var su=el('sUndo');if(su)su.addEventListener('click',function(){restoreSnap(0);});
-    succInfo();
   }
   function runSuccession(){
     var c=succEnsure();
