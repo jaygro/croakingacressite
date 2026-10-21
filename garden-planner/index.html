@@ -271,6 +271,9 @@ td button{padding:2px 8px;min-height:24px;font-size:.74rem}
 .g-prot{position:absolute;top:0;bottom:0;background:var(--accent);opacity:.1;pointer-events:none}
 .g-tag{font-size:.62rem;color:var(--accent);font-family:var(--font-mono);display:block;line-height:1}
 .g-empty{color:var(--muted);padding:5px 8px}
+.g-job{position:absolute;height:6px;border-radius:3px;opacity:.85}.g-job.once{width:6px;margin-left:-3px}
+.kindrow{display:flex;flex-wrap:wrap;gap:4px}.kindrow button{padding:4px 10px;min-height:28px;font-size:.8rem;border-radius:99px}.kindrow button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.calbar .lyr{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted)}
 .grp{border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--bg);display:flex;flex-direction:column;gap:10px;padding:10px 12px}
 .grp.g2{border-left-color:#c98a3a}.grp.g3{border-left-color:var(--frost)}
 .grp-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
@@ -386,23 +389,15 @@ details summary{cursor:pointer;font-family:var(--font-mono);font-size:.7rem;lett
 .suite-tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent,var(--ink))}
 .suite-tabs button:disabled{opacity:.5;cursor:default}
 .suite-tabs small{font-weight:400;margin-left:4px}
+@media (max-width:480px){.suite-tabs button{padding:10px 10px}}
 .suite-panel{max-width:1280px;margin:0 auto}
+.tasks-app .tklist{max-height:none;overflow:visible}
 .suite-panel iframe{display:block;width:100%;border:0;min-height:70vh;background:transparent}
 .suite-care{padding:28px 8px;color:var(--muted,#666)}
 .suite-care h2{margin:0 0 6px;color:var(--ink);font-size:1.15rem}
 
-/* ---- Care mode */
-.carebar{display:none;position:absolute;left:8px;right:8px;top:8px;z-index:3;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:6px 8px;background:var(--panel);border:1px solid var(--edge);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.12);font-size:.82rem}
-body.care .carebar{display:flex}
-body.care .readout,body.care .dock-add{display:none}
-body.care .compass{top:60px}
-@media (max-width:560px){body.care .compass{top:108px;width:44px;height:44px}}
+/* ---- Care jobs */
 input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--accent)}
-.carebar .cb-d{display:flex;align-items:center;gap:8px;flex:1 1 200px;min-width:160px}
-.carebar input[type=range]{flex:1;min-width:80px}
-.carebar output{font-family:var(--font-mono);min-width:3.6em}
-.carebar button{font:inherit;padding:3px 9px;border:1px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:5px;cursor:pointer}
-.carebar .cb-l{display:flex;gap:10px}
 .jobs{display:flex;flex-direction:column;gap:6px;margin:8px 0}
 .jobrow{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line);border-radius:6px}
 .jobrow .jb{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -413,8 +408,6 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
 .clashbox ul{margin:4px 0 0;padding-left:18px}
 .clash{color:var(--danger)}
 .mini{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:12px 0 4px}
-.carebar .cb-d{flex-direction:row;align-items:center;white-space:nowrap}
-.carebar .cb-d input{flex:1}
 /* Site header: same markup and styles as the other pages (index.html, nrcs-guide/). */
 .site-header{display:block;margin:-14px -16px 12px;background:var(--panel);border-bottom:1px solid var(--line)}
 .site-header .in{max-width:1280px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:6px 16px;flex-wrap:wrap}
@@ -448,10 +441,10 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
   </div>
 </header>
 <nav class="suite-tabs" role="tablist" aria-label="Garden Suite">
-  <button type="button" role="tab" id="tb-plan" data-tab="plan" aria-controls="tab-plan" aria-selected="true">Plan</button>
-  <button type="button" role="tab" id="tb-care" data-tab="care" aria-controls="tab-plan" aria-selected="false" tabindex="-1">Care</button>
-  <button type="button" role="tab" id="tb-doing" data-tab="doing" aria-controls="tab-doing" aria-selected="false" tabindex="-1">Field Log</button>
+  <button type="button" role="tab" id="tb-plan" data-tab="plan" aria-controls="tab-plan" aria-selected="true">Plan/Care</button>
+  <button type="button" role="tab" id="tb-tasks" data-tab="tasks" aria-controls="tab-tasks" aria-selected="false" tabindex="-1">Tasks</button>
   <button type="button" role="tab" id="tb-forecast" data-tab="forecast" aria-controls="tab-forecast" aria-selected="false" tabindex="-1">Forecast</button>
+  <button type="button" role="tab" id="tb-doing" data-tab="doing" aria-controls="tab-doing" aria-selected="false" tabindex="-1">Field Log</button>
 </nav>
 <div id="tab-plan" role="tabpanel" aria-labelledby="tb-plan">
 
@@ -487,10 +480,6 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
         <button class="compass" id="compass" type="button" aria-label="Compass" title="Shows where north is. Click to turn it 90 degrees to match your map."></button>
         <div class="totals" id="totals" aria-live="polite"></div>
         <div class="readout" id="readout">1 square = 1 ft</div>
-        <div class="carebar" role="group" aria-label="Care view">
-          <label class="cb-d">View date<input type="range" id="cbR" min="0" max="364" value="150" aria-label="Date shown on the map"></label><output id="cbL" for="cbR"></output><button type="button" id="cbToday">Today</button>
-          <span class="cb-l"><label class="chk" for="lyPlant"><input type="checkbox" id="lyPlant" checked> Plantings</label><label class="chk" for="lyJobs"><input type="checkbox" id="lyJobs" checked> Jobs</label></span>
-        </div>
         <div class="dock">
           <div class="dock-add" role="toolbar" aria-label="Add to the plan"><span class="dock-l">Add</span>
             <button class="chip" data-add="bed">Bed</button>
@@ -510,6 +499,7 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
         <div class="calbar">
           <label for="bandCrop">Best times for<select id="bandCrop"></select></label>
           <span class="calnote" id="calNote"></span>
+          <span class="lyr">Map shows<label class="chk" for="lyPlant"><input type="checkbox" id="lyPlant" checked> Plantings</label><label class="chk" for="lyJobs"><input type="checkbox" id="lyJobs" checked> Jobs</label></span>
           <div class="scrub">
             <label class="chk" for="scrubOn"><input type="checkbox" id="scrubOn"> Show plan on the map for</label>
             <input type="range" id="scrubR" min="0" max="364" value="150" aria-label="Date shown on the map" disabled>
@@ -517,50 +507,12 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
           </div>
         </div>
         <div class="ganttwrap"><div class="gantt" id="gantt"></div></div>
-        <div class="legend"><span>Hatched: seed started indoors</span><span>Light: growing</span><span>Solid: harvest</span><span>Dashed blue: frost dates</span><span>Green wash: extended season inside a hoop house</span></div>
+        <div class="legend"><span>Hatched: seed started indoors</span><span>Light: growing</span><span>Solid: harvest</span><span>Dashed blue: frost dates</span><span>Green wash: extended season inside a hoop house</span><span>Thin bars and dots under a bed: its jobs</span></div>
         <div class="bandnote" id="bandNote"></div>
       </section>
       <details class="cal tool" id="succWrap">
-        <summary>Plan across beds <span>Repeat one crop over several beds. Optional tool.</span></summary>
+        <summary>Plan across beds <span>Repeat a crop or a job over several beds. Optional tool.</span></summary>
         <div class="sec" id="succSec"></div>
-      </details>
-      <section class="cal" aria-label="Task list">
-        <div class="tkbar">
-          <h2>Tasks</h2>
-          <div class="seg" role="group" aria-label="Group tasks by"><button type="button" data-tm="day" aria-pressed="true">By day</button><button type="button" data-tm="week" aria-pressed="false">By week</button><button type="button" data-tm="bed" aria-pressed="false">By bed</button></div>
-          <label class="chk" for="tkFuture"><input type="checkbox" id="tkFuture"> Upcoming only</label>
-        </div>
-        <div class="tklist" id="tkList"></div>
-      </section>
-      <details class="cal tool" id="outWrap">
-        <summary>Calendar file and printable plan <span>Send tasks to a calendar or print them. Optional.</span></summary>
-        <div class="sec" id="outSec">
-          <div class="orow">
-            <label for="oFrom">From<input type="date" id="oFrom"></label>
-            <label for="oTo">To<input type="date" id="oTo"></label>
-          </div>
-          <p class="hint">Leave the dates blank to use the whole plan.</p>
-          <div class="ochk">
-            <label class="chk" for="oA"><input type="checkbox" id="oA" checked> Seed starting</label>
-            <label class="chk" for="oB"><input type="checkbox" id="oB" checked> Planting</label>
-            <label class="chk" for="oC"><input type="checkbox" id="oC" checked> Harvest windows</label>
-            <label class="chk" for="oD"><input type="checkbox" id="oD" checked> Care jobs</label>
-            <label class="chk" for="oDone"><input type="checkbox" id="oDone"> Include checked-off tasks</label>
-          </div>
-          <h3>Calendar file (.ics)</h3>
-          <p class="hint">One all-day event per action. Each lists the beds and rows, and harvest is one event spanning its window. Import it into Google, Apple or Outlook calendar, or whichever calendar your Skylight shows. If saving renames it to .txt, change the ending back to .ics. Each event keeps the same ID, so importing again later updates it.</p>
-          <div class="btnrow"><button type="button" id="icsDl">Download .ics</button><button type="button" id="icsCp">Copy text</button></div>
-          <p class="hint" id="oCount"></p>
-          <textarea id="icsBox" aria-label="Calendar file text" hidden readonly></textarea>
-          <h3>Printable plan</h3>
-          <div class="btnrow">
-            <select id="pKind" aria-label="Plan layout"><option value="week">One page per week</option><option value="month">Monthly calendar</option></select>
-            <button type="button" id="pvBtn">Preview</button>
-            <button type="button" id="prBtn" disabled>Save page to print</button>
-          </div>
-          <p class="hint">Preview it, then save the page and open that file in your browser to print it.</p>
-          <div class="pv" id="pvBox"></div>
-        </div>
       </details>
     </section>
 
@@ -618,8 +570,50 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
     <p class="hint">Made by <a href="../">Croaking Acres</a>, a small market garden in Franklin Township, Indianapolis. Also see the free <a href="../nrcs-guide/">NRCS grant guide</a> for help paying for high tunnels, irrigation and soil work. If the planner helps you, you can <a href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">chip in any amount</a> to keep it free. It is a gift to the farm, not a tax-deductible donation.</p>
   </div>
 </section>
-<div id="printArea" aria-hidden="true"></div>
 </div>
+<div class="suite-panel" id="tab-tasks" role="tabpanel" aria-labelledby="tb-tasks" hidden>
+<div class="app tasks-app">
+  <section class="cal" aria-label="Task list">
+    <div class="tkbar">
+      <h2>Tasks</h2>
+      <div class="seg" role="group" aria-label="Group tasks by"><button type="button" data-tm="day" aria-pressed="true">By day</button><button type="button" data-tm="week" aria-pressed="false">By week</button><button type="button" data-tm="bed" aria-pressed="false">By bed</button></div>
+      <label class="chk" for="tkFuture"><input type="checkbox" id="tkFuture"> Upcoming only</label>
+    </div>
+    <div class="tklist" id="tkList"></div>
+  </section>
+  <details class="cal tool" id="outWrap">
+    <summary>Calendar file and printable plan <span>Send tasks to a calendar or print them. Optional.</span></summary>
+    <div class="sec" id="outSec">
+      <div class="orow">
+        <label for="oFrom">From<input type="date" id="oFrom"></label>
+        <label for="oTo">To<input type="date" id="oTo"></label>
+      </div>
+      <p class="hint">Leave the dates blank to use the whole plan.</p>
+      <div class="ochk">
+        <label class="chk" for="oA"><input type="checkbox" id="oA" checked> Seed starting</label>
+        <label class="chk" for="oB"><input type="checkbox" id="oB" checked> Planting</label>
+        <label class="chk" for="oC"><input type="checkbox" id="oC" checked> Harvest windows</label>
+        <label class="chk" for="oD"><input type="checkbox" id="oD" checked> Care jobs</label>
+        <label class="chk" for="oDone"><input type="checkbox" id="oDone"> Include checked-off tasks</label>
+      </div>
+      <h3>Calendar file (.ics)</h3>
+      <p class="hint">One all-day event per action. Each lists the beds and rows, and harvest is one event spanning its window. Import it into Google, Apple or Outlook calendar, or whichever calendar your Skylight shows. If saving renames it to .txt, change the ending back to .ics. Each event keeps the same ID, so importing again later updates it.</p>
+      <div class="btnrow"><button type="button" id="icsDl">Download .ics</button><button type="button" id="icsCp">Copy text</button></div>
+      <p class="hint" id="oCount"></p>
+      <textarea id="icsBox" aria-label="Calendar file text" hidden readonly></textarea>
+      <h3>Printable plan</h3>
+      <div class="btnrow">
+        <select id="pKind" aria-label="Plan layout"><option value="week">One page per week</option><option value="month">Monthly calendar</option></select>
+        <button type="button" id="pvBtn">Preview</button>
+        <button type="button" id="prBtn" disabled>Save page to print</button>
+      </div>
+      <p class="hint">Preview it, then save the page and open that file in your browser to print it.</p>
+      <div class="pv" id="pvBox"></div>
+    </div>
+  </details>
+</div>
+</div>
+<div id="printArea" aria-hidden="true"></div>
 <div class="suite-panel" id="tab-doing" role="tabpanel" aria-labelledby="tb-doing" hidden></div>
 <div class="suite-panel" id="tab-forecast" role="tabpanel" aria-labelledby="tb-forecast" hidden></div>
 <script type="text/plain" id="app-doing"><title>Garden Field Log</title>
@@ -700,7 +694,7 @@ h2 em{font-style:normal;font-family:var(--mono);letter-spacing:0}
     <div><h1>Garden Field Log</h1><div class="date" id="today"></div></div>
     <button class="btn pri" id="addObs" type="button">+ Observation</button>
   </header>
-  <div class="ex" id="exTag" hidden>Showing an example plan. Edit the layout on the Plan tab and your own tasks appear here.</div>
+  <div class="ex" id="exTag" hidden>Showing an example plan. Edit the layout on the Plan/Care tab and your own tasks appear here.</div>
   <div id="quick" hidden></div>
   <nav role="tablist" aria-label="Views">
     <button role="tab" data-v="today" aria-selected="true">Today</button>
@@ -808,7 +802,7 @@ h2 em{font-style:normal;font-family:var(--mono);letter-spacing:0}
   function viewPlan(){
     var p=st.plan,all=p.tasks,n=all.length,dn=all.filter(isDone).length;
     return '<div class="imp"><b>'+esc(p.name||'Plan')+'</b><div class="stat">'+n+' tasks'+(p.exported?', exported '+esc(String(p.exported).slice(0,10)):'')+', '+dn+' checked off, '+st.log.length+' log entries'+(st.example?' (example)':'')+'</div></div>'+
-      (window.UNIFIED?'<div class="imp"><b>Your plan</b><p>This tab reads the plan from the Plan tab automatically. Change the plan there and it shows up here with your check-offs and notes kept.</p></div>':'<div class="imp"><b>Load your plan</b><p>In the planner, press Copy plan, then paste it here. Or open the saved plan file. Loading again after you change the plan keeps your check-offs and notes.</p><textarea id="pasteIn" placeholder="Paste plan text here" aria-label="Plan text"></textarea><div class="acts"><button class="btn pri" id="loadPaste" type="button">Load pasted plan</button><label class="btn" style="cursor:pointer">Open file<input type="file" id="fileIn" accept=".json,application/json,text/plain" style="display:none"></label></div></div>')+
+      (window.UNIFIED?'<div class="imp"><b>Your plan</b><p>This tab reads the plan from the Plan/Care tab automatically. Change the plan there and it shows up here with your check-offs and notes kept.</p></div>':'<div class="imp"><b>Load your plan</b><p>In the planner, press Copy plan, then paste it here. Or open the saved plan file. Loading again after you change the plan keeps your check-offs and notes.</p><textarea id="pasteIn" placeholder="Paste plan text here" aria-label="Plan text"></textarea><div class="acts"><button class="btn pri" id="loadPaste" type="button">Load pasted plan</button><label class="btn" style="cursor:pointer">Open file<input type="file" id="fileIn" accept=".json,application/json,text/plain" style="display:none"></label></div></div>')+
       '<div class="imp"><b>Save your log</b><p>Take your notes and harvest data to a spreadsheet or to the forecasting tool later.</p><div class="acts"><button class="btn" id="exCsv" type="button">Save log (.csv)</button><button class="btn" id="exJson" type="button">Save log and checklist (.json)</button><button class="btn" id="cpJson" type="button">Copy as text</button></div><textarea id="outBox" hidden readonly aria-label="Exported log"></textarea></div>'+
       '<div class="imp"><b>Reset</b><p>Removes the plan, check-offs and log from this browser. Save the log first.</p><div class="acts"><button class="btn" id="reset" type="button">Reset everything</button></div></div>';
   }
@@ -1243,7 +1237,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     if(!done)setPlan(EXAMPLE.slice(),'Example plan');
   }
   init();
-  if(window.UNIFIED){var sb=document.querySelector('.sub');if(sb)sb.textContent='Reads the live plan from the Plan tab, spreads each harvest window across its dates and prices it. Change the yield and price per crop to see sales by week and month.';}
+  if(window.UNIFIED){var sb=document.querySelector('.sub');if(sb)sb.textContent='Reads the live plan from the Plan/Care tab, spreads each harvest window across its dates and prices it. Change the yield and price per crop to see sales by week and month.';}
   window.__suitePush=function(txt,ex){
     var j;try{j=JSON.parse(txt);}catch(e){return;}
     var w=fromPlan(j);
@@ -1867,8 +1861,8 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         rect.setAttribute('stroke-dasharray',(6/view.s)+' '+(4/view.s));
       }
       if(sp.type==='path'){rect.setAttribute('fill-opacity','0.8');}
-      var cropNames=(sp.type==='field'||(careOn()&&!LAYERS.plant))?[]:drawPlants(sp,grp);
-      if(careOn())drawJobs(sp,grp);
+      var cropNames=(sp.type==='field'||!LAYERS.plant)?[]:drawPlants(sp,grp);
+      drawJobs(sp,grp);
       var label=sp.name||TYPES[sp.type].n;
       if(sp.type==='field')label+=' · '+fmtArea(polyArea(sp.pts));
       if(sp.w*view.s>40&&sp.h*view.s>22){
@@ -1886,7 +1880,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         mk('rect',{x:ix,y:iy+is*0.45,width:is,height:is*0.7,fill:'var(--edge)','pointer-events':'none'},grp);
         mk('path',{d:'M'+(ix+is*0.2)+' '+(iy+is*0.45)+' v'+(-is*0.2)+' a'+(is*0.3)+' '+(is*0.3)+' 0 0 1 '+(is*0.6)+' 0 v'+(is*0.2),fill:'none',stroke:'var(--edge)','stroke-width':1.6/view.s,'pointer-events':'none'},grp);
       }
-      if(isSel&&!sp.locked&&!careOn()&&sp.type!=='field'){
+      if(isSel&&!sp.locked&&sp.type!=='field'){
         var hs=11/view.s;
         mk('rect',{x:sp.x+sp.w-hs/2,y:sp.y+sp.h-hs/2,width:hs,height:hs,fill:'var(--accent)',stroke:'var(--panel)','stroke-width':1/view.s,'data-id':sp.id,'data-handle':'1',style:'cursor:nwse-resize'},grp);
       }
@@ -1900,7 +1894,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
           var r2=sp.pts[(i+1)%np],len=Math.hypot(r2[0]-q[0],r2[1]-q[1]),mx=(q[0]+r2[0])/2,my=(q[1]+r2[1])/2;
           if(len*view.s>34){var tl=mk('text',{x:mx,y:my-5/view.s,'font-size':11/view.s,'text-anchor':'middle',class:'svgtext','pointer-events':'none',style:'font-family:var(--font-mono)'},og);tl.textContent=fmtN(len)+' ft';tl.setAttribute('paint-order','stroke');tl.setAttribute('stroke','var(--panel)');tl.setAttribute('stroke-width',3/view.s);}
         });
-        if(!sp.locked&&!careOn()){
+        if(!sp.locked){
           sp.pts.forEach(function(q,i){
             var r2=sp.pts[(i+1)%np];
             if(Math.hypot(r2[0]-q[0],r2[1]-q[1])*view.s>26)mk('circle',{cx:(q[0]+r2[0])/2,cy:(q[1]+r2[1])/2,r:5/view.s,fill:'var(--panel)',stroke:'var(--accent)','stroke-width':1.5/view.s,'data-id':sp.id,'data-mid':i,style:'cursor:copy'},og);
@@ -2091,8 +2085,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   }
   /* ---- Care jobs: things done to an area that are not a planting (prep, install, feed, care, rest).
      Each job has one of three shapes: once (one date), span (start and end tasks), repeat (every N days). */
-  var MODE='plan',LAYERS={plant:true,jobs:true},prevScrub=false;
-  function careOn(){return MODE==='care';}
+  var LAYERS={plant:true,jobs:true};
   var JOBCATS=[
     {id:'prep',n:'Prep',col:'#b08957',types:[
       {id:'dig',n:'Dig',g:'D',shape:'once',blocks:true},
@@ -2204,33 +2197,12 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     return out;
   }
 
-  /* ---- date shown on the map in Care mode (shares the calendar's date slider) */
+  /* ---- date the job markers on the map are drawn for: the calendar's date slider, else today */
   function careDate(){
     if(scrub.date)return scrub.date;
     var y=seasonYear(),today=todayIso();
     return today.slice(0,4)===String(y)?today:addD(state.season.lastFrost,45);
   }
-  function syncCarebar(){
-    var r=el('cbR');if(!r||!careOn())return;
-    var d=careDate();
-    r.value=String(Math.max(0,Math.min(364,diffD(seasonYear()+'-01-01',d))));
-    el('cbL').textContent=fmtD(d);
-  }
-  function setMode(m){
-    if(m===MODE)return;
-    var was=careOn();
-    MODE=m;
-    document.body.classList.toggle('care',careOn());
-    if(careOn()){
-      prevScrub=scrub.on;
-      scrub.on=true;if(!scrub.date)scrub.date=careDate();
-    }else if(was){scrub.on=prevScrub;}
-    var so=el('scrubOn');if(so)so.checked=scrub.on;
-    cj=null;
-    render();renderCal();syncCarebar();
-    if(state.spaces.length)fit();
-  }
-
   /* ---- drawing jobs on the map */
   function drawJobs(sp,grp){
     if(!LAYERS.jobs||!jobable(sp)||!sp.jobs||!sp.jobs.length)return;
@@ -2266,8 +2238,8 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     }
   }
 
-  /* ---- Care side panel */
-  var cj=null,cjFor=null;
+  /* ---- Jobs in the side panel. A bed's panel adds plantings and jobs from one row of kinds; other areas add jobs only. */
+  var cj=null,cjFor=null,addKind='plant',kindFor=null;
   function cjDefaults(s,type){
     var T=JT[type]||JT.water,st=careDate(),S=state.season,fall=S.firstFrost>st?S.firstFrost:addD(st,60);
     var o={id:null,cat:T.cat,type:T.id,label:'',shape:T.shape,start:st,end:T.shape==='once'?'':fall,every:T.every||14,note:'',scope:'self'};
@@ -2285,33 +2257,33 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     if((x=v('cjScope'))!==null)cj.scope=x;
   }
   function opts(list,sel){return list.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===sel?' selected':'')+'>'+esc(o[1])+'</option>';}).join('');}
-  function careHtml(s){
-    if(!s){
-      var rows='',n=0;
-      state.spaces.forEach(function(sp){
-        if(!jobable(sp)||!sp.jobs||!sp.jobs.length)return;
-        n+=sp.jobs.length;
-        var cl=jobClashes(sp).length;
-        rows+='<div class="cropline"><span>'+esc(sp.name||TYPES[sp.type].n)+'</span><span style="font-family:var(--font-mono)">'+sp.jobs.length+' job'+(sp.jobs.length>1?'s':'')+(cl?' <b class="clash">'+cl+' clash'+(cl>1?'es':'')+'</b>':'')+'</span></div>';
-      });
-      return '<h2>Care</h2><p class="hint">Click a bed or area to plan jobs for it: prep, water lines, feeding, checks and rest periods. Slide the date above the map to see what is happening where. Circles on a bed are jobs active or due around that date; a red dashed outline means a job clashes with a crop.</p>'+(rows?'<h3 class="mini">All jobs ('+n+')</h3>'+rows:'<p class="hint">No jobs yet.</p>');
-    }
-    if(!jobable(s))return '<h2>Path</h2><p class="hint">Paths do not take jobs. Pick a bed, container, field or structure.</p>';
-    if(cjFor!==s.id||!cj){cjFor=s.id;cj=cjDefaults(s,'water');}
-    var jobs=(s.jobs||[]).slice().sort(function(a,b){return a.start<b.start?-1:a.start>b.start?1:0;});
-    var list=jobs.map(function(j){
-      var C=jcat(j);
-      return '<div class="jobrow"><span class="dot" style="background:'+C.col+'"></span><div class="jb"><b>'+esc(jname(j))+'</b><small>'+esc(C.n)+' · '+esc(jobSpan(j))+(j.note?' · '+esc(j.note):'')+'</small></div><button type="button" data-cj-edit="'+j.id+'">Edit</button><button type="button" data-cj-del="'+j.id+'" class="danger">Delete</button></div>';
-    }).join('');
-    var cl=jobClashes(s).map(function(c){return '<li>'+esc(c.msg)+'</li>';}).join('');
-    var T=JT[cj.type]||JT.other;
+  function allJobsHtml(){
+    var rows='',n=0;
+    state.spaces.forEach(function(sp){
+      if(!jobable(sp)||!sp.jobs||!sp.jobs.length)return;
+      n+=sp.jobs.length;
+      var cl=jobClashes(sp).length;
+      rows+='<div class="cropline"><span>'+esc(sp.name||TYPES[sp.type].n)+'</span><span style="font-family:var(--font-mono)">'+sp.jobs.length+' job'+(sp.jobs.length>1?'s':'')+(cl?' <b class="clash">'+cl+' clash'+(cl>1?'es':'')+'</b>':'')+'</span></div>';
+    });
+    return rows?'<h3 class="mini">All jobs ('+n+')</h3>'+rows:'';
+  }
+  function kindRow(canPlant){
+    var ks=(canPlant?[['plant','Planting']]:[]).concat(JOBCATS.map(function(c){return [c.id,c.n];}));
+    return '<div class="kindrow" role="group" aria-label="What to add">'+ks.map(function(k){return '<button type="button" data-kind="'+k[0]+'" aria-pressed="'+(k[0]===addKind?'true':'false')+'">'+esc(k[1])+'</button>';}).join('')+'</div>';
+  }
+  function jobRowHtml(j){
+    var C=jcat(j);
+    return '<div class="jobrow"><span class="dot" style="background:'+C.col+'"></span><div class="jb"><b>'+esc(jname(j))+'</b><small>'+esc(C.n)+' · '+esc(jobSpan(j))+(j.note?' · '+esc(j.note):'')+'</small></div><button type="button" data-cj-edit="'+j.id+'">Edit</button><button type="button" data-cj-del="'+j.id+'" class="danger">Delete</button></div>';
+  }
+  function jobFormHtml(s){
+    if(cjFor!==s.id||!cj){cjFor=s.id;cj=cjDefaults(s,(JC[addKind]||JC.install).types[0].id);}
+    var T=JT[cj.type]||JT.other,C=JC[cj.cat]||JC.other;
     var houseS=s.type==='structure'?s:houseOf(s);
-    var scopeOpts=[['self','Just this '+(s.type==='structure'?'structure':'area')],['all','Every bed']];
+    var scopeOpts=[['self','Just this '+(s.type==='structure'?'structure':(s.type==='bed'||s.type==='container'?'bed':'area'))],['all','Every bed']];
     if(houseS)scopeOpts.push(['house','Beds in '+(houseS.name||'the hoop house')]);
-    var f=
-      '<div class="grp g2"><div class="grp-h"><span class="num">+</span><b>'+(cj.id?'Edit job':'Add a job')+'</b><small>Pick a kind, then the dates.</small></div>'+
-      '<div class="row"><label>Kind<select id="cjCat">'+opts(JOBCATS.map(function(c){return [c.id,c.n];}),cj.cat)+'</select></label>'+
-      '<label>Job<select id="cjType">'+opts(JC[cj.cat].types.map(function(t){return [t.id,t.n];}),cj.type)+'</select></label></div>'+
+    return '<div id="jform" class="addp'+(cj.id?' editing':'')+'">'+
+      '<div class="subh"><b>'+(cj.id?'Edit job':C.id==='other'?'Add a job':'Add '+(/^[aeiou]/i.test(C.n)?'an ':'a ')+esc(C.n.toLowerCase())+' job')+'</b>'+(cj.id?'<button type="button" id="cjCancel">Cancel</button>':'')+'</div>'+
+      (C.types.length>1?'<label>Job<select id="cjType">'+opts(C.types.map(function(t){return [t.id,t.n];}),cj.type)+'</select></label>':'')+
       (cj.type==='other'?'<label>Name<input id="cjLabel" type="text" maxlength="60" value="'+esc(cj.label)+'" placeholder="e.g. Move the cold frame"></label>':'')+
       '<label>Happens<select id="cjShape">'+opts(SHAPES,cj.shape)+'</select></label>'+
       '<div class="row"><label>'+(cj.shape==='once'?'Date':'Start')+'<input id="cjStart" type="date" value="'+esc(cj.start)+'"></label>'+
@@ -2320,25 +2292,25 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       (cj.shape==='span'?'<p class="hint">Makes two tasks: "'+esc(T.s||('Start '+jname(cj).toLowerCase()))+'" on the start date and "'+esc(T.e||('End '+jname(cj).toLowerCase()))+'" on the end date.</p>':'')+
       '<label>Note<input id="cjNote" type="text" maxlength="200" value="'+esc(cj.note)+'" placeholder="optional"></label>'+
       (cj.id?'':'<label>Add to<select id="cjScope">'+opts(scopeOpts,cj.scope)+'</select></label>')+
-      '<div class="btnrow"><button type="button" id="cjSave" class="pri">'+(cj.id?'Save changes':'Add job')+'</button>'+(cj.id?'<button type="button" id="cjCancel">Cancel</button>':'')+'</div></div>';
-    return '<h2>Care: '+esc(s.name||TYPES[s.type].n)+'</h2>'+
-      (cl?'<div class="clashbox"><b>Clashes with crops</b><ul>'+cl+'</ul></div>':'')+
-      (list?'<div class="jobs">'+list+'</div>':'<p class="hint">No jobs on this '+(s.type==='structure'?'structure':'area')+' yet.</p>')+f;
+      '<div class="btnrow"><button type="button" id="cjSave" class="primary">'+(cj.id?'Save changes':'Add job')+'</button></div></div>';
   }
-  function careSide(box,s){
-    box.innerHTML=careHtml(s);
-    if(!s||!jobable(s))return;
-    var again=function(){cjRead(box);renderSide();};
+  function wireJobs(box,s){
     function on(id,fn){var n=box.querySelector('#'+id);if(n)n.addEventListener('change',fn);}
-    on('cjCat',function(){cjRead(box);var c=JC[box.querySelector('#cjCat').value];var keep={id:cj.id,note:cj.note,start:cj.start,scope:cj.scope};cj=cjDefaults(s,c.types[0].id);cj.id=keep.id;cj.note=keep.note;cj.start=keep.start||cj.start;cj.scope=keep.scope;renderSide();});
     on('cjType',function(){cjRead(box);var keep={id:cj.id,note:cj.note,start:cj.start,scope:cj.scope,label:cj.label};cj=cjDefaults(s,box.querySelector('#cjType').value);cj.id=keep.id;cj.note=keep.note;cj.start=keep.start||cj.start;cj.scope=keep.scope;cj.label=keep.label;renderSide();});
     on('cjShape',function(){cjRead(box);var sh=box.querySelector('#cjShape').value;cj.shape=sh;if(sh==='once')cj.end='';else if(!okDate(cj.end))cj.end=state.season.firstFrost>cj.start?state.season.firstFrost:addD(cj.start,60);renderSide();});
     box.onclick=function(e){
       var t=e.target,v;
       if(!t.getAttribute)return;
+      if((v=t.getAttribute('data-kind'))){
+        if(v===addKind)return;
+        addKind=v;
+        if(v!=='plant'){cj=cjDefaults(s,JC[v].types[0].id);cjFor=s.id;}
+        renderSide();return;
+      }
       if((v=t.getAttribute('data-cj-edit'))){
         var j=(s.jobs||[]).filter(function(x){return x.id===v;})[0];
-        if(j){cj={id:j.id,cat:j.cat,type:j.type,label:j.label,shape:j.shape,start:j.start,end:j.end,every:j.every,note:j.note,scope:'self'};renderSide();}
+        if(j){cj={id:j.id,cat:j.cat,type:j.type,label:j.label,shape:j.shape,start:j.start,end:j.end,every:j.every,note:j.note,scope:'self'};cjFor=s.id;addKind=j.cat;renderSide();
+          var jf=el('jform');if(jf&&jf.scrollIntoView)jf.scrollIntoView({block:'nearest'});}
         return;
       }
       if((v=t.getAttribute('data-cj-del'))){
@@ -2346,7 +2318,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         if(cj&&cj.id===v)cj=null;
         touchState();render();return;
       }
-      if(t.id==='cjCancel'){cj=cjDefaults(s,'water');renderSide();return;}
+      if(t.id==='cjCancel'){cj=null;renderSide();return;}
       if(t.id==='cjSave'){
         cjRead(box);
         if(!okDate(cj.start)){toast('Pick a start date.');return;}
@@ -2365,7 +2337,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
           else if(cj.scope==='house'){var h=s.type==='structure'?s:houseOf(s);targets=state.spaces.filter(function(b){return (b.type==='bed'||b.type==='container')&&houseOf(b)===h;});}
           if(!targets.length)targets=[s];
           targets.forEach(function(b){b.jobs=b.jobs||[];b.jobs.push(Object.assign({id:nid()},rec));});
-          toast('Added to '+targets.length+(targets.length===1?' area.':' areas.'));
+          toast('Added '+jname(rec)+' to '+(targets.length===1?(targets[0].name||'this area'):targets.length+' beds')+'.');
         }
         cj=cjDefaults(s,cj.type);
         touchState();render();
@@ -2373,29 +2345,20 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     };
   }
   function initCare(){
-    var r=el('cbR');if(!r)return;
-    r.addEventListener('input',function(){
-      scrub.date=addD(seasonYear()+'-01-01',parseInt(r.value,10));
-      el('cbL').textContent=fmtD(scrub.date);
-      render(true);renderCal();
-    });
-    el('cbToday').addEventListener('click',function(){
-      var y=seasonYear(),today=todayIso();
-      scrub.date=today.slice(0,4)===String(y)?today:addD(state.season.lastFrost,45);
-      render(true);renderCal();syncCarebar();
-    });
     el('lyPlant').addEventListener('change',function(){LAYERS.plant=el('lyPlant').checked;render(true);});
     el('lyJobs').addEventListener('change',function(){LAYERS.jobs=el('lyJobs').checked;render(true);});
   }
   function renderSide(){
     var s=sel?byId(sel):null;
     var box=el('selSec');
-    if(careOn()){
-      careSide(box,s);
-    }else if(!s){
-      box.innerHTML='<h2>Selection</h2><p class="hint">Click a bed or structure to edit it. Drag to move. Drag the green corner to resize. Drag empty space to pan, scroll to zoom. Locked shapes stay put and dragging them pans the view.</p>';
+    box.onclick=null;
+    if(!s){
+      box.innerHTML='<h2>Selection</h2><p class="hint">Click a bed or structure to edit it, or to add plantings and jobs like water lines, weeding and cover crops. Drag to move. Drag the green corner to resize. Drag empty space to pan, scroll to zoom. Locked shapes stay put and dragging them pans the view.</p>'+allJobsHtml();
     }else{
-      var canPlant=(s.type==='bed'||s.type==='container');
+      var canPlant=(s.type==='bed'||s.type==='container'),canJob=jobable(s);
+      if(kindFor!==s.id){kindFor=s.id;addKind=canPlant?'plant':'prep';cj=null;}
+      if(!canPlant&&addKind==='plant')addKind='prep';
+      var adding=canJob?(kindRow(canPlant)+(addKind==='plant'?plantingsHtml(s):jobFormHtml(s))+scheduledHtml(s)):'';
       function grp(n,cls,title,sub,body){return '<div class="grp '+cls+'"><div class="grp-h"><span class="num">'+n+'</span><b>'+title+'</b><small>'+sub+'</small></div>'+body+'</div>';}
       box.innerHTML=
         '<h2>'+TYPES[s.type].n+(s.locked?' (locked)':'')+'</h2>'+
@@ -2409,12 +2372,14 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         (s.type==='structure'?grp(2,'g2','Frost protection','How much longer the growing season runs for beds inside this house.',
           '<div class="row"><label>Weeks earlier in spring<input type="number" id="fPe" min="0" max="12" step="1" value="'+s.pe+'"></label><label>Weeks later in fall<input type="number" id="fPl" min="0" max="12" step="1" value="'+s.pl+'"></label></div>'+
           '<p class="hint">Applied to the last and first frost dates for any bed that is mostly (over half) inside this house. Beds inside: '+state.spaces.filter(function(b){return houseOf(b)===s;}).length+'. A double-layer unheated house is often 4 to 6 weeks on each end. A heated one can reach further.</p>'):'')+
-        (canPlant?grp(2,'g2','Plantings','Add what you will grow, then see what is scheduled in this bed.',
+        (canPlant?grp(2,'g2','Plantings and jobs','Add what you will grow and the work the bed needs, then see everything scheduled for it.',
           (houseOf(s)?'<label class="chk"><input id="fHouse" type="checkbox"'+(s.useHouse!==false?' checked':'')+'> In '+esc(houseOf(s).name||'the hoop house')+': use its season (frost dates '+houseOf(s).pe+' wk earlier, '+houseOf(s).pl+' wk later)</label>':'')+
-          plantingsHtml(s)):'')+
+          adding):'')+
+        (!canPlant&&canJob?grp(s.type==='structure'?3:2,'g3','Jobs','Prep, water lines, feeding, checks and rest for this '+(s.type==='structure'?'structure':'area')+'.',adding):'')+
         '<label>Notes<textarea id="fNotes" style="font-family:var(--font-body);font-size:.85rem">'+esc(s.notes||'')+'</textarea></label>'+
         '<div class="btnrow"><button id="delBtn" class="danger"'+(s.locked?' disabled title="Unlock this first"':'')+'>'+(s.locked?'Unlock to delete':'Delete')+'</button></div>';
       wireSel(s,canPlant);
+      if(canJob)wireJobs(box,s);
     }
     var bedArea=0,counts={},total=0,nBeds=0;
     state.spaces.forEach(function(sp){
@@ -2597,25 +2562,30 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       '</div>';
   }
   function scheduledHtml(sp){
-    var list=(sp.plantings||[]).slice().sort(function(a,b){return a.plant<b.plant?-1:(a.plant>b.plant?1:0);});
-    var rows=list.map(function(p){
+    var list=(sp.plantings||[]).slice(),jobs=(sp.jobs||[]).slice(),items=[];
+    list.forEach(function(p){
       var e=cropOf(p),ins=instances(sp,p),f=ins[0],l=ins[ins.length-1],par=parentOf(sp,p),multi=ins.length>1;
       var nw=warningsFor(p,sp).concat(spacingWarns(sp,p)).length+(conflictsWith(sp,p).length?1:0);
-      return '<div class="sch'+((draft&&draft.editId===p.id)?' cur':'')+'" data-sch="'+p.id+'">'+
+      items.push({d:p.plant,h:'<div class="sch'+((draft&&draft.editId===p.id)?' cur':'')+'" data-sch="'+p.id+'">'+
         '<span class="dot" style="background:'+(e?e.c:'#6aa')+'"></span>'+
         '<div class="sch-b"><b>'+esc(e?e.n:'Crop')+(p.variety?' ('+esc(p.variety)+')':'')+'</b>'+(par?' <em class="fl">follows</em>':'')+(nw?' <span class="warn" title="Open it to see the warnings">&#9888; '+nw+'</span>':'')+
         '<div class="sch-m">'+(multi?plantsIn(sp,p)+' plants, '+ins.length+' staggered plantings':f.lay.n+' row'+(f.lay.n===1?'':'s')+' &times; '+f.lay.per+' plants')+'</div>'+
         '<div class="sch-m">'+(p.method==='transplant'?'Plant ':'Sow ')+fmtD(f.L.plant)+(multi?' to '+fmtD(l.L.plant):'')+' &middot; done '+fmtD(l.L.end)+'</div></div>'+
-        '<div class="sch-a"><button data-edit="'+p.id+'">Edit</button>'+(par?'<button data-unlink="'+p.id+'">Unlink</button>':'')+'<button data-del="'+p.id+'">Remove</button></div></div>';
-    }).join('');
-    return '<div class="schp"><div class="subh"><b>Scheduled</b><span class="hint">'+list.length+' planting'+(list.length===1?'':'s')+'</span></div>'+
-      (rows||'<p class="hint">Nothing scheduled yet. Fill in the form above and press Add to schedule.</p>')+
+        '<div class="sch-a"><button data-edit="'+p.id+'">Edit</button>'+(par?'<button data-unlink="'+p.id+'">Unlink</button>':'')+'<button data-del="'+p.id+'">Remove</button></div></div>'});
+    });
+    jobs.forEach(function(j){items.push({d:j.start,h:jobRowHtml(j)});});
+    items.sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:0;});
+    var cl=jobClashes(sp).map(function(c){return '<li>'+esc(c.msg)+'</li>';}).join('');
+    var cnt=[];if(list.length||!jobs.length)cnt.push(list.length+' planting'+(list.length===1?'':'s'));if(jobs.length)cnt.push(jobs.length+' job'+(jobs.length===1?'':'s'));
+    if(!(sp.type==='bed'||sp.type==='container'))cnt=[jobs.length+' job'+(jobs.length===1?'':'s')];
+    return '<div class="schp"><div class="subh"><b>Scheduled</b><span class="hint">'+cnt.join(', ')+'</span></div>'+
+      (cl?'<div class="clashbox"><b>Jobs that clash with crops</b><ul>'+cl+'</ul></div>':'')+
+      (items.length?'<div class="jobs">'+items.map(function(x){return x.h;}).join('')+'</div>':'<p class="hint">Nothing scheduled yet. Pick what to add above, fill in the form and add it.</p>')+
       (list.length?'<div class="btnrow"><button id="clrPl" class="danger">Clear all plantings</button></div>':'')+'</div>';
   }
   function plantingsHtml(sp){
     if(!draft||draft.bedId!==sp.id||!draft.p)newDraft(sp);
-    var editing=!!draft.editId;
-    return '<div style="display:flex;flex-direction:column;gap:12px">'+plantFormHtml(sp,draft.p,editing)+scheduledHtml(sp)+'</div>';
+    return plantFormHtml(sp,draft.p,!!draft.editId);
   }
   function wirePlantings(sp){
     function find(id){return (sp.plantings||[]).filter(function(p){return p.id===id;})[0];}
@@ -2684,7 +2654,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       var p=find(row.getAttribute('data-sch'));
       if(!p)return;
       row.querySelector('[data-edit]').addEventListener('click',function(){
-        draft={bedId:sp.id,p:clone(p),editId:p.id};renderSide();
+        draft={bedId:sp.id,p:clone(p),editId:p.id};addKind='plant';renderSide();
         var f2=el('pform');if(f2&&f2.scrollIntoView)f2.scrollIntoView({block:'nearest'});
       });
       var ul=row.querySelector('[data-unlink]');
@@ -2702,6 +2672,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   function succPicked(){
     var all=bedList();
     if(succ.touched)return all.filter(function(b){return succ.beds[b.id];});
+    if(succ.kind&&succ.kind!=='plant')return all;
     var free=all.filter(function(b){return !(b.plantings&&b.plantings.length);});
     return free.length?free:all;
   }
@@ -2796,19 +2767,13 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   }
   function renderSucc(){
     var c=succEnsure(),box=el('succSec');
+    if(succ.kind&&succ.kind!=='plant'){renderSuccJobs(box);return;}
     if(!c){box.innerHTML='<h2>Succession planner</h2><p class="hint">No timing data for this catalog yet.</p>';return;}
     var cat=state.catalog;
     var copts=c.ents.slice().sort(function(a,b){return a.n<b.n?-1:1;}).map(function(e){return '<option value="'+e.id+'"'+(e.id===succ.crop?' selected':'')+'>'+esc(e.n)+'</option>';}).join('');
     var mopts=c.ms.map(function(m){return '<option value="'+m+'"'+(m===succ.method?' selected':'')+'>'+(m==='transplant'?'Transplant':'Direct sow')+'</option>';}).join('');
-    var picked0=succPicked(),grps=containerGroups(bedList());
-    var beds=grps.map(function(g,gi){
-      var nOn=g.beds.filter(function(b){return picked0.indexOf(b)>=0;}).length;
-      var head='<label class="bgh"><input type="checkbox" data-sg="'+gi+'"'+(nOn===g.beds.length?' checked':'')+' data-part="'+(nOn>0&&nOn<g.beds.length?1:0)+'"> '+esc(g.c?(g.c.name||TYPES[g.c.type].n):'Other beds')+' <small>'+(g.c?TYPES[g.c.type].n+', ':'')+g.beds.length+' bed'+(g.beds.length===1?'':'s')+'</small></label>';
-      return '<div class="bgrp">'+head+g.beds.map(function(b){
-        return '<label class="bed1"><input type="checkbox" data-sb="'+b.id+'"'+(picked0.indexOf(b)>=0?' checked':'')+'> '+esc(b.name||TYPES[b.type].n)+'</label>';
-      }).join('')+'</div>';
-    }).join('')||'<span class="hint">Add a bed to the map first.</span>';
-    box.innerHTML='<h2>Succession planner</h2>'+
+    var picked0=succPicked(),grps=containerGroups(bedList()),beds=succBedsHtml(picked0,grps);
+    box.innerHTML='<h2>Succession planner</h2>'+succKindRow()+
       '<p class="hint">Repeat one crop every few weeks. Plantings are spread across the beds you tick, and a bed that is still busy is skipped. Beds with no plantings are ticked to start.</p>'+
       '<label>Crop ('+esc(CAT[cat].short)+')<select id="sCrop">'+copts+'</select></label>'+
       '<label>Method<select id="sMethod">'+mopts+'</select></label>'+
@@ -2838,10 +2803,27 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     el('sFirst').addEventListener('change',function(){if(okDate(el('sFirst').value)){var gap=diffD(succ.first,succ.last);succ.first=el('sFirst').value;succ.last=addD(succ.first,Math.max(0,gap));}renderSucc();});
     var si=el('sInt');if(si)si.addEventListener('change',function(){var v=parseInt(si.value,10);if(v>0)succ.interval=v;succInfo();});
     var sc=el('sCount');if(sc)sc.addEventListener('change',function(){var v=parseInt(sc.value,10);if(v>0)succ.count=Math.min(20,v);});
+    wireSuccBeds(box,grps,succInfo);
+    wireSuccKinds(box);
+    el('sGo').addEventListener('click',runSuccession);
+    var su=el('sUndo');if(su)su.addEventListener('click',function(){restoreSnap(0);});
+    succInfo();
+  }
+  /* Plan across beds for jobs: one job on every ticked bed, each bed optionally a few days after the one before */
+  function succBedsHtml(picked0,grps){
+    return grps.map(function(g,gi){
+      var nOn=g.beds.filter(function(b){return picked0.indexOf(b)>=0;}).length;
+      var head='<label class="bgh"><input type="checkbox" data-sg="'+gi+'"'+(nOn===g.beds.length?' checked':'')+' data-part="'+(nOn>0&&nOn<g.beds.length?1:0)+'"> '+esc(g.c?(g.c.name||TYPES[g.c.type].n):'Other beds')+' <small>'+(g.c?TYPES[g.c.type].n+', ':'')+g.beds.length+' bed'+(g.beds.length===1?'':'s')+'</small></label>';
+      return '<div class="bgrp">'+head+g.beds.map(function(b){
+        return '<label class="bed1"><input type="checkbox" data-sb="'+b.id+'"'+(picked0.indexOf(b)>=0?' checked':'')+'> '+esc(b.name||TYPES[b.type].n)+'</label>';
+      }).join('')+'</div>';
+    }).join('')||'<span class="hint">Add a bed to the map first.</span>';
+  }
+  function wireSuccBeds(box,grps,after){
     Array.prototype.forEach.call(box.querySelectorAll('[data-sb]'),function(cb){
       cb.addEventListener('change',function(){
         if(!succ.touched){var pk0=succPicked();succ.touched=true;pk0.forEach(function(b){succ.beds[b.id]=true;});}
-        succ.beds[cb.getAttribute('data-sb')]=cb.checked;succInfo();
+        succ.beds[cb.getAttribute('data-sb')]=cb.checked;after();
       });
     });
     Array.prototype.forEach.call(box.querySelectorAll('[data-sg]'),function(cb){
@@ -2852,9 +2834,67 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         renderSucc();
       });
     });
-    el('sGo').addEventListener('click',runSuccession);
+  }
+  function succKindRow(){
+    var cur=succ.kind||'plant',ks=[['plant','Planting']].concat(JOBCATS.map(function(c){return [c.id,c.n];}));
+    return '<div class="kindrow" role="group" aria-label="What to plan across beds">'+ks.map(function(k){return '<button type="button" data-skind="'+k[0]+'" aria-pressed="'+(k[0]===cur?'true':'false')+'">'+esc(k[1])+'</button>';}).join('')+'</div>';
+  }
+  function wireSuccKinds(box){
+    Array.prototype.forEach.call(box.querySelectorAll('[data-skind]'),function(b){
+      b.addEventListener('click',function(){
+        var k=b.getAttribute('data-skind');if(k===(succ.kind||'plant'))return;
+        succ.kind=k;if(k!=='plant')succ.job=cjDefaults(null,JC[k].types[0].id);
+        renderSucc();
+      });
+    });
+  }
+  function renderSuccJobs(box){
+    var j=succ.job||(succ.job=cjDefaults(null,JC[succ.kind].types[0].id)),C=JC[j.cat]||JC.other;
+    var picked=succPicked(),grps=containerGroups(bedList()),st=Math.max(0,succ.jstag|0);
+    var lastStart=addD(j.start,st*Math.max(0,picked.length-1));
+    var info=!picked.length?'Tick at least one bed.':
+      esc(jname(j))+' goes on '+picked.length+' bed'+(picked.length===1?'':'s')+
+      (st&&picked.length>1?', the first on '+fmtD(j.start)+' and the last on '+fmtD(lastStart)+' ('+st+' day'+(st===1?'':'s')+' apart, in the order listed)':', starting '+fmtD(j.start))+'.';
+    box.innerHTML='<h2>Succession planner</h2>'+succKindRow()+
+      '<p class="hint">Add the same job to several beds at once. Stagger it to start each bed a few days after the one before, for example weeding one bed a day.</p>'+
+      (C.types.length>1?'<label>Job<select id="sjType">'+opts(C.types.map(function(t){return [t.id,t.n];}),j.type)+'</select></label>':'')+
+      (j.type==='other'?'<label>Name<input id="sjLabel" type="text" maxlength="60" value="'+esc(j.label)+'" placeholder="e.g. Move the cold frame"></label>':'')+
+      '<label>Happens<select id="sjShape">'+opts(SHAPES,j.shape)+'</select></label>'+
+      '<div class="row"><label>'+(j.shape==='once'?'Date':'Start')+' (first bed)<input id="sjStart" type="date" value="'+esc(j.start)+'"></label>'+
+      (j.shape!=='once'?'<label>End (first bed)<input id="sjEnd" type="date" value="'+esc(j.end)+'"></label>':'')+'</div>'+
+      (j.shape==='repeat'?'<label>Every (days)<input id="sjEvery" type="number" min="1" max="365" step="1" value="'+j.every+'"></label>':'')+
+      '<label>Days between beds<input id="sjStag" type="number" min="0" max="60" step="1" value="'+st+'"></label>'+
+      '<label>Note<input id="sjNote" type="text" maxlength="200" value="'+esc(j.note)+'" placeholder="optional"></label>'+
+      '<fieldset class="beds"><legend>Beds to use</legend>'+succBedsHtml(picked,grps)+'</fieldset>'+
+      '<p class="hint" id="sInfo">'+info+'</p>'+
+      '<div class="btnrow"><button class="primary" id="sjGo">Add jobs</button>'+((snaps()[0]||{}).label==='Before succession'?'<button id="sUndo">Undo last run</button>':'')+'</div>';
+    wireSuccKinds(box);
+    wireSuccBeds(box,grps,renderSucc);
+    function ch(id,fn){var n=el(id);if(n)n.addEventListener('change',function(){fn(n.value);renderSucc();});}
+    function tx(id,k){var n=el(id);if(n)n.addEventListener('input',function(){j[k]=n.value;});}
+    ch('sjType',function(v){var keep={start:j.start,note:j.note};succ.job=j=cjDefaults(null,v);j.start=keep.start;j.note=keep.note;});
+    ch('sjShape',function(v){j.shape=v;if(v==='once')j.end='';else if(!okDate(j.end))j.end=state.season.firstFrost>j.start?state.season.firstFrost:addD(j.start,60);});
+    ch('sjStart',function(v){if(okDate(v))j.start=v;});
+    ch('sjEnd',function(v){if(okDate(v))j.end=v;});
+    ch('sjEvery',function(v){j.every=Math.max(1,Math.min(365,parseInt(v,10)||j.every));});
+    ch('sjStag',function(v){succ.jstag=Math.max(0,Math.min(60,parseInt(v,10)||0));});
+    tx('sjLabel','label');tx('sjNote','note');
+    el('sjGo').addEventListener('click',function(){
+      var pk=succPicked();
+      if(!pk.length){toast('Tick at least one bed.');return;}
+      if(!okDate(j.start)){toast('Pick a start date.');return;}
+      if(j.shape!=='once'&&(!okDate(j.end)||j.end<j.start)){toast('Pick an end date on or after the start.');return;}
+      snapPlan('Before succession');
+      var gap=Math.max(0,succ.jstag|0);
+      pk.forEach(function(b,i){
+        var off=i*gap;
+        b.jobs=b.jobs||[];
+        b.jobs.push({id:nid(),cat:j.cat,type:j.type,label:j.label,shape:j.shape,start:addD(j.start,off),end:j.shape==='once'?'':addD(j.end,off),every:j.every,note:j.note});
+      });
+      touchState();render();
+      toast('Added '+jname(j)+' to '+pk.length+' bed'+(pk.length===1?'':'s')+'.');
+    });
     var su=el('sUndo');if(su)su.addEventListener('click',function(){restoreSnap(0);});
-    succInfo();
   }
   function runSuccession(){
     var c=succEnsure();
@@ -3057,9 +3097,15 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
         if(stag)html+='<div class="g-txt"'+dat+' style="left:'+pct(ins[0].L.plant)+'%;width:'+Math.max(0.3,pct(ins[0].L.end)-pct(ins[0].L.plant))+'%;top:'+lane.top+'px;color:var(--ink)">'+esc(e?e.n:'')+'</div>';
       });
       var h=4;lanes.forEach(function(l){h=Math.max(h,l.top+l.h+4);});
-      if(!lanes.length)h=32;
+      if(!lanes.length)h=(b.jobs&&b.jobs.length)?26:32;
+      (b.jobs||[]).slice().sort(function(x,z){return x.start<z.start?-1:x.start>z.start?1:0;}).forEach(function(j,ji){
+        var C=jcat(j),top=h+ji*9,t=esc(jname(j)+': '+jobSpan(j));
+        if(j.shape!=='once'){var je=okDate(j.end)&&j.end>=j.start?j.end:j.start;html+='<i class="g-job" title="'+t+'" style="left:'+pct(j.start)+'%;width:'+Math.max(0.6,pct(je)-pct(j.start))+'%;top:'+top+'px;background:'+C.col+';opacity:.45"></i>';}
+        occ(j).forEach(function(o){html+='<i class="g-job once" title="'+t+'" style="left:'+pct(o.d)+'%;top:'+top+'px;background:'+C.col+'"></i>';});
+      });
+      if(b.jobs&&b.jobs.length)h+=b.jobs.length*9+2;
       return '<div class="g-row'+(sel===b.id?' sel':'')+'" data-bed="'+b.id+'"><div class="g-label" title="'+esc(b.name)+'">'+esc(b.name||TYPES[b.type].n)+(sf.prot?'<span class="g-tag">in hoop house</span>':'')+'</div>'+
-        '<div class="g-track" style="height:'+h+'px">'+(sf.prot?'<div class="g-prot" title="'+esc((sf.house.name||'Hoop house')+' season: '+fmtD(sf.lastFrost)+' to '+fmtD(sf.firstFrost))+'" style="left:'+pct(sf.lastFrost)+'%;width:'+Math.max(0.3,pct(sf.firstFrost)-pct(sf.lastFrost))+'%"></div>':'')+(pls.length?html:'<span class="g-empty">No plantings</span>')+'</div></div>';
+        '<div class="g-track" style="height:'+h+'px">'+(sf.prot?'<div class="g-prot" title="'+esc((sf.house.name||'Hoop house')+' season: '+fmtD(sf.lastFrost)+' to '+fmtD(sf.firstFrost))+'" style="left:'+pct(sf.lastFrost)+'%;width:'+Math.max(0.3,pct(sf.firstFrost)-pct(sf.lastFrost))+'%"></div>':'')+(pls.length?'':'<span class="g-empty">No plantings</span>')+html+'</div></div>';
     };
     var rows=containerGroups(beds).map(function(g){return groupHead(g,beds)+g.beds.map(rowFn).join('');}).join('');
     var lines='<div class="g-line" style="left:calc(var(--lw) + (100% - var(--lw)) * '+(pct(S.lastFrost)/100)+')"><b>Last frost</b></div>'+
@@ -3072,7 +3118,6 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     r.max=String(total-1);r.disabled=!scrub.on;
     if(scrub.on&&scrub.date)r.value=String(diffD(start,scrub.date));
     el('scrubL').textContent=scrub.on&&scrub.date?fmtD(scrub.date):'';
-    syncCarebar();
   }
 
   var taskMode='day';
@@ -3461,7 +3506,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       else if(s.type==='field'&&!s.locked&&ptA!==null){selPt=+ptA;drag={mode:'pt',id:s.id,i:selPt};}
       else if(s.type==='field'&&!s.locked&&midA!==null){var mi=+midA,a1=s.pts[mi],b1=s.pts[(mi+1)%s.pts.length];s.pts.splice(mi+1,0,[Math.round((a1[0]+b1[0])/2),Math.round((a1[1]+b1[1])/2)]);selPt=mi+1;drag={mode:'pt',id:s.id,i:selPt,moved:true};}
       else if(t.getAttribute('data-handle')){drag={mode:'resize',id:s.id,w0:w,orig:{w:s.w,h:s.h}};}
-      else if(s.locked||careOn()){drag={mode:'pan',sx:e.clientX,sy:e.clientY,vx:view.x,vy:view.y};svg.classList.add('panning');}
+      else if(s.locked){drag={mode:'pan',sx:e.clientX,sy:e.clientY,vx:view.x,vy:view.y};svg.classList.add('panning');}
       else{drag={mode:'move',id:s.id,w0:w,orig:{x:s.x,y:s.y,pts:s.pts?s.pts.map(function(q){return q.slice();}):null}};}
       if(e.pointerType==='touch'&&drag&&drag.mode==='pan'){drag=null;svg.classList.remove('panning');}
       if(e.pointerType==='touch'&&drag&&drag.mode!=='pan'){
@@ -3602,7 +3647,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     if(!state.spaces.length){view={x:20,y:20,s:14};render();return;}
     var a=1e9,b=1e9,c=-1e9,d=-1e9;
     state.spaces.forEach(function(s,i){fixPos(s,i);a=Math.min(a,s.x);b=Math.min(b,s.y);c=Math.max(c,s.x+s.w);d=Math.max(d,s.y+s.h);});
-    var cb=careOn()?document.querySelector('.carebar'):null,topX=cb?cb.offsetHeight+8:0;
+    var topX=0;
     var pad=32,dk=document.querySelector('.dock'),padB=pad+(dk?dk.offsetHeight+8:0),ah=Math.max(40,r.height-pad-padB-topX);
     var sx=(r.width-pad*2)/Math.max(1,c-a), sy=ah/Math.max(1,d-b);
     view.s=clamp(Math.min(sx,sy),1.5,60);
@@ -3739,7 +3784,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   fit();
   /* ---- Garden Suite: tabs. Plan is this app; Field Log and Forecast are loaded on first open and fed the live plan. */
   (function(){
-    var tabs=['plan','care','doing','forecast'],frames={},cur='plan';
+    var tabs=['plan','tasks','forecast','doing'],frames={},cur='plan';
     function appSrc(id){
       var n=document.getElementById('app-'+id);if(!n)return '';
       return '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script>window.UNIFIED=1;<\/script>'+n.textContent.replace(/<\\\/script/g,'</script');
@@ -3754,14 +3799,15 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
       }catch(e){}
     }
     function open(id){
+      if(id==='care')id='plan'; /* old links to the Care tab */
       if(tabs.indexOf(id)<0)id='plan';
       cur=id;
-      var shown=(id==='plan'||id==='care')?'tab-plan':'tab-'+id;
-      ['tab-plan','tab-doing','tab-forecast'].forEach(function(p){var n=document.getElementById(p);if(n)n.hidden=(p!==shown);});
+      var shown='tab-'+id;
+      ['tab-plan','tab-tasks','tab-doing','tab-forecast'].forEach(function(p){var n=document.getElementById(p);if(n)n.hidden=(p!==shown);});
       tabs.forEach(function(t){
         var b=document.querySelector('.suite-tabs [data-tab="'+t+'"]');if(b){b.setAttribute('aria-selected',t===id?'true':'false');b.tabIndex=t===id?0:-1;}
       });
-      if(id==='plan'||id==='care')setMode(id==='care'?'care':'plan');
+      if(id==='tasks')renderTasks();
       if(id==='doing'||id==='forecast'){
         if(!frames[id]){
           var host=document.getElementById('tab-'+id),el=document.createElement('iframe');
@@ -3771,7 +3817,7 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
           el.srcdoc=appSrc(id);host.appendChild(el);
         }else push(id);
       }
-      if(id==='plan'||id==='care'){try{render();renderSide();}catch(e){}}
+      if(id==='plan'){try{render();renderSide();}catch(e){}}
       try{history.replaceState(null,'','#'+id);}catch(e){}
       window.scrollTo(0,0);
     }
