@@ -6,8 +6,8 @@
   <meta name="color-scheme" content="light dark">
   <title>NRCS Grant Guide | Croaking Acres</title>
   <meta name="description" content="A plain-language guide to what NRCS can help small farms pay for, with a worksheet to turn your ideas into a request.">
-  <meta name="theme-color" content="#f7f9f4" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#18211b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#faf7f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1e1a15" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="NRCS Grant Guide | Croaking Acres">
   <meta property="og:description" content="See everything NRCS can help small farms pay for, then build a worksheet to take to your meeting.">
   <meta property="og:url" content="https://croakingacres.com/nrcs-guide/">
@@ -22,7 +22,7 @@
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
   <script>try{var t=localStorage.getItem('ca-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
   <script type="application/ld+json">
 {
@@ -60,7 +60,7 @@
   "url": "https://croakingacres.com/",
   "logo": {
    "@type": "ImageObject",
-   "url": "https://croakingacres.com/favicon.svg"
+   "url": "https://croakingacres.com/assets/logo-badge.png"
   }
  }
 }
@@ -68,22 +68,22 @@
   <style>
     /* Palette and fonts are shared with the home page and garden-planner/. Change them in all three. */
     :root {
-      --bg: #edf1ea; --panel: #f7f9f4; --ink: #1b2a21; --muted: #5b6a60; --line: #cbd5ca;
-      --accent: #2e7a4d; --accent-ink: #ffffff; --accent-soft: #bfe0c7; --warn-bg: #f1e7cf;
-      --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+      --bg: #f3eee4; --panel: #faf7f0; --ink: #1f1b16; --muted: #6b6257; --line: #d9cfbd;
+      --accent: #4a6b35; --accent-ink: #ffffff; --accent-soft: #dfe3c8; --warn-bg: #f1e7cf;
+      --font-display: "IM Fell English SC", "Trebuchet MS", system-ui, sans-serif;
       --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
       --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
-        --bg: #111814; --panel: #18211b; --ink: #e3ece5; --muted: #8fa196; --line: #2c3a31;
-        --accent: #58b97f; --accent-ink: #0c140f; --accent-soft: #2b4a37; --warn-bg: #3a3320;
+        --bg: #161310; --panel: #1e1a15; --ink: #ece4d4; --muted: #a59a87; --line: #3b332a;
+        --accent: #a3bd7c; --accent-ink: #15120e; --accent-soft: #3a4429; --warn-bg: #3a3320;
         color-scheme: dark;
       }
     }
     :root[data-theme="dark"] {
-      --bg: #111814; --panel: #18211b; --ink: #e3ece5; --muted: #8fa196; --line: #2c3a31;
-      --accent: #58b97f; --accent-ink: #0c140f; --accent-soft: #2b4a37; --warn-bg: #3a3320;
+      --bg: #161310; --panel: #1e1a15; --ink: #ece4d4; --muted: #a59a87; --line: #3b332a;
+      --accent: #a3bd7c; --accent-ink: #15120e; --accent-soft: #3a4429; --warn-bg: #3a3320;
       color-scheme: dark;
     }
     :root[data-theme="light"] { color-scheme: light; }
@@ -125,8 +125,8 @@
     .pickbar { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 16px); z-index: 30; display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 18px; border-radius: 999px; background: var(--ink); color: var(--panel); box-shadow: 0 8px 24px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; white-space: nowrap; font-size: 0.93rem; }
     .pickbar.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
     .pickbar a { background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 600; padding: 7px 14px; border-radius: 999px; }
-    :root[data-theme="dark"] .pickbar a { background: #2e7a4d; color: #fff; }
-    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pickbar a { background: #2e7a4d; color: #fff; } }
+    :root[data-theme="dark"] .pickbar a { background: #4a6b35; color: #fff; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pickbar a { background: #4a6b35; color: #fff; } }
 
     .hero { padding: 56px 0 24px; }
     .hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.1rem, 5vw, 3.2rem); letter-spacing: -0.02em; margin: 0 0 16px; line-height: 1.06; text-wrap: balance; max-width: 820px; }
@@ -216,6 +216,14 @@
       #summary { display: block !important; padding: 0; }
       #summary .doc { border: 0; padding: 0; }
     }
+  
+    /* ---- Logo-matched look: etched ink on paper */
+    body { font-synthesis: none; }
+    .brand { font-weight: 400; font-size: 1.4rem; letter-spacing: 0.02em; }
+    .brand-mark { width: 40px; height: 40px; flex: none; background: currentColor;
+      -webkit-mask: url(/assets/logo-mark.svg) center / contain no-repeat; mask: url(/assets/logo-mark.svg) center / contain no-repeat; }
+    .site-header { border-bottom: 3px double var(--line); }
+    .site-footer { border-top: 3px double var(--line); }
   </style>
 </head>
 <body>
@@ -223,7 +231,7 @@
   <header class="site-header">
     <div class="in">
       <a class="brand" href="../" aria-label="Croaking Acres home">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#2e7a4d"/><circle cx="10.5" cy="12" r="4.6" fill="#a8d98a"/><circle cx="21.5" cy="12" r="4.6" fill="#a8d98a"/><ellipse cx="16" cy="19.5" rx="11" ry="7.5" fill="#a8d98a"/><circle cx="10.5" cy="11.4" r="1.9" fill="#1b2a21"/><circle cx="21.5" cy="11.4" r="1.9" fill="#1b2a21"/><path d="M10.5 20.5q5.5 3.6 11 0" fill="none" stroke="#1b2a21" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span class="brand-mark" aria-hidden="true"></span>
         Croaking Acres
       </a>
       <nav class="site-nav" aria-label="Site">
