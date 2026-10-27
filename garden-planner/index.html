@@ -430,6 +430,10 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
       -webkit-mask: url(/assets/logo-mark.svg) center / contain no-repeat; mask: url(/assets/logo-mark.svg) center / contain no-repeat; }
     .site-header { border-bottom: 3px double var(--line); }
     .site-footer { border-top: 3px double var(--line); }
+      .site-nav a.ig-btn { width: 34px; height: 34px; margin-left: 4px; padding: 0; display: inline-grid; place-items: center; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+    .site-nav a.ig-btn:hover { border-color: var(--accent); background: var(--panel); }
+    .site-nav a.ig-btn svg { width: 16px; height: 16px; }
+    @media (max-width: 480px) { .site-nav a.ig-btn { display: none; } }
   </style>
 </head>
 <body>
@@ -444,7 +448,8 @@ input[type=range],input[type=checkbox],input[type=radio]{accent-color:var(--acce
       <a href="../nrcs-guide/">NRCS Guide</a>
       <a href="../#contact">Contact</a>
       <a href="mailto:support@croakingacres.com">Support</a>
-      <button class="theme-btn" id="themeBtn" type="button"></button>
+      <a class="ig-btn" href="https://www.instagram.com/croakingacres/" target="_blank" rel="noopener" aria-label="Croaking Acres on Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+        <button class="theme-btn" id="themeBtn" type="button"></button>
     </nav>
   </div>
 </header>
