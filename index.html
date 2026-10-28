@@ -263,7 +263,7 @@
         </div>
         <div class="promise">
           <div><b>Free, no account</b><span>Open it and start. Nothing to sign up for.</span></div>
-          <div><b>Private by design</b><span>Your plans stay in your own browser and are never uploaded.</span></div>
+          <div><b>Private by design</b><span>Your plans stay in your own browser and are never uploaded. We only count page visits, with no cookies.</span></div>
           <div><b>Works in the field</b><span>The planner installs on your phone and keeps working offline.</span></div>
         </div>
       </section>
@@ -318,5 +318,7 @@
       b.addEventListener('click',function(){var n=cur()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('ca-theme',n);}catch(e){}paint();document.dispatchEvent(new CustomEvent('ca-theme'));});
       if(mq&&mq.addEventListener)mq.addEventListener('change',paint);paint();})();
   </script>
+  <!-- Privacy-friendly visit counter (no cookies, no personal data): https://www.goatcounter.com -->
+  <script data-goatcounter="https://croakingacres.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
