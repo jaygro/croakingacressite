@@ -69,7 +69,7 @@
     /* Palette and fonts are shared with the home page and garden-planner/. Change them in all three. */
     :root {
       --bg: #f3eee4; --panel: #faf7f0; --ink: #1f1b16; --muted: #6b6257; --line: #d9cfbd;
-      --accent: #4a6b35; --accent-ink: #ffffff; --accent-soft: #dfe3c8; --warn-bg: #f1e7cf;
+      --accent: #4a6b35; --accent-ink: #ffffff; --accent-soft: #dfe3c8; --warn-bg: #f1e7cf; --stop-bg: #f3ddd3;
       --font-display: "IM Fell English SC", "Trebuchet MS", system-ui, sans-serif;
       --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
       --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
@@ -77,13 +77,13 @@
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
         --bg: #161310; --panel: #1e1a15; --ink: #ece4d4; --muted: #a59a87; --line: #3b332a;
-        --accent: #a3bd7c; --accent-ink: #15120e; --accent-soft: #3a4429; --warn-bg: #3a3320;
+        --accent: #a3bd7c; --accent-ink: #15120e; --accent-soft: #3a4429; --warn-bg: #3a3320; --stop-bg: #44261d;
         color-scheme: dark;
       }
     }
     :root[data-theme="dark"] {
       --bg: #161310; --panel: #1e1a15; --ink: #ece4d4; --muted: #a59a87; --line: #3b332a;
-      --accent: #a3bd7c; --accent-ink: #15120e; --accent-soft: #3a4429; --warn-bg: #3a3320;
+      --accent: #a3bd7c; --accent-ink: #15120e; --accent-soft: #3a4429; --warn-bg: #3a3320; --stop-bg: #44261d;
       color-scheme: dark;
     }
     :root[data-theme="light"] { color-scheme: light; }
@@ -228,6 +228,31 @@
     .site-nav a.ig-btn:hover { border-color: var(--accent); background: var(--panel); }
     .site-nav a.ig-btn svg { width: 16px; height: 16px; }
     @media (max-width: 480px) { .site-nav a.ig-btn { display: none; } }
+
+    /* ---- Before you apply: callout, pre-check, land lists */
+    .callout { margin-top: 14px; background: var(--accent-soft); border-radius: 10px; padding: 14px 16px; font-size: 0.95rem; max-width: 720px; }
+    .callout a { font-weight: 600; }
+    .check { display: grid; gap: 0; }
+    .cq { padding: 14px 0; border-top: 1px solid var(--line); }
+    .cq:first-child { border-top: 0; padding-top: 0; }
+    .cq .qt { font-weight: 600; margin: 0 0 8px; }
+    .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+    .res { margin: 10px 0 0; font-size: 0.92rem; padding: 8px 12px; border-radius: 6px; }
+    .res.ok { background: var(--accent-soft); }
+    .res.warn { background: var(--warn-bg); }
+    .res.stop { background: var(--stop-bg); }
+    .verdict { margin-top: 16px; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); }
+    .verdict b { display: block; font-family: var(--font-display); font-size: 1.15rem; }
+    .verdict p { margin: 4px 0 0; color: var(--muted); font-size: 0.93rem; }
+    .verdict ol { margin-top: 10px; }
+    .land { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 20px; }
+    .land ul, .bring { margin: 0; padding-left: 20px; }
+    .land li, .bring li { margin-bottom: 6px; font-size: 0.94rem; }
+    .land .panel { min-width: 0; }
+    .alt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .alt-grid .panel h3 { font-size: 1.02rem; }
+    .alt-grid .panel p { margin: 0; color: var(--muted); font-size: 0.93rem; }
   </style>
 </head>
 <body>
@@ -259,15 +284,62 @@
         <h1>NRCS grants: see everything that's possible, then ask for it.</h1>
         <p>Many small farms apply for one thing, like a high tunnel, and never hear that NRCS can also help pay for irrigation, rainwater capture, soil and fertility planning, pest management, wind protection, and more. This guide shows the full range and helps you turn your ideas into a clear request.</p>
         <div class="notice">This is an independent guide, not an official USDA or NRCS page. Programs, practice lists, payment rates, and deadlines change, and they differ by state. Always confirm details with your local NRCS office before you plan around anything here.</div>
+        <p class="callout"><b>New to USDA programs?</b> Before you pick practices, <a href="#ready">take the 2-minute pre-check</a>. You'll need a few things in place first, like a farm number from the Farm Service Agency and proof you can make changes to the land. Many people sort these out in one office visit. Some can't yet, and we'll show you other options.</p>
         <p class="give-line">Free to use, no sign-up. If it saves you time, <a href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">chip in any amount</a> to keep it free and up to date. It is a gift to the farm, not a tax-deductible donation.</p>
         <nav aria-label="On this page"><ul class="toc">
+          <li><a href="#ready">Before you apply</a></li>
           <li><a href="#explore">What's possible</a></li>
           <li><a href="#build">Build your worksheet</a></li>
           <li><a href="#process">How it works</a></li>
           <li><a href="#questions">Questions to ask</a></li>
+          <li><a href="#other-help">Other options</a></li>
           <li><a href="#sources">Sources</a></li>
         </ul></nav>
       </div>
+
+      <section id="ready">
+        <h2>Before you apply: is this for me?</h2>
+        <p class="lead">NRCS (the Natural Resources Conservation Service, part of USDA) can help pay for conservation work on farms of almost any size. Before it can pay you, a few things have to be true about you and your land. Answer these to see where you stand. Not sure about one? Skip it. The office can answer it, and your answers stay in your browser.</p>
+        <div class="panel">
+          <div class="check" id="check"></div>
+          <div class="verdict" id="verdict" aria-live="polite"><b id="verdictH"></b><p id="verdictP"></p><ol class="bring" id="verdictSteps" hidden></ol></div>
+        </div>
+
+        <div class="land">
+          <div class="panel">
+            <h3>Usually fine</h3>
+            <ul>
+              <li>Small plots, backyards, community gardens, and urban lots. NRCS says size and location aren't the test.</li>
+              <li>Growing only for your family or neighbors. You don't have to sell anything.</li>
+              <li>No crop history. You can self-certify what you grow on the application, and NRCS may confirm with a visit.</li>
+              <li>Watering with a hose or watering can, or with city water or rainwater. Any legal method counts as irrigation history.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Check these first</h3>
+            <ul>
+              <li>Nothing growing or raised yet. You need to be producing something when you apply.</li>
+              <li>Renting without a written lease, or a landowner who won't OK changes.</li>
+              <li>Public, HOA, or shared land where you don't decide what gets built.</li>
+              <li>Land already in the Conservation Reserve Program (CRP) or a wetland easement, or land that's permanently underwater.</li>
+              <li>Irrigation practices on ground that hasn't been watered in 2 of the last 5 years.</li>
+              <li>Average adjusted gross income (AGI) over $900,000, unless 75% or more of it comes from farming.</li>
+              <li>Zoning, permits, or HOA rules that ban structures like high tunnels.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="lead" style="margin-top:16px">One more thing: NRCS, not FSA, decides whether your land is eligible. Having a farm number is required, but it doesn't guarantee the land qualifies.</p>
+
+        <div class="panel" style="margin-top:4px">
+          <h3>What to bring to your first visit</h3>
+          <ul class="bring">
+            <li>Your Social Security number, or an EIN if you farm as a business</li>
+            <li>Your deed, or a written lease if you rent, plus your landowner's contact information</li>
+            <li>A rough map or photos of where you grow, and what you grow or raise there now</li>
+            <li>Business documents, such as articles of organization, if you farm as an LLC or other entity</li>
+          </ul>
+        </div>
+      </section>
 
       <section id="mindset">
         <h2>Think in problems, not shopping lists</h2>
@@ -336,10 +408,10 @@
         <h2>How the process works</h2>
         <p class="lead">The details vary by state and year, but the path for EQIP (the main NRCS program for working farms) generally looks like this.</p>
         <ol class="steps">
-          <li><b>Contact your local USDA Service Center.</b><span>Tell them you're interested in EQIP. You can also start through farmers.gov. A conservation planner will check your eligibility and learn about your land.</span></li>
-          <li><b>Get a farm number from the Farm Service Agency (FSA).</b><span>NRCS requires one for financial assistance. FSA is usually in the same building as NRCS. If you're new to USDA programs, make this appointment early.</span></li>
+          <li><b>Call your USDA Service Center and ask for two appointments, one with FSA and one with NRCS.</b><span>They're usually in the same building. Tell NRCS you're interested in EQIP. Talking to NRCS and getting a planning visit is free and doesn't need a farm number. You need the farm number only to get paid.</span></li>
+          <li><b>Set up your records with the Farm Service Agency (FSA).</b><span>FSA gives your land a farm and tract number and makes a map of it. Bring the items from <a href="#ready">What to bring</a>. Expect to fill out AD-2047 (customer information), CCC-902 (farm operating plan), CCC-941 (income certification), and AD-1026 (highly erodible land and wetland certification). If your land has never been farmed or sits in town, FSA may need to map it first, so ask how long setup will take and book it early.</span></li>
           <li><b>Develop a conservation plan with your planner.</b><span>This is where your worksheet helps. You and the planner pick practices that address your resource concerns.</span></li>
-          <li><b>Complete the application and paperwork.</b><span>This includes forms CPA-1200 and AD-1026, a tax ID (SSN or EIN), and proof you control the land, like a deed or a lease. If you lease, landowner permission can matter for some practices.</span></li>
+          <li><b>Complete the application and paperwork.</b><span>The NRCS application is form CPA-1200. NRCS also checks that your FSA records, tax ID, and proof of land control (a deed or lease) are in place. If you lease, landowner permission can matter for some practices.</span></li>
           <li><b>Meet the ranking date.</b><span>NRCS accepts applications year-round, but funding decisions are made at set ranking dates, and applications are scored competitively. Each state sets its own cutoff dates, listed on the NRCS application cutoff dates page (linked below). Missing a date means waiting for the next cycle.</span></li>
           <li><b>If you're selected, sign a contract. Don't start the work first.</b><span>Starting a practice before NRCS signs your contract can make that practice ineligible for payment. A waiver to start early exists, but it has to be requested in writing and granted beforehand.</span></li>
           <li><b>Build it to NRCS standards, then get paid.</b><span>NRCS typically pays after the work is done and inspected. Some producers qualify for advance payment, and NRCS describes higher payment rates for beginning, veteran, limited resource, and socially disadvantaged producers, so ask which applies to you.</span></li>
@@ -351,6 +423,19 @@
         <h2>Questions to ask your conservationist</h2>
         <p class="lead">These come along in your summary too.</p>
         <ul class="qlist" id="qlist"></ul>
+      </section>
+
+      <section id="other-help">
+        <h2>If NRCS isn't a fit right now</h2>
+        <p class="lead">Maybe you rent without a lease, haven't started growing yet, or your project doesn't fit EQIP. You still have options, and most of them are free.</p>
+        <div class="alt-grid">
+          <div class="panel"><h3>Your soil and water conservation district</h3><p>Every county has one, often in the same USDA office. Many run their own cost-share, rain barrel, cover crop, or urban programs with simpler rules. Find yours through the <a href="https://www.nacdnet.org/" rel="noopener">National Association of Conservation Districts</a> or your state conservation agency.</p></div>
+          <div class="panel"><h3>Cooperative Extension</h3><p>Your state's land-grant university has a county office with soil testing, small farm and urban ag programs, and Master Gardener help.</p></div>
+          <div class="panel"><h3>ATTRA</h3><p>A free sustainable agriculture helpline and library of guides, run by the National Center for Appropriate Technology. Find it at <a href="https://attra.ncat.org/" rel="noopener">attra.ncat.org</a>.</p></div>
+          <div class="panel"><h3>SARE grants</h3><p>Sustainable Agriculture Research and Education offers farmer and rancher grants for trying new practices, run by region. See <a href="https://www.sare.org/grants/" rel="noopener">sare.org</a>.</p></div>
+          <div class="panel"><h3>State and local programs</h3><p>Check your state department of agriculture and your city or county for specialty crop, urban ag, stormwater credit, or rain barrel rebate programs.</p></div>
+          <div class="panel"><h3>NRCS help without a contract</h3><p>An NRCS planner can still visit and help you write a conservation plan. Then you're ready to apply when your situation changes.</p></div>
+        </div>
       </section>
 
       <section id="faq">
@@ -369,6 +454,10 @@
           <li><a href="https://www.nrcs.usda.gov/programs-initiatives/eqip-environmental-quality-incentives" rel="noopener">NRCS: Environmental Quality Incentives Program (EQIP)</a></li>
           <li><a href="https://www.nrcs.usda.gov/sites/default/files/2023-11/EQIP%20for%20Small-Scale%20Urban%20Ag%20factsheet_0.pdf" rel="noopener">NRCS: EQIP for small-scale urban agriculture (fact sheet)</a></li>
           <li><a href="https://www.nrcs.usda.gov/sites/default/files/2024-12/fy25-eqip-seasonal-high-tunnel-practice-list.pdf" rel="noopener">NRCS: FY2025 EQIP seasonal high tunnel practice list</a></li>
+          <li><a href="https://www.nrcs.usda.gov/getting-assistance/how-to-apply" rel="noopener">NRCS: How to apply</a></li>
+          <li><a href="https://www.usda.gov/sites/default/files/guidance-documents/NRCS.EQIP-Myth-Busters-Fact-Sheet.pdf" rel="noopener">NRCS: EQIP myth busters (size, gardens, irrigation history)</a></li>
+          <li><a href="https://dts.fsa.usda.gov/Assets/USDA-FSA-Public/usdafiles/FactSheets/2024/FSA_Customer-FarmRecord_FACTSHEET_24-1-.pdf" rel="noopener">FSA: Customer and farm records fact sheet</a></li>
+          <li><a href="https://www.fsa.usda.gov/tools/informational/payment-eligibility/adjusted-gross-income" rel="noopener">FSA: Adjusted gross income limit</a></li>
           <li><a href="https://www.nrcs.usda.gov/contact/find-a-service-center" rel="noopener">Find your USDA service center</a></li>
           <li><a href="https://www.farmers.gov" rel="noopener">farmers.gov</a></li>
         </ul>
@@ -483,6 +572,8 @@
   ];
 
   var QUESTIONS = [
+    "Can you visit and give me technical help before I have a farm number?",
+    "Does my land meet the eligibility tests, and what do you need to see from me?",
     "Which of these practices are on my state's EQIP list and payment schedule this year?",
     "What is the next ranking date, and what can I do now to be ready for it?",
     "Which resource concerns on my land would these practices address?",
@@ -495,20 +586,88 @@
     "What technical help can NRCS or partners like Cooperative Extension and the local soil and water conservation district give me?"
   ];
 
+  // Pre-check: each option is [label, level, advice]; levels are ok, warn, stop.
+  var CHECK = [
+    { id: "grow", short: "Growing or raising something now", q: "Are you growing or raising something on this land right now?", o: [
+      ["Yes, even a little", "ok", "Good. Any amount counts, even if it's just for family or neighbors."],
+      ["Not yet", "stop", "Start growing first, even a few beds this season. NRCS needs you to be producing something when you apply. Meanwhile, a free NRCS planning visit can help you choose where and how to start."]] },
+    { id: "land", short: "Control of the land", q: "Do you own the land, or have a written lease?", o: [
+      ["I own it", "ok", "Bring your deed, or the property's legal description."],
+      ["Written lease", "ok", "Bring the lease. Ask your landowner now whether they'll OK structures like a tunnel."],
+      ["Renting, no lease", "warn", "Get a written lease or a signed landowner agreement first. It should cover the years of a contract."],
+      ["Public, HOA, or shared", "warn", "Find out who controls the land and whether they'll sign. HOA and zoning rules can block structures."]] },
+    { id: "farmno", short: "FSA farm number", q: "Do you have a Farm Service Agency (FSA) farm number for this land?", o: [
+      ["Yes", "ok", "Great. Bring it, and check that your FSA records are up to date."],
+      ["No or not sure", "warn", "Book an FSA appointment first. Bring your SSN or EIN and your deed or lease. Land in town may need to be mapped, which can take a while."]] },
+    { id: "agi", short: "Income under the limit", q: "Is your average adjusted gross income (AGI) over $900,000?", o: [
+      ["No", "ok", "You're under the limit. You'll certify this on form CCC-941."],
+      ["Yes", "stop", "You're likely over the limit, unless 75% or more of your income comes from farming (form CCC-943). Ask FSA."]] },
+    { id: "other", short: "Not in CRP or an easement", q: "Is the land in CRP, under a conservation easement, or permanently underwater?", o: [
+      ["No", "ok", "Nothing blocking you here."],
+      ["Yes or not sure", "warn", "Land in CRP or a wetland easement usually can't be in EQIP. Ask NRCS to check."]] },
+    { id: "cash", short: "Can front the cost", q: "Can you pay for the work up front and get paid back later?", o: [
+      ["Yes", "ok", "That's the usual way it works. NRCS pays after the work passes inspection."],
+      ["That would be hard", "warn", "Ask about advance payment. Beginning, veteran, and limited resource producers can get at least 50% up front, to spend within 90 days."]] }
+  ];
+
   var KEY = "ca-nrcs-worksheet-v1";
-  var state = { sel: {}, notes: {}, profile: {} };
+  var state = { sel: {}, notes: {}, profile: {}, check: {} };
   var byId = {};
   CATS.forEach(function (c) { c.items.forEach(function (i) { i.cat = c.title; byId[i.id] = i; }); });
 
   function load() {
     try {
       var raw = localStorage.getItem(KEY);
-      if (raw) { var s = JSON.parse(raw); state.sel = s.sel || {}; state.notes = s.notes || {}; state.profile = s.profile || {}; }
+      if (raw) { var s = JSON.parse(raw); state.sel = s.sel || {}; state.notes = s.notes || {}; state.profile = s.profile || {}; state.check = s.check || {}; }
     } catch (e) {}
   }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; }
+
+  function checkAnswer(c) {
+    var k = state.check[c.id];
+    return (typeof k === "number" && c.o[k]) ? c.o[k] : null;
+  }
+  // Turns every answer that isn't "ok" into a next step, so nobody hits a dead end.
+  function todoSteps() {
+    var out = [];
+    CHECK.forEach(function (c) { var a = checkAnswer(c); if (a && a[1] !== "ok") out.push(a[2]); });
+    if (out.length) out.push("Then call your USDA Service Center for a free NRCS planning visit. You can do this before everything above is sorted out.");
+    return out;
+  }
+  function renderCheck() {
+    var root = $("check");
+    root.textContent = "";
+    CHECK.forEach(function (c) {
+      var box = el("div", "cq"), opts = el("div", "opts"), res = el("p", "res");
+      box.appendChild(el("p", "qt", c.q));
+      c.o.forEach(function (o, k) {
+        var b = el("button", "chip", o[0]);
+        b.type = "button"; b.id = "ck-" + c.id + "-" + k;
+        b.setAttribute("aria-pressed", state.check[c.id] === k ? "true" : "false");
+        b.addEventListener("click", function () {
+          if (state.check[c.id] === k) delete state.check[c.id]; else state.check[c.id] = k;
+          save(); renderCheck();
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      var a = checkAnswer(c);
+      if (a) { res.className = "res " + a[1]; res.textContent = a[2]; box.appendChild(res); }
+      root.appendChild(box);
+    });
+    var lv = CHECK.map(checkAnswer).filter(Boolean).map(function (a) { return a[1]; });
+    var todo = todoSteps(), ol = $("verdictSteps");
+    ol.textContent = "";
+    todo.forEach(function (t) { ol.appendChild(el("li", "", t)); });
+    ol.hidden = !todo.length;
+    var h = $("verdictH"), p = $("verdictP");
+    if (!lv.length) { h.textContent = "Answer a few questions to see where you stand"; p.textContent = "Tap an answer again to clear it."; }
+    else if (lv.indexOf("stop") > -1) { h.textContent = "Not yet, but you have other options"; p.innerHTML = 'Something needs to change before NRCS can pay for work, but you can start today. Here\'s how, and <a href="#other-help">these programs</a> may help in the meantime:'; }
+    else if (lv.indexOf("warn") > -1) { h.textContent = "Likely possible, with a few steps first"; p.innerHTML = 'Here\'s what to do first. While you work on these, <a href="#explore">pick practices</a> and build your worksheet so you\'re ready.'; }
+    else { h.textContent = lv.length === CHECK.length ? "You look ready to start" : "So far, so good"; p.innerHTML = 'Next, <a href="#explore">pick practices</a> and build your worksheet. Ask your office about your state\'s next ranking date.'; }
+  }
 
   function renderCatalog() {
     var root = $("catalog");
@@ -610,6 +769,14 @@
     if (P.problems) { L.push("What's not working today:"); L.push(P.problems); }
     if (P.goals) { L.push("My goals:"); L.push(P.goals); }
     L.push("");
+    var C = CHECK.filter(checkAnswer);
+    if (C.length) {
+      L.push("MY STARTING POINT");
+      C.forEach(function (c) { var a = checkAnswer(c); L.push("- " + c.short + ": " + a[0] + (a[1] === "ok" ? "" : " (to sort out)")); });
+      var T = todoSteps();
+      if (T.length) { L.push("To do first:"); T.forEach(function (t) { L.push("[ ] " + t); }); }
+      L.push("");
+    }
     L.push("PRACTICES I WANT TO DISCUSS");
     var ids = selectedIds();
     if (!ids.length) L.push("(none selected)");
@@ -643,6 +810,25 @@
     if (P.problems) { doc.appendChild(el("h4", "", "What's not working today")); doc.appendChild(el("p", "pre", P.problems)); }
     if (P.goals) { doc.appendChild(el("h4", "", "My goals")); doc.appendChild(el("p", "pre", P.goals)); }
 
+    var C = CHECK.filter(checkAnswer);
+    if (C.length) {
+      doc.appendChild(el("h4", "", "My starting point"));
+      var cu = el("ul");
+      C.forEach(function (c) {
+        var a = checkAnswer(c), li = el("li");
+        li.appendChild(el("b", "", c.short + ": "));
+        li.appendChild(document.createTextNode(a[0] + (a[1] === "ok" ? "" : " (to sort out)")));
+        cu.appendChild(li);
+      });
+      doc.appendChild(cu);
+      var T = todoSteps();
+      if (T.length) {
+        doc.appendChild(el("p", "small", "To do first"));
+        var tu = el("ul");
+        T.forEach(function (t) { tu.appendChild(el("li", "", "☐ " + t)); });
+        doc.appendChild(tu);
+      }
+    }
     doc.appendChild(el("h4", "", "Practices I want to discuss"));
     var any = false;
     CATS.forEach(function (c) {
@@ -677,7 +863,7 @@
 
   function init() {
     load();
-    renderCatalog(); renderBundles(); renderPicks(); bindProfile();
+    renderCheck(); renderCatalog(); renderBundles(); renderPicks(); bindProfile();
 
     $("catalog").addEventListener("change", function (e) {
       var t = e.target;
@@ -708,10 +894,10 @@
     });
     $("clear").addEventListener("click", function () {
       if (!window.confirm("Clear your picks and notes?")) return;
-      state = { sel: {}, notes: {}, profile: {} };
+      state = { sel: {}, notes: {}, profile: {}, check: {} };
       save();
       PROFILE.forEach(function (p) { $(p[0]).value = ""; });
-      syncCards(); renderPicks();
+      syncCards(); renderPicks(); renderCheck();
     });
   }
 
