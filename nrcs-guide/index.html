@@ -32,7 +32,7 @@
  "description": "A plain-language, state-neutral guide to what NRCS and EQIP can help small and urban farms pay for, from high tunnels and irrigation to rainwater capture and soil health, with a printable request worksheet.",
  "url": "https://croakingacres.com/nrcs-guide/",
  "image": "https://croakingacres.com/assets/og-nrcs.png",
- "dateModified": "2026-10-19",
+ "dateModified": "2026-10-28",
  "inLanguage": "en-US",
  "isAccessibleForFree": true,
  "about": [
@@ -250,6 +250,16 @@
     .land ul, .bring { margin: 0; padding-left: 20px; }
     .land li, .bring li { margin-bottom: 6px; font-size: 0.94rem; }
     .land .panel { min-width: 0; }
+    .tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+    .tbl table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.93rem; }
+    .tbl th, .tbl td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    .tbl th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+    .tbl tr:last-child td { border-bottom: 0; }
+    .tbl small { color: var(--muted); }
+    dl.gloss { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 8px 18px; max-width: 760px; }
+    dl.gloss dt { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500; }
+    dl.gloss dd { margin: 0; color: var(--muted); }
+    @media (max-width: 520px) { dl.gloss { grid-template-columns: 1fr; gap: 2px; } dl.gloss dd { margin-bottom: 10px; } }
     .alt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
     .alt-grid .panel h3 { font-size: 1.02rem; }
     .alt-grid .panel p { margin: 0; color: var(--muted); font-size: 0.93rem; }
@@ -282,7 +292,8 @@
       <div class="hero">
         <p class="kicker">Free guide</p>
         <h1>NRCS grants: see everything that's possible, then ask for it.</h1>
-        <p>Many small farms apply for one thing, like a high tunnel, and never hear that NRCS can also help pay for irrigation, rainwater capture, soil and fertility planning, pest management, wind protection, and more. This guide shows the full range and helps you turn your ideas into a clear request.</p>
+        <p>The Natural Resources Conservation Service (NRCS) is the part of USDA that helps farms of every size fix soil, water, and plant problems. Many small farms apply for one thing, like a high tunnel, and never hear that NRCS can also help pay for irrigation, rainwater capture, soil and fertility planning, pest management, wind protection, and more. This guide shows the full range and helps you turn your ideas into a clear request.</p>
+        <p>One thing to know up front: NRCS mostly pays you back after the work is done and inspected, so it works more like cost-share than a grant check. <a href="#glossary">New words?</a> There's a short glossary at the bottom.</p>
         <div class="notice">This is an independent guide, not an official USDA or NRCS page. Programs, practice lists, payment rates, and deadlines change, and they differ by state. Always confirm details with your local NRCS office before you plan around anything here.</div>
         <p class="callout"><b>New to USDA programs?</b> Before you pick practices, <a href="#ready">take the 2-minute pre-check</a>. You'll need a few things in place first, like a farm number from the Farm Service Agency and proof you can make changes to the land. Many people sort these out in one office visit. Some can't yet, and we'll show you other options.</p>
         <p class="give-line">Free to use, no sign-up. If it saves you time, <a href="https://buy.stripe.com/00w14m8jd3Qf4kWcO9gUM00" target="_blank" rel="noopener">chip in any amount</a> to keep it free and up to date. It is a gift to the farm, not a tax-deductible donation.</p>
@@ -291,6 +302,7 @@
           <li><a href="#explore">What's possible</a></li>
           <li><a href="#build">Build your worksheet</a></li>
           <li><a href="#process">How it works</a></li>
+          <li><a href="#programs">Which program?</a></li>
           <li><a href="#questions">Questions to ask</a></li>
           <li><a href="#other-help">Other options</a></li>
           <li><a href="#sources">Sources</a></li>
@@ -372,6 +384,9 @@
             <label class="f">County or location<input type="text" id="p-where" autocomplete="off"></label>
             <label class="f">What you grow or raise<input type="text" id="p-grow" autocomplete="off"></label>
             <label class="f">Size of your operation <small>acres or square feet, and any structures you already have</small><input type="text" id="p-size" autocomplete="off"></label>
+            <label class="f">What's growing or raised there right now? <small>NRCS needs you to be producing something when you apply</small><input type="text" id="p-now" autocomplete="off"></label>
+            <label class="f">Landowner name and contact <small>if you rent. Some practices need their OK.</small><input type="text" id="p-owner" autocomplete="off"></label>
+            <label class="f">Water source <small>Well, city water, rain barrels... and has this area been watered in 2 of the last 5 years? Hoses count.</small><input type="text" id="p-water" autocomplete="off"></label>
             <label class="f">What's not working today? <small>Dry spells, wet spots, cold snaps, weeds, tired soil, wind, hauling water by hand...</small><textarea id="p-problems"></textarea></label>
             <label class="f">What do you want to be able to do? <small>Your goals for the next few years</small><textarea id="p-goals"></textarea></label>
           </div>
@@ -406,7 +421,7 @@
     <div class="wrap">
       <section id="process">
         <h2>How the process works</h2>
-        <p class="lead">The details vary by state and year, but the path for EQIP (the main NRCS program for working farms) generally looks like this.</p>
+        <p class="lead">The details vary by state and year, but the path for EQIP (the Environmental Quality Incentives Program, the main NRCS program for working farms) generally looks like this.</p>
         <ol class="steps">
           <li><b>Call your USDA Service Center and ask for two appointments, one with FSA and one with NRCS.</b><span>They're usually in the same building. Tell NRCS you're interested in EQIP. Talking to NRCS and getting a planning visit is free and doesn't need a farm number. You need the farm number only to get paid.</span></li>
           <li><b>Set up your records with the Farm Service Agency (FSA).</b><span>FSA gives your land a farm and tract number and makes a map of it. Bring the items from <a href="#ready">What to bring</a>. Expect to fill out AD-2047 (customer information), CCC-902 (farm operating plan), CCC-941 (income certification), and AD-1026 (highly erodible land and wetland certification). If your land has never been farmed or sits in town, FSA may need to map it first, so ask how long setup will take and book it early.</span></li>
@@ -414,9 +429,22 @@
           <li><b>Complete the application and paperwork.</b><span>The NRCS application is form CPA-1200. NRCS also checks that your FSA records, tax ID, and proof of land control (a deed or lease) are in place. If you lease, landowner permission can matter for some practices.</span></li>
           <li><b>Meet the ranking date.</b><span>NRCS accepts applications year-round, but funding decisions are made at set ranking dates, and applications are scored competitively. Each state sets its own cutoff dates, listed on the NRCS application cutoff dates page (linked below). Missing a date means waiting for the next cycle.</span></li>
           <li><b>If you're selected, sign a contract. Don't start the work first.</b><span>Starting a practice before NRCS signs your contract can make that practice ineligible for payment. A waiver to start early exists, but it has to be requested in writing and granted beforehand.</span></li>
-          <li><b>Build it to NRCS standards, then get paid.</b><span>NRCS typically pays after the work is done and inspected. Some producers qualify for advance payment, and NRCS describes higher payment rates for beginning, veteran, limited resource, and socially disadvantaged producers, so ask which applies to you.</span></li>
+          <li><b>Build it to NRCS standards, then get paid.</b><span>NRCS typically pays after the work is done and inspected, so plan to cover the cost first. Beginning, veteran, limited resource, and other historically underserved producers can ask for an advance payment and may get higher payment rates. How USDA defines these groups changed for some programs in 2025, so ask how your office defines them now.</span></li>
         </ol>
         <p class="lead" style="margin-top:8px">Eligibility basics generally include: you control or own eligible land, meet adjusted gross income limits, comply with highly erodible land and wetland conservation rules, and develop a conservation plan. Already doing good conservation work? Ask about the Conservation Stewardship Program (CSP), which pays for maintaining and building on it.</p>
+      </section>
+
+      <section id="programs">
+        <h2>Which program is for me?</h2>
+        <p class="lead">You'll hear about several USDA conservation programs. For most new and small growers, EQIP is the place to start.</p>
+        <div class="tbl"><table>
+          <thead><tr><th>Program</th><th>Run by</th><th>Who it fits</th><th>For newcomers</th></tr></thead>
+          <tbody>
+            <tr><td><b>EQIP</b><br><small>Environmental Quality Incentives Program</small></td><td>NRCS</td><td>Working farms of any size that want help paying for practices that fix a problem on their land.</td><td>The usual starting point</td></tr>
+            <tr><td><b>CSP</b><br><small>Conservation Stewardship Program</small></td><td>NRCS</td><td>Established operations already doing conservation that want to keep it up and add more.</td><td>Usually later</td></tr>
+            <tr><td><b>CRP</b><br><small>Conservation Reserve Program</small></td><td>FSA</td><td>Cropland taken out of production for 10 to 15 years. The land needs a cropping history (planted 4 of the 6 years from 2012 to 2017).</td><td>Rarely fits</td></tr>
+          </tbody>
+        </table></div>
       </section>
 
       <section id="questions">
@@ -443,12 +471,38 @@
         <details><summary>Is a high tunnel the only thing worth asking for?</summary><p>No. NRCS's high tunnel initiative practice list also includes irrigation, roof runoff structures, raised beds, low tunnels, mulching, nutrient and pest management, and more. Tunnels get the attention, but the supporting practices are often what make a farm work.</p></details>
         <details><summary>Will everything I tick get funded?</summary><p>No. Practices have to address a documented resource concern, fit NRCS design standards, be on your state's current list, and rank well against other applicants. Think of your picks as a starting conversation, not a promise.</p></details>
         <details><summary>What do practices pay?</summary><p>Payment rates are set by state and year, and some practices have small-scale scenarios. We don't list dollar amounts here because they go stale quickly. Ask your local office for your state's current payment schedule.</p></details>
-        <details><summary>I'm a small or urban farm. Is there special help?</summary><p>Many state NRCS offices have a page for small and urban farms and an urban or small-scale conservationist, so check yours. NRCS also describes targeted funding and higher rates for historically underserved producers, and an Organic Initiative. Ask about each when you meet.</p></details>
+        <details><summary>I'm a small or urban farm. Is there special help?</summary><p>Many state NRCS offices have a page for small and urban farms and an urban or small-scale conservationist, so check yours. NRCS also describes targeted funding and higher rates for beginning, veteran, limited resource, and other historically underserved producers, and an Organic Initiative. Ask about each when you meet.</p></details>
+        <details><summary>Do I have to pay up front?</summary><p>Usually, yes. NRCS pays after your practice is built to its standards and inspected. Beginning, veteran, limited resource, and other historically underserved producers can ask for an advance of at least 50% of a practice's payment, which has to be spent within 90 days. Signing a contract also means keeping each practice working for its full lifespan, often several years, so think about your lease length or any plans to move.</p></details>
+        <details><summary>I just have a garden. Does that count?</summary><p>It can. NRCS says size and location don't decide eligibility, and you don't have to sell anything. You do need to be growing something, control the land, and have a resource problem a practice would fix. <a href="#ready">Take the pre-check</a> to see where you stand.</p></details>
+        <details><summary>I rent. Can I apply?</summary><p>Yes, with a written lease or agreement that covers the contract years. Some practices, especially structures, need your landowner's permission, so bring their contact information.</p></details>
+      </section>
+
+      <section id="glossary">
+        <h2>Glossary</h2>
+        <dl class="gloss">
+          <dt>USDA</dt><dd>U.S. Department of Agriculture. NRCS and FSA are both part of it.</dd>
+          <dt>NRCS</dt><dd>Natural Resources Conservation Service. Plans conservation work with you and pays part of the cost.</dd>
+          <dt>FSA</dt><dd>Farm Service Agency. Keeps farm records and handles the eligibility paperwork.</dd>
+          <dt>Service Center</dt><dd>Your local USDA office. NRCS, FSA, and the conservation district are often in one building.</dd>
+          <dt>Farm and tract number</dt><dd>FSA's ID for your land. It belongs to the land, not to you.</dd>
+          <dt>EQIP</dt><dd>Environmental Quality Incentives Program. The main NRCS cost-share program.</dd>
+          <dt>CSP</dt><dd>Conservation Stewardship Program. For operations already doing conservation.</dd>
+          <dt>CRP</dt><dd>Conservation Reserve Program. An FSA program that takes cropland out of production.</dd>
+          <dt>Practice</dt><dd>A specific, numbered piece of work NRCS knows how to design and pay for, like "325 High tunnel."</dd>
+          <dt>Resource concern</dt><dd>The problem a practice fixes, such as erosion, water, soil health, or pests.</dd>
+          <dt>Ranking and cutoff date</dt><dd>Applications are scored against each other in batches. Each state sets its own cutoff dates.</dd>
+          <dt>Payment schedule</dt><dd>Your state's list of what each practice pays this year.</dd>
+          <dt>AGI</dt><dd>Adjusted gross income from your tax return. The limit is a $900,000 average.</dd>
+          <dt>HEL and WC</dt><dd>Highly erodible land and wetland conservation rules. You certify them on form AD-1026.</dd>
+          <dt>CPA-1200</dt><dd>The NRCS application form.</dd>
+          <dt>EIN</dt><dd>Employer Identification Number, a tax ID for a business. Individuals use their Social Security number.</dd>
+          <dt>Lifespan</dt><dd>How long you agree to keep a practice working after you're paid.</dd>
+        </dl>
       </section>
 
       <section id="sources">
         <h2>Sources and where to go next</h2>
-        <p class="lead">Last reviewed October 2026. Check these for current details.</p>
+        <p class="lead">Last reviewed October 28, 2026. Check these for current details.</p>
         <ul class="sources">
           <li><a href="https://www.nrcs.usda.gov/application-cutoff-dates" rel="noopener">NRCS application cutoff dates by state</a></li>
           <li><a href="https://www.nrcs.usda.gov/programs-initiatives/eqip-environmental-quality-incentives" rel="noopener">NRCS: Environmental Quality Incentives Program (EQIP)</a></li>
@@ -571,7 +625,15 @@
     { name: "Weather and wear", ids: ["wb", "hua", "trail", "storm", "drain"] }
   ];
 
+  var BRING = [
+    "Social Security number, or EIN if I farm as a business",
+    "Deed, or written lease plus landowner contact",
+    "Map or photos of where I grow",
+    "Business documents, if I farm as an LLC or other entity"
+  ];
+
   var QUESTIONS = [
+    "What happens if I move or my lease ends before a practice's lifespan is up?",
     "Can you visit and give me technical help before I have a farm number?",
     "Does my land meet the eligibility tests, and what do you need to see from me?",
     "Which of these practices are on my state's EQIP list and payment schedule this year?",
@@ -747,7 +809,7 @@
     });
   }
 
-  var PROFILE = [["p-name", "name"], ["p-where", "where"], ["p-grow", "grow"], ["p-size", "size"], ["p-problems", "problems"], ["p-goals", "goals"]];
+  var PROFILE = [["p-name", "name"], ["p-where", "where"], ["p-grow", "grow"], ["p-size", "size"], ["p-now", "now"], ["p-owner", "owner"], ["p-water", "water"], ["p-problems", "problems"], ["p-goals", "goals"]];
   function bindProfile() {
     PROFILE.forEach(function (p) {
       var f = $(p[0]);
@@ -766,6 +828,9 @@
     if (P.where) L.push("Location: " + P.where);
     if (P.grow) L.push("What I grow or raise: " + P.grow);
     if (P.size) L.push("Size and existing structures: " + P.size);
+    if (P.now) L.push("Growing or raised now: " + P.now);
+    if (P.owner) L.push("Landowner: " + P.owner);
+    if (P.water) L.push("Water source and history: " + P.water);
     if (P.problems) { L.push("What's not working today:"); L.push(P.problems); }
     if (P.goals) { L.push("My goals:"); L.push(P.goals); }
     L.push("");
@@ -791,6 +856,9 @@
       });
     });
     L.push("");
+    L.push("BRING TO THE OFFICE");
+    BRING.forEach(function (b) { L.push("[ ] " + b); });
+    L.push("");
     L.push("QUESTIONS TO ASK");
     QUESTIONS.forEach(function (q) { L.push("[ ] " + q); });
     return L.join("\n");
@@ -803,7 +871,7 @@
     doc.appendChild(el("p", "small", "Prepared " + new Date().toLocaleDateString() + " with the Croaking Acres NRCS guide. This is a personal worksheet, not an NRCS application."));
 
     var ul = el("ul");
-    [["Name", P.name], ["Location", P.where], ["What I grow or raise", P.grow], ["Size and existing structures", P.size]].forEach(function (r) {
+    [["Name", P.name], ["Location", P.where], ["What I grow or raise", P.grow], ["Size and existing structures", P.size], ["Growing or raised now", P.now], ["Landowner", P.owner], ["Water source and history", P.water]].forEach(function (r) {
       if (r[1]) { var li = el("li"); li.appendChild(el("b", "", r[0] + ": ")); li.appendChild(document.createTextNode(r[1])); ul.appendChild(li); }
     });
     if (ul.children.length) { doc.appendChild(el("h4", "", "About my operation")); doc.appendChild(ul); }
@@ -846,6 +914,11 @@
       doc.appendChild(u);
     });
     if (!any) doc.appendChild(el("p", "", "No practices selected."));
+
+    doc.appendChild(el("h4", "", "Bring to the office"));
+    var bu = el("ul");
+    BRING.forEach(function (b) { bu.appendChild(el("li", "", "☐ " + b)); });
+    doc.appendChild(bu);
 
     doc.appendChild(el("h4", "", "Questions to ask"));
     var q = el("ul");
