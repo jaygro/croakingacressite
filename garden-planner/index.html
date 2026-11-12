@@ -1389,7 +1389,8 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
   var uid=0;
   function nid(){uid+=1;return 's'+Date.now().toString(36)+uid;}
   function el(id){return document.getElementById(id);}
-  function snap(v){return Math.round(v*2)/2;}
+  /* Moves and resizes step by 1 inch (map units are feet). */
+  function snap(v){return Math.round(v*12)/12;}
   function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
   function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
@@ -3563,11 +3564,27 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     else if(drag.mode==='move'){
       var sn=drag.orig.pts?Math.round:snap,nx=sn(drag.orig.x+(w.x-drag.w0.x)),ny=sn(drag.orig.y+(w.y-drag.w0.y));
       if(drag.orig.pts){var ddx=nx-drag.orig.x,ddy=ny-drag.orig.y;s.pts=drag.orig.pts.map(function(q){return [q[0]+ddx,q[1]+ddy];});syncBox(s);}
-      else{s.x=nx;s.y=ny;}
+      else{var mg=magnet(s,nx,ny,s.w,s.h,false);s.x=mg.x;s.y=mg.y;}
     }
-    else{s.w=Math.max(0.5,snap(drag.orig.w+(w.x-drag.w0.x)));s.h=Math.max(0.5,snap(drag.orig.h+(w.y-drag.w0.y)));}
+    else{var rw=Math.max(1/12,snap(drag.orig.w+(w.x-drag.w0.x))),rh=Math.max(1/12,snap(drag.orig.h+(w.y-drag.w0.y))),mr=magnet(s,s.x,s.y,rw,rh,true);s.w=mr.w;s.h=mr.h;}
     drag.moved=true;
     return true;
+  }
+  /* Pull a dragged shape's edges onto nearby edges of other shapes (within about 10 screen pixels) so beds and paths butt together exactly. With resize=true only the right and bottom edges move. */
+  function magnet(s,x,y,w,h,resize){
+    var th=10/view.s,bx=null,by=null,dx=th,dy=th;
+    state.spaces.forEach(function(o){
+      if(o.id===s.id||!(o.w>0)||!(o.h>0))return;
+      var nearY=y<o.y+o.h+th&&y+h>o.y-th,nearX=x<o.x+o.w+th&&x+w>o.x-th;
+      if(nearY)[o.x,o.x+o.w].forEach(function(e){
+        (resize?[e-x-w]:[e-x,e-x-w]).forEach(function(d){if(Math.abs(d)<dx){dx=Math.abs(d);bx=d;}});
+      });
+      if(nearX)[o.y,o.y+o.h].forEach(function(e){
+        (resize?[e-y-h]:[e-y,e-y-h]).forEach(function(d){if(Math.abs(d)<dy){dy=Math.abs(d);by=d;}});
+      });
+    });
+    if(resize)return {w:bx===null?w:Math.max(1/12,w+bx),h:by===null?h:Math.max(1/12,h+by)};
+    return {x:bx===null?x:x+bx,y:by===null?y:y+by};
   }
   /* How hard to pan, -1.5..1.5 per axis, when the pointer is within a margin of the board edge (the bottom margin sits above the dock). */
   function edgeVel(){
@@ -3674,6 +3691,16 @@ html.unified #exBtn,html.unified .src label.btn[for=fileIn],html.unified #pasteB
     var tag=(document.activeElement&&document.activeElement.tagName)||'';
     if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return;
     if((e.ctrlKey||e.metaKey)&&(e.key==='z'||e.key==='Z'||e.key==='y')){e.preventDefault();if(e.key==='y'||e.shiftKey)redoMap();else undoMap();return;}
+    var ak={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];
+    if(ak&&sel){
+      /* arrow keys nudge the selected shape 1 inch, Shift+arrow 1 foot */
+      var ns=byId(sel);if(!ns||ns.locked)return;
+      e.preventDefault();
+      var st=e.shiftKey?1:1/12,mx=ak[0]*st,my=ak[1]*st;
+      if(ns.pts){ns.pts=ns.pts.map(function(q){return [q[0]+mx,q[1]+my];});syncBox(ns);}
+      else{ns.x=snap(ns.x+mx);ns.y=snap(ns.y+my);}
+      touchState();render();return;
+    }
     if((e.key==='Delete'||e.key==='Backspace')&&sel){
       e.preventDefault();
       var cs=byId(sel);
